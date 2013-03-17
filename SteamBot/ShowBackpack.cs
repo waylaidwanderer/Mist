@@ -75,13 +75,16 @@ namespace MistClient
                     }
                 }
                 name += " (Level " + item.Level + ")";
-                if (item.IsNotTradeable)
-                    name += " (Untradeable)";
                 try
                 {
                     int size = item.Attributes.Length;
                     for (int count = 0; count < size; count++)
                     {
+                        if (item.Attributes[count].Defindex == 261)
+                        {
+                            string paint = PaintToName(item.Attributes[count].FloatValue);
+                            name += " (Painted: " + paint + ")";
+                        }
                         if (item.Attributes[count].Defindex == 186)
                         {
                             name += " (Gifted)";
@@ -92,15 +95,14 @@ namespace MistClient
                 {
                     // Item has no attributes... or something.
                 }
-                if (item.IsNotCraftable)
-                    name += " (Uncraftable)";
                 if (currentItem.Name == "Wrapped Gift")
                 {
                     // Untested!
                     try
                     {
                         var containedItem = Trade.CurrentSchema.GetItem(item.ContainedItem.Defindex);
-                        name += " (Contains: " + containedItem.ItemName + ")";
+                        var containedName = GetItemName(containedItem, item.ContainedItem);
+                        name += " (Contains: " + containedName + ")";
                     }
                     catch (Exception ex)
                     {
@@ -108,9 +110,91 @@ namespace MistClient
                         // Guess this doesn't work :P.
                     }
                 }
+                if (item.IsNotCraftable)
+                    name += " (Uncraftable)";
+                if (item.IsNotTradeable)
+                    name += " (Untradeable)";
                 ListBackpack.Add(name);
                 list_inventory.SetObjects(ListBackpack.Get());
             } 
+        }
+
+        string GetItemName(Schema.Item schemaItem, Inventory.Item inventoryItem, bool id = false)
+        {
+            var currentItem = Trade.CurrentSchema.GetItem(schemaItem.Defindex);
+            string name = "";
+            var type = Convert.ToInt32(inventoryItem.Quality.ToString());
+            if (QualityToName(type) != "Unique")
+                name += QualityToName(type) + " ";
+            name += currentItem.ItemName;
+            if (QualityToName(type) == "Unusual")
+            {
+                try
+                {
+                    for (int count = 0; count < inventoryItem.Attributes.Length; count++)
+                    {
+                        if (inventoryItem.Attributes[count].Defindex == 134)
+                        {
+                            name += " (Effect: " + EffectToName(inventoryItem.Attributes[count].FloatValue) + ")";
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            if (currentItem.CraftMaterialType == "supply_crate")
+            {
+                for (int count = 0; count < inventoryItem.Attributes.Length; count++)
+                {
+                    name += " #" + (inventoryItem.Attributes[count].FloatValue);
+                }
+            }
+            name += " (Level " + inventoryItem.Level + ")";
+            try
+            {
+                int size = inventoryItem.Attributes.Length;
+                for (int count = 0; count < size; count++)
+                {
+                    if (inventoryItem.Attributes[count].Defindex == 261)
+                    {
+                        string paint = ShowBackpack.PaintToName(inventoryItem.Attributes[count].FloatValue);
+                        name += " (Painted: " + paint + ")";
+                    }
+                    if (inventoryItem.Attributes[count].Defindex == 186)
+                    {
+                        name += " (Gifted)";
+                    }
+                }
+            }
+            catch
+            {
+                // Item has no attributes... or something.
+            }
+            if (inventoryItem.IsNotCraftable)
+                name += " (Uncraftable)";
+            if (currentItem.Name == "Wrapped Gift")
+            {
+                // Untested!
+                try
+                {
+                    int size = inventoryItem.Attributes.Length;
+                    for (int count = 0; count < size; count++)
+                    {
+                        var containedItem = Trade.CurrentSchema.GetItem(inventoryItem.ContainedItem.Defindex);
+                        var containedName = GetItemName(containedItem, inventoryItem.ContainedItem);
+                        name += " (Contains: " + containedName + ")";
+                    }
+                }
+                catch
+                {
+                    // Item has no attributes... or something.
+                }
+            }
+            if (id)
+                name += " :" + inventoryItem.Id;
+            return name;
         }
 
         string QualityToName(int quality)
@@ -134,7 +218,7 @@ namespace MistClient
             return "";
         }
 
-        string EffectToName(float effect)
+        public static string EffectToName(float effect)
         {
             if (effect == 6)
                 return "Green Confetti";
@@ -199,6 +283,69 @@ namespace MistClient
             if (effect == 47)
                 return "Stormy 13th Hour";
             return "";
+        }
+
+        public static string PaintToName(float color)
+        {
+            if (color == 3100495)
+                return "A Color Similar to Slate";
+            if (color == 7511618)
+                return "Indubitably Green";
+            if (color == 8208497)
+                return "A Deep Commitment to Purple";
+            if (color == 13595446)
+                return "Mann Co. Orange";
+            if (color == 1315860)
+                return "A Distinctive Lack of Hue";
+            if (color == 10843461)
+                return "Muskelmannbraun";
+            if (color == 12377523)
+                return "A Mann's Mint";
+            if (color == 5322826)
+                return "Noble Hatter's Violet";
+            if (color == 2960676)
+                return "After Eight";
+            if (color == 12955537)
+                return "Peculiarly Drab Tincture";
+            if (color == 8289918)
+                return "Aged Moustache Grey";
+            if (color == 16738740)
+                return "Pink as Hell";
+            if (color == 15132390)
+                return "An Extraordinary Abundance of Tinge";
+            if (color == 6901050)
+                return "Radigan Conagher Brown";
+            if (color == 15185211)
+                return "Australium Gold";
+            if (color == 3329330)
+                return "The Bitter Taste of Defeat and Lime";
+            if (color == 14204632)
+                return "Color No. 216-190-216";
+            if (color == 15787660)
+                return "The Color of a Gentlemann's Business Pants";
+            if (color == 15308410)
+                return "Dark Salmon Injustice";
+            if (color == 8154199)
+                return "Ye Olde Rustic Colour";
+            if (color == 8421376)
+                return "Drably Olive";
+            if (color == 4345659)
+                return "Zepheniah's Greed";
+            if (color == 6637376 || color == 2636109)
+                return "An Air of Debonair";
+            if (color == 12073019 || color == 5801378)
+                return "Team Spirit";
+            if (color == 3874595 || color == 1581885)
+                return "Balaclavas Are Forever";
+            if (color == 8400928 || color == 2452877)
+                return "The Value of Teamwork";
+            if (color == 12807213 || color == 12091445)
+                return "Cream Spirit";
+            if (color == 11049612 || color == 8626083)
+                return "Waterlogged Lab Coat";
+            if (color == 4732984 || color == 3686984)
+                return "Operator's Overalls";
+            return "Unknown";
         }
 
         private void ShowBackpack_Load(object sender, EventArgs e)

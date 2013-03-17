@@ -508,6 +508,11 @@ namespace SteamBot
                             int size = item.Attributes.Length;
                             for (int count = 0; count < size; count++)
                             {
+                                if (item.Attributes[count].Defindex == 261)
+                                {
+                                    string paint = ShowBackpack.PaintToName(item.Attributes[count].FloatValue);
+                                    name += " (Painted: " + paint + ")";
+                                }
                                 if (item.Attributes[count].Defindex == 186)
                                 {
                                     name += " (Gifted)";
@@ -526,7 +531,8 @@ namespace SteamBot
                             try
                             {                           
                                 var containedItem = Trade.CurrentSchema.GetItem(item.ContainedItem.Defindex);
-                                name += " (Contains: " + containedItem.ItemName + ")";
+                                var containedName = GetItemName(containedItem, item.ContainedItem);
+                                name += " (Contains: " + containedName + ")";
                             }
                             catch (Exception ex)
                             {
@@ -712,6 +718,11 @@ namespace SteamBot
                 int size = inventoryItem.Attributes.Length;
                 for (int count = 0; count < size; count++)
                 {
+                    if (inventoryItem.Attributes[count].Defindex == 261)
+                    {
+                        string paint = ShowBackpack.PaintToName(inventoryItem.Attributes[count].FloatValue);
+                        name += " (Painted: " + paint + ")";
+                    }
                     if (inventoryItem.Attributes[count].Defindex == 186)
                     {
                         name += " (Gifted)";
@@ -733,7 +744,8 @@ namespace SteamBot
                     for (int count = 0; count < size; count++)
                     {
                         var containedItem = Trade.CurrentSchema.GetItem(inventoryItem.ContainedItem.Defindex);
-                        name += " (Contains: " + containedItem.ItemName + ")";
+                        var containedName = GetItemName(containedItem, inventoryItem.ContainedItem);
+                        name += " (Contains: " + containedName + ")";
                     }
                 }
                 catch
