@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E81DED36-EDF5-41A5-8666-A3A0C581762F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MistClient</RootNamespace>
+    <AssemblyName>Mist</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>True</Externalconsole>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\Bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>True</Externalconsole>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>mist-icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="MonoDevelop.CSharpBinding, Version=2.6.0.0, Culture=neutral">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddFriend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFriend.Designer.cs">
+      <DependentUpon>AddFriend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bot.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CDNCache.cs" />
+    <Compile Include="Chat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChatTab.cs">
+      <SubType>UserControl</SubType>
+      <CustomToolNamespace>ChatTab</CustomToolNamespace>
+    </Compile>
+    <Compile Include="ChatTab.Designer.cs">
+      <DependentUpon>ChatTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlashWindow.cs" />
+    <Compile Include="ListBackpack.cs" />
+    <Compile Include="ListFriends.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Friends.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Friends.Designer.cs">
+      <DependentUpon>Friends.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListInventory.cs" />
+    <Compile Include="ListOtherOfferings.cs" />
+    <Compile Include="ListUserOfferings.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProfileName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProfileName.Designer.cs">
+      <DependentUpon>ProfileName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ShowBackpack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowBackpack.Designer.cs">
+      <DependentUpon>ShowBackpack.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShowTrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowTrade.Designer.cs">
+      <DependentUpon>ShowTrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SteamGuard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SteamGuard.Designer.cs">
+      <DependentUpon>SteamGuard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserHandler.cs" />
+    <Compile Include="SimpleUserHandler.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Lib\ObjectListView\ObjectListView2010.csproj">
+      <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
+      <Name>ObjectListView2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\SteamKit2\SteamKit2\SteamKit2.csproj">
+      <Project>{BEB5BF07-BB56-402A-97A3-A41C6444C6A5}</Project>
+      <Name>SteamKit2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
+      <Project>{A9AE40FF-1A21-414A-9FE7-3BE13644CC6D}</Project>
+      <Name>Newtonsoft.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\ToastNotifications\ToastNotifications.csproj">
+      <Project>{380d8d88-386c-4c50-9a54-800f79fdf7d2}</Project>
+      <Name>ToastNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SteamTrade\SteamTrade.csproj">
+      <Project>{6CEC0333-81EB-40EE-85D1-941363626FC7}</Project>
+      <Name>SteamTrade</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddFriend.resx">
+      <DependentUpon>AddFriend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChatTab.resx">
+      <DependentUpon>ChatTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Friends.resx">
+      <DependentUpon>Friends.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProfileName.resx">
+      <DependentUpon>ProfileName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShowBackpack.resx">
+      <DependentUpon>ShowBackpack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShowTrade.resx">
+      <DependentUpon>ShowTrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SteamGuard.resx">
+      <DependentUpon>SteamGuard.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\IconIngame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconOffline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconOnline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconUnknown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mist.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mist-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="trade_message.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="message.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="mist-icon.ico" />
+  </ItemGroup>
+</Project>
