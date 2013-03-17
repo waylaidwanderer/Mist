@@ -269,6 +269,11 @@ namespace MistClient
                     catch (Exception ex)
                     {
                         Bot.Print(ex);
+                        MessageBox.Show("\nSomething weird happened. Here's the error:\n" + ex,
+                                    "Trade Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error,
+                                    MessageBoxDefaultButton.Button1);
                     }
                 }
             }

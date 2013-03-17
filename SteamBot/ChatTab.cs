@@ -169,6 +169,7 @@ namespace MistClient
                     button_trade.Text = "Cancel Trade Request";
                     break;
                 case 3: // Other sent trade request - "Accept trade request"
+                    button_trade.Enabled = true;
                     tradeMode = 3;
                     text_log.AppendText("[" + DateTime.Now + "] - " + steam_name.Text + " has requested to trade with you.\r\n");
                     if (!Chat.hasFocus)

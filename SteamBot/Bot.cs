@@ -266,6 +266,18 @@ namespace SteamBot
                     }));
                 }
 
+                if (callback.Result == EResult.InvalidPassword)
+                {
+                    MessageBox.Show("Your password is incorrect. Please try again.",
+                                    "Invalid Password",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error,
+                                    MessageBoxDefaultButton.Button1);
+                    main.wrongAPI = true;
+                    main.Invoke((Action)(main.Close));
+                    return;
+                }
+
                 if (callback.Result == EResult.AccountLogonDenied)
                 {
                     log.Interface ("This account is protected by Steam Guard.  Enter the authentication code sent to the proper email: ");
@@ -331,8 +343,9 @@ namespace SteamBot
                     {
                         Trade.CurrentSchema = Schema.FetchSchema(apiKey);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Console.WriteLine(ex);
                         MessageBox.Show("Your API key is invalid! Please make sure you have obtained a proper one at http://steamcommunity.com/dev/apikey",
                                     "Invalid API Key",
                                     MessageBoxButtons.OK,
