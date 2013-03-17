@@ -4,9 +4,10 @@
 
 **Mist** is a portable Steam client that allows you to chat with friends and trade TF2 items anywhere. It is based heavily on [SteamBot](https://github.com/Jessecar96/SteamBot) and relies on many of its functions. The program is publicly available under the MIT License.
 
-## Configuration Instructions ##
+Mist requires a Steam API key to run. If you do not have one, it can be requested from Value at their [Web API Key](http://steamcommunity.com/dev/apikey) page. **This is required and Mist will not work without an API Key**.
 
-### Step 0 ###
+### Configuration Instructions ###
+
 If you've just recently cloned this repository, there are a few things you need to do in order to build the source code.
 
 1. Run `git submodule init` to initalize the submodule configuration file.
