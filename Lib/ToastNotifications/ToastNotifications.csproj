@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{380D8D88-386C-4C50-9A54-800F79FDF7D2}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ToastNotifications</RootNamespace>
     <AssemblyName>ToastNotifications</AssemblyName>
@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,21 +56,9 @@
     <Compile Include="Notification.designer.cs">
       <DependentUpon>Notification.cs</DependentUpon>
     </Compile>
-    <Compile Include="NotificationLauncher.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NotificationLauncher.Designer.cs">
-      <DependentUpon>NotificationLauncher.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Notification.resx">
       <DependentUpon>Notification.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NotificationLauncher.resx">
-      <DependentUpon>NotificationLauncher.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
