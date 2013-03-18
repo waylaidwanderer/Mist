@@ -318,6 +318,7 @@
             // 
             // label_addfriend2
             // 
+            this.label_addfriend2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label_addfriend2.AutoSize = true;
             this.label_addfriend2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_addfriend2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -333,6 +334,7 @@
             // 
             // label_addfriend
             // 
+            this.label_addfriend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label_addfriend.AutoSize = true;
             this.label_addfriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_addfriend.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
