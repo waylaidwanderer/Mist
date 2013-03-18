@@ -212,7 +212,7 @@ namespace MistClient
                         chat = new Chat(bot);
                         chat.AddChat(selected, sid);
                         chat.Show();
-                        chat.Focus();
+                        chat.Activate();
                         chat_opened = true;
                     }
                     else
@@ -223,14 +223,14 @@ namespace MistClient
                             if (tab.Text == selected)
                             {
                                 chat.ChatTabControl.SelectedTab = tab;
-                                chat.Focus();
+                                chat.Activate();
                                 found = true;
                             }
                         }
                         if (!found)
                         {
                             chat.AddChat(selected, sid);
-                            chat.Focus();
+                            chat.Activate();
                         }
                     }
                 }
