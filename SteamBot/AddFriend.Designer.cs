@@ -91,7 +91,7 @@
             this.MinimizeBox = false;
             this.Name = "AddFriend";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "AddFriend";
+            this.Text = "Add a Friend";
             this.ResumeLayout(false);
             this.PerformLayout();
 
