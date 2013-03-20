@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
+using System.Configuration;
 
 namespace MistClient
 {
@@ -26,6 +27,17 @@ namespace MistClient
         {
             InitializeComponent();
             this.Text = "Login - Mist";
+            MakePortable(Properties.Settings.Default);
+        }
+
+        private static void MakePortable(ApplicationSettingsBase settings)
+        {
+            var portableSettingsProvider =
+                new PortableSettingsProvider("Mist.settings");
+            settings.Providers.Add(portableSettingsProvider);
+            foreach (System.Configuration.SettingsProperty prop in settings.Properties)
+                prop.Provider = portableSettingsProvider;
+            settings.Reload();
         }
 
         private void button_login_Click(object sender, EventArgs e)

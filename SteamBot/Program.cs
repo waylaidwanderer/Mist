@@ -29,7 +29,7 @@ namespace SteamBot
                     return;
                 }
             }
-            Log mainLog = new Log(@"logs/Mist.log", null);
+            Log mainLog;
             bool created;
             mutex = new Mutex(false, "Mist-AF12AF2", out created);
             if (!created)
@@ -37,14 +37,20 @@ namespace SteamBot
                 int pid = 0;
                 try
                 {
-                    pid = System.Diagnostics.Process.GetProcessesByName("Mist")[0].Id;
+                    Random random = new Random();
+                    pid = random.Next(0, 9999);
+                    pid += System.Diagnostics.Process.GetProcessesByName("Mist")[0].Id;
                 }
                 catch
                 {
                     Random random = new Random();
                     pid = random.Next(0, 9999);
                 }
-                mainLog = new Log(@"logs/Mist-" + pid + ".log", null);
+                mainLog = new Log(@"logs/Mist-" + pid + ".log", "Mist", Log.LogLevel.Debug);
+            }
+            else
+            {
+                mainLog = new Log(@"logs/Mist.log", "Mist", Log.LogLevel.Debug);
             }
             Application.EnableVisualStyles();
             Login login = new Login();
@@ -65,7 +71,7 @@ namespace SteamBot
                 {
                     try
                     {
-                        new Bot(info, login.APIKey, (Bot bot, SteamID sid) => {
+                        new Bot(info, mainLog, login.APIKey, (Bot bot, SteamID sid) => {
                                     
                             return (SteamBot.UserHandler)System.Activator.CreateInstance(Type.GetType(bot.BotControlClass), new object[] { bot, sid });  
                         }, login, false);

@@ -84,7 +84,7 @@ namespace SteamBot
         public Inventory MyInventory;
         public Inventory OtherInventory;
 
-        public Bot(Configuration.BotInfo config, string apiKey, UserHandlerCreator handlerCreator, Login _login, bool debug = false)
+        public Bot(Configuration.BotInfo config, Log log, string apiKey, UserHandlerCreator handlerCreator, Login _login, bool debug = false)
         {
             this.main = _login;
             logOnDetails = new SteamUser.LogOnDetails
@@ -106,7 +106,7 @@ namespace SteamBot
                 Console.WriteLine("Invalid LogLevel provided in configuration. Defaulting to 'INFO'");
                 LogLevel = Log.LogLevel.Info;
             }
-            log = new Log ("Mist.log", this.DisplayName, LogLevel);
+            this.log = log;
             CreateHandler = handlerCreator;
             BotControlClass = "SteamBot.SimpleUserHandler";
 

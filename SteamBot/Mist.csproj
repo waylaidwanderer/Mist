@@ -49,6 +49,7 @@
       <HintPath>..\Lib\SteamKit2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
@@ -112,6 +113,7 @@
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="PortableSettings.cs" />
     <Compile Include="ProfileName.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +131,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="ShowBackpack.cs">
       <SubType>Form</SubType>
     </Compile>
