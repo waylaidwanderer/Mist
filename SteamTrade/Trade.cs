@@ -31,12 +31,17 @@ namespace SteamTrade
         string apiKey;
         int numEvents;
 
+        public static string SessionID;
+        public static string SteamLogin;
+
         internal Trade (SteamID me, SteamID other, string sessionId, string token, string apiKey, Inventory myInventory, Inventory otherInventory)
         {
             mySteamId = me;
             OtherSID = other;
             this.sessionId = sessionId;
             this.steamLogin = token;
+            SessionID = sessionId;
+            SteamLogin = token;
             this.apiKey = apiKey;
 
             OtherOfferedItems = new List<ulong> ();

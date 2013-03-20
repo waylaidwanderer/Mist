@@ -348,6 +348,7 @@ namespace SteamBot
 
         public override void OnTradeError(string error)
         {
+            string name = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
             Bot.main.Invoke((Action)(() =>
             {
                 try
@@ -362,31 +363,94 @@ namespace SteamBot
                 {
                     Bot.Print(ex);
                 }
-                foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+                if (!Friends.chat_opened)
                 {
-                    if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                    Friends.chat = new Chat(Bot);
+                    Friends.chat.AddChat(name, OtherSID);
+                    Friends.chat.Show();
+                    Friends.chat_opened = true;
+                    Friends.chat.Flash();
+                    Friends.chat.chatTab.TradeButtonMode(1);
+                    if (error.Contains("cancelled"))
                     {
-                        foreach (var item in tab.Controls)
+                        Friends.chat.Invoke((Action)(() =>
                         {
-                            Friends.chat.chatTab = (ChatTab)item;
-                        }
+                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
+                        }));
                     }
-                }
-                Friends.chat.chatTab.TradeButtonMode(1);
-                if (error.Contains("cancelled"))
-                {
-                    Friends.chat.Invoke((Action)(() =>
+                    else
                     {
-                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
-                    }));
+                        Friends.chat.Invoke((Action)(() =>
+                        {
+                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
+                        }));
+                    }
                 }
                 else
                 {
-                    Friends.chat.Invoke((Action)(() =>
+                    bool found = false;
+                    try
                     {
-                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
-                    }));
+                        Console.WriteLine("Trying");
+                        foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+                        {
+                            Console.WriteLine("Looking at " + tab.Text);
+                            if (tab.Text == name)
+                            {
+                                foreach (var item in tab.Controls)
+                                {
+                                    Friends.chat.chatTab = (ChatTab)item;
+                                }
+                                Friends.chat.ChatTabControl.SelectedTab = tab;
+                                Friends.chat.Show();
+                                Friends.chat.Flash();
+                                Friends.chat.chatTab.TradeButtonMode(1);
+                                if (error.Contains("cancelled"))
+                                {
+                                    Friends.chat.Invoke((Action)(() =>
+                                    {
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
+                                    }));
+                                }
+                                else
+                                {
+                                    Friends.chat.Invoke((Action)(() =>
+                                    {
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
+                                    }));
+                                }
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            Console.WriteLine("Not found");
+                            Friends.chat.AddChat(name, OtherSID);
+                            Friends.chat.Show();
+                            Friends.chat.Flash();
+                            Friends.chat.chatTab.TradeButtonMode(1);
+                            if (error.Contains("cancelled"))
+                            {
+                                Friends.chat.Invoke((Action)(() =>
+                                {
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
+                                }));
+                            }
+                            else
+                            {
+                                Friends.chat.Invoke((Action)(() =>
+                                {
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
+                                }));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
+                
             }));
         }
 
@@ -423,6 +487,7 @@ namespace SteamBot
 
         public override void OnTradeInit()
         {
+            
             ShowTrade.itemsAdded = 0;
             Bot.log.Success("Trade successfully initialized.");
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
@@ -567,7 +632,6 @@ namespace SteamBot
                                 // Guess this doesn't work :P.
                             }
                         }
-                        Console.WriteLine(currentItem.ImageURL);
                         ListInventory.Add(name, item.Id, currentItem.ImageURL);
                     }
                 }

@@ -141,6 +141,12 @@
     <Compile Include="ShowTrade.Designer.cs">
       <DependentUpon>ShowTrade.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShowTrade_Web.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowTrade_Web.Designer.cs">
+      <DependentUpon>ShowTrade_Web.cs</DependentUpon>
+    </Compile>
     <Compile Include="SteamGuard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,9 @@
     </Compile>
     <Compile Include="UserHandler.cs" />
     <Compile Include="SimpleUserHandler.cs" />
+    <Compile Include="WebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -179,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ShowTrade.resx">
       <DependentUpon>ShowTrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShowTrade_Web.resx">
+      <DependentUpon>ShowTrade_Web.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SteamGuard.resx">
       <DependentUpon>SteamGuard.cs</DependentUpon>
@@ -225,5 +237,16 @@
       <Project>{6cec0333-81eb-40ee-85d1-941363626fc7}</Project>
       <Name>SteamTrade</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
 </Project>

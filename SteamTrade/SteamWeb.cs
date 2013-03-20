@@ -14,7 +14,6 @@ namespace SteamTrade
 {
     public class SteamWeb
     {
-
         public static string Fetch (string url, string method, NameValueCollection data = null, CookieContainer cookies = null, bool ajax = true)
         {
             HttpWebResponse response = Request (url, method, data, cookies, ajax);

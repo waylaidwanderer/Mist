@@ -13,12 +13,12 @@ namespace SteamTrade
         static string SteamCommunityDomain = "steamcommunity.com";
         static string SteamTradeUrl = "http://steamcommunity.com/trade/{0}/";
 
-        string sessionId;
-        string sessionIdEsc;
-        string baseTradeURL;
+        public string sessionId;
+        public static string sessionIdEsc;
+        public static string baseTradeURL;
         string steamLogin;
-        CookieContainer cookies;
-        
+        public static CookieContainer cookies;
+        public static string browser_data;
 
         internal int LogPos { get; set; }
 
@@ -31,7 +31,7 @@ namespace SteamTrade
             data.Add ("sessionid", sessionIdEsc);
             data.Add ("logpos", "" + LogPos);
             data.Add ("version", "" + Version);
-            
+            browser_data = "sessionid=" + sessionIdEsc + "&logpos=" + "" + LogPos + "&version=" + "" + Version;
             string response = Fetch (baseTradeURL + "tradestatus", "POST", data);
             return JsonConvert.DeserializeObject<StatusObj> (response);
         }
@@ -201,7 +201,7 @@ namespace SteamTrade
             cookies = new CookieContainer();
             cookies.Add (new Cookie ("sessionid", sessionId, String.Empty, SteamCommunityDomain));
             cookies.Add (new Cookie ("steamLogin", steamLogin, String.Empty, SteamCommunityDomain));
-
+            
             baseTradeURL = String.Format (SteamTradeUrl, OtherSID.ConvertToUInt64 ());
         }
 

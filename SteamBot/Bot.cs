@@ -136,12 +136,12 @@ namespace SteamBot
             }); 
             
             CallbackThread.Start();
-            log.Success ("Done loading account!");
+            CallbackThread.Join();
+            log.Success("Done loading account!");
             main.Invoke((Action)(() =>
             {
                 main.label_status.Text = "Done loading account!";
             }));
-            CallbackThread.Join();
         }
 
         /// <summary>
@@ -307,7 +307,16 @@ namespace SteamBot
             {
                 while (true)
                 {
-                    bool authd = SteamWeb.Authenticate(callback, SteamClient, out sessionId, out token);
+                    log.Info ("About to authenticate...");
+                    bool authd = false;
+                    try
+                    {
+                        authd = SteamWeb.Authenticate(callback, SteamClient, out sessionId, out token);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error("Error on authentication:\n" + ex);
+                    }
                     if (authd)
                     {
                         log.Success ("User Authenticated!");
