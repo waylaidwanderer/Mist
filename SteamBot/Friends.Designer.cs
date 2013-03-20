@@ -32,12 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Friends));
             this.steam_name = new System.Windows.Forms.Label();
             this.steam_status = new System.Windows.Forms.Label();
-            this.friends_list = new BrightIdeasSoftware.ObjectListView();
-            this.column_friend = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.menu_friend = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inviteToTradeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewGameInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blockFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -61,10 +59,13 @@
             this.label_addfriend2 = new System.Windows.Forms.Label();
             this.label_addfriend = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
+            this.column_friend = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.friends_list = new BrightIdeasSoftware.ObjectListView();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
             this.SuspendLayout();
             // 
             // steam_name
@@ -85,68 +86,19 @@
             this.steam_status.TabIndex = 2;
             this.steam_status.Text = "Online";
             // 
-            // friends_list
-            // 
-            this.friends_list.AllColumns.Add(this.column_friend);
-            this.friends_list.AllColumns.Add(this.column_status);
-            this.friends_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.friends_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_friend,
-            this.column_status});
-            this.friends_list.ContextMenuStrip = this.menu_friend;
-            this.friends_list.Location = new System.Drawing.Point(12, 55);
-            this.friends_list.MultiSelect = false;
-            this.friends_list.Name = "friends_list";
-            this.friends_list.SelectAllOnControlA = false;
-            this.friends_list.Size = new System.Drawing.Size(304, 369);
-            this.friends_list.TabIndex = 4;
-            this.friends_list.UseCompatibleStateImageBehavior = false;
-            this.friends_list.View = System.Windows.Forms.View.Details;
-            this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching);
-            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate);
-            // 
-            // column_friend
-            // 
-            this.column_friend.AspectName = "Name";
-            this.column_friend.CellPadding = null;
-            this.column_friend.FillsFreeSpace = true;
-            this.column_friend.Groupable = false;
-            this.column_friend.Hideable = false;
-            this.column_friend.IsEditable = false;
-            this.column_friend.MinimumWidth = 100;
-            this.column_friend.Searchable = false;
-            this.column_friend.Text = "Friend";
-            this.column_friend.UseInitialLetterForGroup = true;
-            this.column_friend.Width = 150;
-            this.column_friend.WordWrap = true;
-            // 
-            // column_status
-            // 
-            this.column_status.AspectName = "Status";
-            this.column_status.CellPadding = null;
-            this.column_status.Hideable = false;
-            this.column_status.IsEditable = false;
-            this.column_status.MinimumWidth = 100;
-            this.column_status.Searchable = false;
-            this.column_status.Sortable = false;
-            this.column_status.Text = "Status";
-            this.column_status.Width = 100;
-            this.column_status.WordWrap = true;
-            // 
             // menu_friend
             // 
             this.menu_friend.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openChatToolStripMenuItem,
             this.inviteToTradeToolStripMenuItem,
+            this.viewGameInfoToolStripMenuItem,
             this.removeFriendToolStripMenuItem,
             this.blockFriendToolStripMenuItem,
             this.toolStripMenuItem2,
             this.showBackpackToolStripMenuItem,
             this.steamRepToolStripMenuItem});
             this.menu_friend.Name = "menu_friend";
-            this.menu_friend.Size = new System.Drawing.Size(163, 142);
+            this.menu_friend.Size = new System.Drawing.Size(163, 164);
             // 
             // openChatToolStripMenuItem
             // 
@@ -161,6 +113,14 @@
             this.inviteToTradeToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.inviteToTradeToolStripMenuItem.Text = "Invite To Trade";
             this.inviteToTradeToolStripMenuItem.Click += new System.EventHandler(this.inviteToTradeToolStripMenuItem_Click);
+            // 
+            // viewGameInfoToolStripMenuItem
+            // 
+            this.viewGameInfoToolStripMenuItem.Enabled = false;
+            this.viewGameInfoToolStripMenuItem.Name = "viewGameInfoToolStripMenuItem";
+            this.viewGameInfoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewGameInfoToolStripMenuItem.Text = "View Game Info";
+            this.viewGameInfoToolStripMenuItem.Click += new System.EventHandler(this.viewGameInfoToolStripMenuItem_Click);
             // 
             // removeFriendToolStripMenuItem
             // 
@@ -355,6 +315,56 @@
             this.avatarBox.TabIndex = 11;
             this.avatarBox.TabStop = false;
             // 
+            // column_friend
+            // 
+            this.column_friend.AspectName = "Name";
+            this.column_friend.CellPadding = null;
+            this.column_friend.FillsFreeSpace = true;
+            this.column_friend.Groupable = false;
+            this.column_friend.Hideable = false;
+            this.column_friend.IsEditable = false;
+            this.column_friend.MinimumWidth = 100;
+            this.column_friend.Searchable = false;
+            this.column_friend.Text = "Friend";
+            this.column_friend.UseInitialLetterForGroup = true;
+            this.column_friend.Width = 150;
+            this.column_friend.WordWrap = true;
+            // 
+            // column_status
+            // 
+            this.column_status.AspectName = "Status";
+            this.column_status.CellPadding = null;
+            this.column_status.Hideable = false;
+            this.column_status.IsEditable = false;
+            this.column_status.MinimumWidth = 100;
+            this.column_status.Searchable = false;
+            this.column_status.Sortable = false;
+            this.column_status.Text = "Status";
+            this.column_status.Width = 100;
+            this.column_status.WordWrap = true;
+            // 
+            // friends_list
+            // 
+            this.friends_list.AllColumns.Add(this.column_friend);
+            this.friends_list.AllColumns.Add(this.column_status);
+            this.friends_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.friends_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.column_friend,
+            this.column_status});
+            this.friends_list.ContextMenuStrip = this.menu_friend;
+            this.friends_list.Location = new System.Drawing.Point(12, 55);
+            this.friends_list.MultiSelect = false;
+            this.friends_list.Name = "friends_list";
+            this.friends_list.SelectAllOnControlA = false;
+            this.friends_list.Size = new System.Drawing.Size(304, 369);
+            this.friends_list.TabIndex = 4;
+            this.friends_list.UseCompatibleStateImageBehavior = false;
+            this.friends_list.View = System.Windows.Forms.View.Details;
+            this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching);
+            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate);
+            // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -374,10 +384,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Friends_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Friends_FormClosed);
             this.Load += new System.EventHandler(this.Friends_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).EndInit();
             this.menu_friend.ResumeLayout(false);
             this.menu_status.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,11 +395,8 @@
 
         #endregion
 
-        public BrightIdeasSoftware.ObjectListView friends_list;
-        private BrightIdeasSoftware.OLVColumn column_friend;
         public System.Windows.Forms.Label steam_name;
         public System.Windows.Forms.Label steam_status;
-        private BrightIdeasSoftware.OLVColumn column_status;
         private System.Windows.Forms.ContextMenuStrip menu_status;
         private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem awayToolStripMenuItem;
@@ -416,5 +423,9 @@
         private System.Windows.Forms.ToolStripMenuItem aboutMistToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.PictureBox avatarBox;
+        private System.Windows.Forms.ToolStripMenuItem viewGameInfoToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn column_friend;
+        private BrightIdeasSoftware.OLVColumn column_status;
+        public BrightIdeasSoftware.ObjectListView friends_list;
     }
 }

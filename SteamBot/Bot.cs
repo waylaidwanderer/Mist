@@ -622,6 +622,7 @@ namespace SteamBot
                 var friendID = SteamFriends.GetFriendByIndex(count);
                 var friendName = SteamFriends.GetFriendPersonaName(friendID);
                 var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
+                
                 if (friendState.ToString() == "Offline")
                 {
                     ListFriends.Add(friendName, friendID, friendState);

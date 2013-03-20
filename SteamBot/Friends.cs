@@ -12,6 +12,7 @@ using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
+using SteamKit2;
 
 namespace MistClient
 {
@@ -25,6 +26,7 @@ namespace MistClient
         private NotifyIcon trayIcon;
         private ContextMenu trayMenu;
         public byte[] AvatarHash { get; set; } // checking if update is necessary
+        SteamFriends SteamFriends;
         string mist_ver = "1.0.0";
 
         public Friends(SteamBot.Bot bot, string username)
@@ -675,6 +677,23 @@ namespace MistClient
             {
                 AvatarHash = null;
                 avatarBox.Image = ComposeAvatar(null);
+            }
+        }
+
+        private void viewGameInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string selected = "";
+            try
+            {
+                selected = friends_list.SelectedItem.Text;
+            }
+            catch
+            {
+                selected = null;
+            }
+            if (selected != null)
+            {
+                ulong sid = ListFriends.GetSID(selected);
             }
         }
     }

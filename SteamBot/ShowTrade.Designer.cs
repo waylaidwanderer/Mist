@@ -94,13 +94,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addAllItemsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
             // 
             // addAllItemsToolStripMenuItem
             // 
-            this.addAllItemsToolStripMenuItem.Enabled = false;
             this.addAllItemsToolStripMenuItem.Name = "addAllItemsToolStripMenuItem";
-            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addAllItemsToolStripMenuItem.Text = "Add All Items";
             this.addAllItemsToolStripMenuItem.Click += new System.EventHandler(this.addAllItemsToolStripMenuItem_Click);
             // 

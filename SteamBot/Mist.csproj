@@ -45,9 +45,6 @@
     <Reference Include="protobuf-net">
       <HintPath>..\Lib\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="SteamKit2">
-      <HintPath>..\Lib\SteamKit2.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Design" />
@@ -131,7 +128,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
     <Compile Include="ShowBackpack.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +231,10 @@
     <ProjectReference Include="..\Lib\ObjectListView\ObjectListView2010.csproj">
       <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
       <Name>ObjectListView2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\SteamKit2\SteamKit2\SteamKit2.csproj">
+      <Project>{beb5bf07-bb56-402a-97a3-a41c6444c6a5}</Project>
+      <Name>SteamKit2</Name>
     </ProjectReference>
     <ProjectReference Include="..\SteamTrade\SteamTrade.csproj">
       <Project>{6cec0333-81eb-40ee-85d1-941363626fc7}</Project>
