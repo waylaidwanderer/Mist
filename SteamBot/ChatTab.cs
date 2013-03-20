@@ -189,6 +189,12 @@ namespace MistClient
                         }
                         Chat.Flash();
                     }
+                    int duration = 3;
+                    FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
+                    FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
+                    string title = steam_name.Text;
+                    Notification toastNotification = new Notification(title, "has requested to trade with you.", duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox);
+                    toastNotification.Show();
                     button_trade.Text = "Accept Trade Request";
                     break;
             }

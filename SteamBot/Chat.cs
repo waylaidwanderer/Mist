@@ -107,5 +107,11 @@ namespace MistClient
             if (ChatTabControl.TabCount != 0)
                 this.Text = this.ChatTabControl.SelectedTab.Text + " - Chat";
         }
+
+        private void Chat_Leave(object sender, EventArgs e)
+        {
+            FlashWindow.Stop(this);
+            hasFocus = false;
+        }
     }
 }

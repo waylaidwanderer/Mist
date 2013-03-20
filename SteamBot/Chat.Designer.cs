@@ -79,6 +79,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Chat_FormClosed);
             this.Load += new System.EventHandler(this.Chat_Load);
             this.Enter += new System.EventHandler(this.Chat_Enter);
+            this.Leave += new System.EventHandler(this.Chat_Leave);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
