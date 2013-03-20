@@ -243,7 +243,9 @@ namespace MistClient
         }
 
         private void Friends_FormClosed(object sender, FormClosedEventArgs e)
-        {            
+        {
+            trayIcon.Icon = null;
+            trayIcon.Visible = false;
         }
 
         private void label1_MouseHover(object sender, EventArgs e)
