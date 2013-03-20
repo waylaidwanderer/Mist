@@ -287,35 +287,18 @@ namespace SteamBot
 
         public override void SendTradeState(uint tradeID)
         {
-            Bot.main.Invoke((Action)(() =>
-            {
-                string name = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
-                string status = Bot.SteamFriends.GetFriendPersonaState(OtherSID).ToString();
-                if (!Friends.chat_opened)
-                {
-                    OpenChat(OtherSID);
-                }
-                Friends.chat.Invoke((Action)(() =>
-                {
-                    Friends.chat.chatTab.TradeButtonMode(3, tradeID);
-                    Friends.chat.chatTab.otherSentTrade = true;
-                }));
-            }));
-        }
-
-        public override bool OnTradeRequest()
-        {
             string name = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
             Bot.main.Invoke((Action)(() =>
             {
                 if (!Friends.chat_opened)
                 {
-                    Console.WriteLine("Opening new chat");
                     Friends.chat = new Chat(Bot);
                     Friends.chat.AddChat(name, OtherSID);
                     Friends.chat.Show();
                     Friends.chat_opened = true;
                     Friends.chat.Flash();
+                    Friends.chat.chatTab.TradeButtonMode(3, tradeID);
+                    Friends.chat.chatTab.otherSentTrade = true;
                 }
                 else
                 {
@@ -335,8 +318,9 @@ namespace SteamBot
                                 Friends.chat.ChatTabControl.SelectedTab = tab;
                                 Friends.chat.Show();
                                 Friends.chat.Flash();
-                                found = true;
+                                Friends.chat.chatTab.TradeButtonMode(3, tradeID);
                                 Friends.chat.chatTab.otherSentTrade = true;
+                                found = true;
                             }
                         }
                         if (!found)
@@ -345,6 +329,7 @@ namespace SteamBot
                             Friends.chat.AddChat(name, OtherSID);
                             Friends.chat.Show();
                             Friends.chat.Flash();
+                            Friends.chat.chatTab.TradeButtonMode(3, tradeID);
                             Friends.chat.chatTab.otherSentTrade = true;
                         }
                     }
@@ -354,6 +339,10 @@ namespace SteamBot
                     }
                 }
             }));
+        }
+
+        public override bool OnTradeRequest()
+        {
             return false;
         }
 
