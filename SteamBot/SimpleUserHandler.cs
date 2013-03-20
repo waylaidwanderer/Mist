@@ -540,7 +540,8 @@ namespace SteamBot
                                 // Guess this doesn't work :P.
                             }
                         }
-                        ListInventory.Add(name, item.Id);
+                        Console.WriteLine(currentItem.ImageURL);
+                        ListInventory.Add(name, item.Id, currentItem.ImageURL);
                     }
                 }
                 try

@@ -265,7 +265,7 @@ namespace SteamBot
                         main.label_status.Text = "Login Error: " + callback.Result;
                     }));
                 }
-
+                
                 if (callback.Result == EResult.InvalidPassword)
                 {
                     MessageBox.Show("Your password is incorrect. Please try again.",
@@ -337,7 +337,7 @@ namespace SteamBot
                     log.Info ("Downloading Schema...");
                     main.Invoke((Action)(() =>
                     {
-                        main.label_status.Text = "Downloading Schema...";
+                        main.label_status.Text = "Downloading schema...";
                     }));
                     try
                     {
@@ -358,7 +358,7 @@ namespace SteamBot
                     log.Success ("Schema Downloaded!");
                     main.Invoke((Action)(() =>
                     {
-                        main.label_status.Text = "Schema Downloaded!";
+                        main.label_status.Text = "Schema downloaded!";
                     }));
                 }
 
@@ -368,7 +368,7 @@ namespace SteamBot
                 log.Success ("Account Logged In Completely!");
                 main.Invoke((Action)(() =>
                 {
-                    main.label_status.Text = "Schema Downloaded!";
+                    main.label_status.Text = "Logged in completely!";
                 }));
 
                 IsLoggedIn = true;

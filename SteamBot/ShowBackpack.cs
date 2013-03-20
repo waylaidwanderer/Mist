@@ -10,6 +10,9 @@ using SteamBot;
 using SteamTrade;
 using SteamKit2;
 using System.Threading;
+using System.Net;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace MistClient
 {
@@ -36,12 +39,17 @@ namespace MistClient
             {
                 bot.main.Invoke((Action)(() =>
                 {
-                    list_inventory.ShowGroups = false;
+                    list_inventory.EmptyListMsg = "Could not retrieve backpack contents. Backpack is likely private.";
+                    BrightIdeasSoftware.TextOverlay textOverlay = this.list_inventory.EmptyListMsgOverlay as BrightIdeasSoftware.TextOverlay;
                 }));
-                ListBackpack.Add("Could not retrieve backpack contents. Backpack is likely private.");
-                list_inventory.SetObjects(ListBackpack.Get());
                 return;
             }
+            bot.main.Invoke((Action)(() =>
+            {
+                list_inventory.View = View.Tile;
+                list_inventory.TileSize = new Size(250, 64);
+                ListView_SetSpacing(list_inventory, 70, 10);
+            }));
             foreach (Inventory.Item item in inventory)
             {
                 var currentItem = Trade.CurrentSchema.GetItem(item.Defindex);
@@ -114,9 +122,9 @@ namespace MistClient
                     name += " (Uncraftable)";
                 if (item.IsNotTradeable)
                     name += " (Untradeable)";
-                ListBackpack.Add(name);
+                ListBackpack.Add(name, item.Defindex, currentItem.ImageURL);
                 list_inventory.SetObjects(ListBackpack.Get());
-            } 
+            }            
         }
 
         string GetItemName(Schema.Item schemaItem, Inventory.Item inventoryItem, bool id = false)
@@ -355,6 +363,42 @@ namespace MistClient
                 loadBP = new Thread(LoadBP);
                 loadBP.Start();
             }));
+            this.Invoke((Action)(() =>
+            {
+                this.column_inventory.ImageGetter = delegate(object row)
+                {
+                    string key = column_defindex.GetValue(row).ToString();
+                    if (!this.list_inventory.LargeImageList.Images.ContainsKey(key))
+                    {
+                        string url = column_url.GetValue(row).ToString();
+                        if (url != "")
+                        {
+                            Image largeImage = getImageFromURL(url, Convert.ToInt32(key));
+                            this.list_inventory.SmallImageList.Images.Add(key, largeImage);
+                            this.list_inventory.LargeImageList.Images.Add(key, largeImage);
+                        }
+                    }                    
+                    return key;
+                };
+            }));
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        public int MakeLong(short lowPart, short highPart)
+        {
+            return (int)(((ushort)lowPart) | (uint)(highPart << 16));
+        }
+
+        public void ListView_SetSpacing(ListView listview, short cx, short cy)
+        {
+            const int LVM_FIRST = 0x1000;
+            const int LVM_SETICONSPACING = LVM_FIRST + 53;
+            // http://msdn.microsoft.com/en-us/library/bb761176(VS.85).aspx
+            // minimum spacing = 4
+            SendMessage(listview.Handle, LVM_SETICONSPACING,
+            IntPtr.Zero, (IntPtr)MakeLong(cx, cy));
         }
 
         private void ShowBackpack_FormClosing(object sender, FormClosingEventArgs e)
@@ -367,6 +411,21 @@ namespace MistClient
             {
                 Bot.Print(ex);
             }
+        }
+
+        public Bitmap getImageFromURL(string url, int defindex)
+        {
+            //string name = defindex + ".png";
+            //string localPath = Path.Combine(Application.StartupPath, "cache");
+            //string localFile = Path.Combine(localPath, name);
+            //WebClient client = new WebClient();
+            //client.DownloadFileAsync(new Uri(url), localFile);
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+            myRequest.Method = "GET";
+            HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(myResponse.GetResponseStream());
+            myResponse.Close();
+            return bmp;
         }
     }
 }

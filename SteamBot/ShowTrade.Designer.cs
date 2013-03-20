@@ -77,6 +77,7 @@
             this.column_inventory.AspectName = "ItemName";
             this.column_inventory.CellPadding = null;
             this.column_inventory.FillsFreeSpace = true;
+            this.column_inventory.ImageAspectName = "ImageURL";
             this.column_inventory.Text = "Your Inventory";
             this.column_inventory.UseInitialLetterForGroup = true;
             this.column_inventory.Width = 91;

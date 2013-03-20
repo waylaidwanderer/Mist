@@ -400,11 +400,15 @@ namespace MistClient
                 {
                     var itemName = list_userofferings.SelectedItem.Text.Trim();
                     bool valid = false;
+                    string img = "";
                     bot.GetInventory();
                     foreach (var item in bot.MyInventory.Items)
                     {
                         if (item.Id == itemID)
+                        {
                             valid = true;
+                            img = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex).ImageURL;
+                        }
                     }
                     if (valid)
                     {
@@ -419,7 +423,7 @@ namespace MistClient
                             AppendText("You removed: " + itemName);
                             ResetTradeStatus();
                             list_userofferings.SelectedItem.Remove();
-                            ListInventory.Add(itemName, itemID);
+                            ListInventory.Add(itemName, itemID, img);
                             ListUserOfferings.Remove(itemName, itemID);
                             list_inventory.SetObjects(ListInventory.Get());
                             list_userofferings.SetObjects(ListUserOfferings.Get());

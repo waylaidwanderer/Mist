@@ -42,19 +42,14 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ObjectListView">
-      <HintPath>..\Lib\ObjectListView.dll</HintPath>
-    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\Lib\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="SteamKit2">
       <HintPath>..\Lib\SteamKit2.dll</HintPath>
     </Reference>
-    <Reference Include="SteamTrade">
-      <HintPath>..\Lib\SteamTrade.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Core" />
@@ -220,5 +215,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="mist-icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lib\ObjectListView\ObjectListView2010.csproj">
+      <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
+      <Name>ObjectListView2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SteamTrade\SteamTrade.csproj">
+      <Project>{6cec0333-81eb-40ee-85d1-941363626fc7}</Project>
+      <Name>SteamTrade</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -8,15 +8,17 @@ namespace MistClient
     class ListInventory
     {
         string itemName;
+        string imageURL;
         ulong itemID;
         public static ShowTrade ShowTrade;
 
         static List<ListInventory> list = new List<ListInventory>();
 
-        public ListInventory(string itemName, ulong itemID)
+        public ListInventory(string itemName, ulong itemID, string imageURL)
         {
             this.itemName = itemName;
             this.itemID = itemID;
+            this.imageURL = imageURL;
         }
 
         public string ItemName
@@ -31,9 +33,15 @@ namespace MistClient
             set { itemID = value; }
         }
 
-        public static void Add(string itemName, ulong itemID)
+        public string ImageURL
         {
-            ListInventory item = new ListInventory(itemName, itemID);
+            get { return imageURL; }
+            set { imageURL = value; }
+        }
+
+        public static void Add(string itemName, ulong itemID, string imageURL)
+        {
+            ListInventory item = new ListInventory(itemName, itemID, imageURL);
             list.Add(item);
         }
 

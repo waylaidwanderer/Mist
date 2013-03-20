@@ -117,6 +117,9 @@ namespace SteamTrade
 
             [JsonProperty("item_quality")]
             public int ItemQuality { get; set; }
+
+            [JsonProperty("image_url")]
+            public string ImageURL { get; set; }
         }
 
         protected class SchemaResult
