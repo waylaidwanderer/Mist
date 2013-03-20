@@ -34,10 +34,18 @@ namespace SteamBot
             mutex = new Mutex(false, "Mist-AF12AF2", out created);
             if (!created)
             {
-                int pid = System.Diagnostics.Process.GetProcessesByName("Mist")[0].Id;
+                int pid = 0;
+                try
+                {
+                    pid = System.Diagnostics.Process.GetProcessesByName("Mist")[0].Id;
+                }
+                catch
+                {
+                    Random random = new Random();
+                    pid = random.Next(0, 9999);
+                }
                 mainLog = new Log(@"logs/Mist-" + pid + ".log", null);
             }
-            
             Application.EnableVisualStyles();
             Login login = new Login();
             mainLog.Info("Launching Mist...");

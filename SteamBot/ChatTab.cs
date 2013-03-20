@@ -310,6 +310,17 @@ namespace MistClient
 
         private void ChatTab_Enter(object sender, EventArgs e)
         {
+            foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+            {
+                if (tab.Text == steam_name.Text)
+                {
+                    Console.WriteLine("Looking at " + tab.Text);
+                    foreach (var item in tab.Controls)
+                    {
+                        Friends.chat.chatTab = (ChatTab)item;
+                    }
+                }
+            }
         }
 
         private void ChatTab_Leave(object sender, EventArgs e)

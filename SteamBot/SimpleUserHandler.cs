@@ -305,17 +305,55 @@ namespace SteamBot
 
         public override bool OnTradeRequest()
         {
-            foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+            string name = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
+            Bot.main.Invoke((Action)(() =>
             {
-                if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                if (!Friends.chat_opened)
                 {
-                    foreach (var item in tab.Controls)
+                    Console.WriteLine("Opening new chat");
+                    Friends.chat = new Chat(Bot);
+                    Friends.chat.AddChat(name, OtherSID);
+                    Friends.chat.Show();
+                    Friends.chat_opened = true;
+                    Friends.chat.Flash();
+                }
+                else
+                {
+                    bool found = false;
+                    try
                     {
-                        Friends.chat.chatTab = (ChatTab)item;
+                        Console.WriteLine("Trying");
+                        foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+                        {
+                            Console.WriteLine("Looking at " + tab.Text);
+                            if (tab.Text == name)
+                            {
+                                foreach (var item in tab.Controls)
+                                {
+                                    Friends.chat.chatTab = (ChatTab)item;
+                                }
+                                Friends.chat.ChatTabControl.SelectedTab = tab;
+                                Friends.chat.Show();
+                                Friends.chat.Flash();
+                                found = true;
+                                Friends.chat.chatTab.otherSentTrade = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            Console.WriteLine("Not found");
+                            Friends.chat.AddChat(name, OtherSID);
+                            Friends.chat.Show();
+                            Friends.chat.Flash();
+                            Friends.chat.chatTab.otherSentTrade = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
                     }
                 }
-            }
-            Friends.chat.chatTab.otherSentTrade = true;
+            }));
             return false;
         }
 
