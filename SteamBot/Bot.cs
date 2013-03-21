@@ -11,6 +11,7 @@ using MistClient;
 using BrightIdeasSoftware;
 using SteamKit2;
 using SteamTrade;
+using ToastNotifications;
 
 namespace SteamBot
 {
@@ -48,7 +49,7 @@ namespace SteamBot
         public UserHandlerCreator CreateHandler;
         Dictionary<ulong, UserHandler> userHandlers = new Dictionary<ulong, UserHandler>();
 
-        List<SteamID> friends = new List<SteamID>();
+        public List<SteamID> friends = new List<SteamID>();
 
         // The maximum amount of time the bot will trade for.
         public int MaximumTradeTime { get; private set; }
@@ -83,6 +84,8 @@ namespace SteamBot
 
         public Inventory MyInventory;
         public Inventory OtherInventory;
+
+        Friends showFriends;
 
         public Bot(Configuration.BotInfo config, Log log, string apiKey, UserHandlerCreator handlerCreator, Login _login, bool debug = false)
         {
@@ -123,6 +126,10 @@ namespace SteamBot
             SteamUser = SteamClient.GetHandler<SteamUser>();
             SteamFriends = SteamClient.GetHandler<SteamFriends>();
             log.Info ("Connecting...");
+            main.Invoke((Action)(() =>
+            {
+                main.label_status.Text = "Connecting to Steam...";
+            }));
             SteamClient.Connect();
             
             Thread CallbackThread = new Thread(() => // Callback Handling
@@ -405,16 +412,61 @@ namespace SteamBot
             #region Friends
             msg.Handle<SteamFriends.FriendsListCallback>(callback =>
             {
+                bool newFriend = false;
                 foreach (SteamFriends.FriendsListCallback.Friend friend in callback.FriendList)
                 {
-                    if (!friends.Contains(friend.SteamID))
+                    if (!friends.Contains(friend.SteamID) && !friend.SteamID.ToString().StartsWith("1"))
                     {
-                        friends.Add(friend.SteamID);
-                        if (friend.Relationship == EFriendRelationship.RequestRecipient &&
-                            GetUserHandler(friend.SteamID).OnFriendAdd())
+                        new Thread(() =>
                         {
-                            SteamFriends.AddFriend(friend.SteamID);
-                        }
+                            main.Invoke((Action)(() =>
+                            {
+                                if (showFriends == null && friend.Relationship == EFriendRelationship.RequestRecipient)
+                                {
+                                    log.Info(SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
+                                    friends.Add(friend.SteamID);
+                                    newFriend = true;
+                                    string name = SteamFriends.GetFriendPersonaName(friend.SteamID);
+                                    string status = SteamFriends.GetFriendPersonaState(friend.SteamID).ToString();
+                                    if (!ListFriendRequests.Find(friend.SteamID))
+                                    {
+                                        ListFriendRequests.Add(name, friend.SteamID, status);
+                                    }
+                                }
+                                if (showFriends != null && friend.Relationship == EFriendRelationship.RequestRecipient)
+                                {
+                                    log.Info(SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
+                                    friends.Add(friend.SteamID);
+                                    /*if (friend.Relationship == EFriendRelationship.RequestRecipient &&
+                                        GetUserHandler(friend.SteamID).OnFriendAdd())
+                                    {
+                                        SteamFriends.AddFriend(friend.SteamID);
+                                    }*/
+                                    newFriend = true;
+                                    string name = SteamFriends.GetFriendPersonaName(friend.SteamID);
+                                    string status = SteamFriends.GetFriendPersonaState(friend.SteamID).ToString();
+                                    if (!ListFriendRequests.Find(friend.SteamID))
+                                    {
+                                        try
+                                        {
+                                            showFriends.NotifyFriendRequest();
+                                            ListFriendRequests.Add(name, friend.SteamID, status);
+                                            log.Info("Notifying you that " + SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
+                                            int duration = 5;
+                                            FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
+                                            FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
+                                            Notification toastNotification = new Notification(name, "has sent you a friend request.", duration, animationMethod, animationDirection);
+                                            toastNotification.Show();
+                                            showFriends.list_friendreq.SetObjects(ListFriendRequests.Get());
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("Friends list hasn't loaded yet...");
+                                        }
+                                    }
+                                }
+                            }));
+                        }).Start();
                     }
                     else
                     {
@@ -423,6 +475,13 @@ namespace SteamBot
                             friends.Remove(friend.SteamID);
                             GetUserHandler(friend.SteamID).OnFriendRemove();
                         }
+                    }
+                }
+                if (!newFriend && ListFriendRequests.Get().Count == 0)
+                {
+                    if (showFriends != null)
+                    {
+                        showFriends.HideFriendRequests();
                     }
                 }
             });
@@ -571,7 +630,15 @@ namespace SteamBot
                 IsLoggedIn = false;
                 CloseTrade ();
                 log.Warn ("Disconnected from Steam Network!");
+                main.Invoke((Action)(() =>
+                {
+                    main.label_status.Text = "Disconnected from Steam Network! Retrying...";
+                }));
                 SteamClient.Connect ();
+                main.Invoke((Action)(() =>
+                {
+                    main.label_status.Text = "Connecting to Steam...";
+                }));
             });
             #endregion
 
@@ -592,13 +659,12 @@ namespace SteamBot
         {
             main.Invoke(new MethodInvoker(delegate()
             {
-                Friends friends = new Friends(this, Bot.displayName);
-                friends.Show();
-                friends.Activate();
+                showFriends = new Friends(this, Bot.displayName);
+                showFriends.Show();
+                showFriends.Activate();
                 LoadFriends();
-                friends.friends_list.SetObjects(ListFriends.Get());                
-            }));
-            
+                showFriends.friends_list.SetObjects(ListFriends.Get());                
+            }));            
         }
 
         public void LoadFriends()
@@ -610,7 +676,7 @@ namespace SteamBot
                 var friendID = SteamFriends.GetFriendByIndex(count);
                 var friendName = SteamFriends.GetFriendPersonaName(friendID);
                 var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
-                if (friendState.ToString() != "Offline")
+                if (friendState.ToString() != "Offline" && SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
                 {
                     string friend_name = friendName + " (" + friendID + ")" + Environment.NewLine + friendState;
                     ListFriends.Add(friendName, friendID, friendState);
@@ -622,12 +688,37 @@ namespace SteamBot
                 var friendID = SteamFriends.GetFriendByIndex(count);
                 var friendName = SteamFriends.GetFriendPersonaName(friendID);
                 var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
-                
-                if (friendState.ToString() == "Offline")
+                if (friendState.ToString() == "Offline" && SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
                 {
                     ListFriends.Add(friendName, friendID, friendState);
                 }
                 Thread.Sleep(25);
+            }
+            bool newFriend = true;
+            foreach (var item in ListFriends.Get())
+            {
+                if (ListFriendRequests.Find(item.SID))
+                {
+                    Console.WriteLine("Found friend {0} in list of friend requests, so let's remove the user.", item.Name);
+                    // Not a friend request, so let's remove it
+                    ListFriendRequests.Remove(item.SID);
+                    newFriend = false;
+                }
+            }
+            foreach (var item in ListFriendRequests.Get())
+            {
+                if (item.Name == "[unknown]")
+                {
+                    string name = SteamFriends.GetFriendPersonaName(item.SteamID);
+                    ListFriendRequests.Remove(item.SteamID);
+                    ListFriendRequests.Add(name, item.SteamID);
+                }
+            }
+            if (newFriend && ListFriendRequests.Get().Count != 0)
+            {
+                Console.WriteLine("Notifying about new friend request.");
+                showFriends.NotifyFriendRequest();
+                showFriends.list_friendreq.SetObjects(ListFriendRequests.Get());
             }
             Console.WriteLine("Done!");
         }

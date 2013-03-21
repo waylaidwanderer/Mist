@@ -39,6 +39,7 @@
             this.removeFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.blockFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.viewProfileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.showBackpackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steamRepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_status = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -59,12 +60,27 @@
             this.label_addfriend2 = new System.Windows.Forms.Label();
             this.label_addfriend = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
+            this.list_friendreq = new BrightIdeasSoftware.ObjectListView();
+            this.column_friendreq_name = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_friendreq_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.menu_friendreq = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.acceptFriendRequestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.denyFriendRequestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showBackpackToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.friends_list = new BrightIdeasSoftware.ObjectListView();
             this.column_friend = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.friends_list = new BrightIdeasSoftware.ObjectListView();
+            this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.list_friendreq)).BeginInit();
+            this.menu_friendreq.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,10 +111,11 @@
             this.removeFriendToolStripMenuItem,
             this.blockFriendToolStripMenuItem,
             this.toolStripMenuItem2,
+            this.viewProfileToolStripMenuItem1,
             this.showBackpackToolStripMenuItem,
             this.steamRepToolStripMenuItem});
             this.menu_friend.Name = "menu_friend";
-            this.menu_friend.Size = new System.Drawing.Size(163, 164);
+            this.menu_friend.Size = new System.Drawing.Size(163, 186);
             // 
             // openChatToolStripMenuItem
             // 
@@ -140,6 +157,13 @@
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(159, 6);
+            // 
+            // viewProfileToolStripMenuItem1
+            // 
+            this.viewProfileToolStripMenuItem1.Name = "viewProfileToolStripMenuItem1";
+            this.viewProfileToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
+            this.viewProfileToolStripMenuItem1.Text = "View Profile";
+            this.viewProfileToolStripMenuItem1.Click += new System.EventHandler(this.viewProfileToolStripMenuItem1_Click);
             // 
             // showBackpackToolStripMenuItem
             // 
@@ -282,7 +306,7 @@
             this.label_addfriend2.AutoSize = true;
             this.label_addfriend2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_addfriend2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_addfriend2.Location = new System.Drawing.Point(10, 427);
+            this.label_addfriend2.Location = new System.Drawing.Point(10, 405);
             this.label_addfriend2.Name = "label_addfriend2";
             this.label_addfriend2.Size = new System.Drawing.Size(24, 25);
             this.label_addfriend2.TabIndex = 7;
@@ -298,7 +322,7 @@
             this.label_addfriend.AutoSize = true;
             this.label_addfriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_addfriend.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_addfriend.Location = new System.Drawing.Point(31, 432);
+            this.label_addfriend.Location = new System.Drawing.Point(31, 410);
             this.label_addfriend.Name = "label_addfriend";
             this.label_addfriend.Size = new System.Drawing.Size(109, 16);
             this.label_addfriend.TabIndex = 8;
@@ -314,6 +338,117 @@
             this.avatarBox.Size = new System.Drawing.Size(40, 40);
             this.avatarBox.TabIndex = 11;
             this.avatarBox.TabStop = false;
+            // 
+            // list_friendreq
+            // 
+            this.list_friendreq.AllColumns.Add(this.column_friendreq_name);
+            this.list_friendreq.AllColumns.Add(this.column_friendreq_sid);
+            this.list_friendreq.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.list_friendreq.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.column_friendreq_name});
+            this.list_friendreq.ContextMenuStrip = this.menu_friendreq;
+            this.list_friendreq.Location = new System.Drawing.Point(12, 55);
+            this.list_friendreq.Name = "list_friendreq";
+            this.list_friendreq.Size = new System.Drawing.Size(278, 80);
+            this.list_friendreq.TabIndex = 16;
+            this.list_friendreq.UseCompatibleStateImageBehavior = false;
+            this.list_friendreq.View = System.Windows.Forms.View.Details;
+            this.list_friendreq.Visible = false;
+            // 
+            // column_friendreq_name
+            // 
+            this.column_friendreq_name.AspectName = "Name";
+            this.column_friendreq_name.CellPadding = null;
+            this.column_friendreq_name.FillsFreeSpace = true;
+            this.column_friendreq_name.Groupable = false;
+            this.column_friendreq_name.Text = "Friend Requests";
+            this.column_friendreq_name.Width = 120;
+            // 
+            // column_friendreq_sid
+            // 
+            this.column_friendreq_sid.AspectName = "SteamID";
+            this.column_friendreq_sid.CellPadding = null;
+            this.column_friendreq_sid.DisplayIndex = 1;
+            this.column_friendreq_sid.IsVisible = false;
+            this.column_friendreq_sid.Searchable = false;
+            this.column_friendreq_sid.Text = "SteamID";
+            // 
+            // menu_friendreq
+            // 
+            this.menu_friendreq.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.acceptFriendRequestToolStripMenuItem,
+            this.denyFriendRequestToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.viewProfileToolStripMenuItem,
+            this.showBackpackToolStripMenuItem2,
+            this.steamRepStatusToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.refreshToolStripMenuItem});
+            this.menu_friendreq.Name = "menu_friendreq";
+            this.menu_friendreq.Size = new System.Drawing.Size(193, 148);
+            // 
+            // acceptFriendRequestToolStripMenuItem
+            // 
+            this.acceptFriendRequestToolStripMenuItem.Name = "acceptFriendRequestToolStripMenuItem";
+            this.acceptFriendRequestToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.acceptFriendRequestToolStripMenuItem.Text = "Accept Friend Request";
+            this.acceptFriendRequestToolStripMenuItem.Click += new System.EventHandler(this.acceptFriendRequestToolStripMenuItem_Click);
+            // 
+            // denyFriendRequestToolStripMenuItem
+            // 
+            this.denyFriendRequestToolStripMenuItem.Name = "denyFriendRequestToolStripMenuItem";
+            this.denyFriendRequestToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.denyFriendRequestToolStripMenuItem.Text = "Deny Friend Request";
+            this.denyFriendRequestToolStripMenuItem.Click += new System.EventHandler(this.denyFriendRequestToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(189, 6);
+            // 
+            // viewProfileToolStripMenuItem
+            // 
+            this.viewProfileToolStripMenuItem.Name = "viewProfileToolStripMenuItem";
+            this.viewProfileToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.viewProfileToolStripMenuItem.Text = "View Profile";
+            this.viewProfileToolStripMenuItem.Click += new System.EventHandler(this.viewProfileToolStripMenuItem_Click);
+            // 
+            // showBackpackToolStripMenuItem2
+            // 
+            this.showBackpackToolStripMenuItem2.Name = "showBackpackToolStripMenuItem2";
+            this.showBackpackToolStripMenuItem2.Size = new System.Drawing.Size(192, 22);
+            this.showBackpackToolStripMenuItem2.Text = "Show Backpack";
+            this.showBackpackToolStripMenuItem2.Click += new System.EventHandler(this.showBackpackToolStripMenuItem2_Click);
+            // 
+            // steamRepStatusToolStripMenuItem
+            // 
+            this.steamRepStatusToolStripMenuItem.Name = "steamRepStatusToolStripMenuItem";
+            this.steamRepStatusToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.steamRepStatusToolStripMenuItem.Text = "SteamRep Status";
+            this.steamRepStatusToolStripMenuItem.Click += new System.EventHandler(this.steamRepStatusToolStripMenuItem_Click);
+            // 
+            // friends_list
+            // 
+            this.friends_list.AllColumns.Add(this.column_friend);
+            this.friends_list.AllColumns.Add(this.column_status);
+            this.friends_list.AllColumns.Add(this.column_sid);
+            this.friends_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.friends_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.column_friend,
+            this.column_status});
+            this.friends_list.ContextMenuStrip = this.menu_friend;
+            this.friends_list.Location = new System.Drawing.Point(12, 134);
+            this.friends_list.MultiSelect = false;
+            this.friends_list.Name = "friends_list";
+            this.friends_list.SelectAllOnControlA = false;
+            this.friends_list.Size = new System.Drawing.Size(278, 273);
+            this.friends_list.TabIndex = 15;
+            this.friends_list.UseCompatibleStateImageBehavior = false;
+            this.friends_list.View = System.Windows.Forms.View.Details;
+            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate_1);
             // 
             // column_friend
             // 
@@ -343,38 +478,38 @@
             this.column_status.Width = 100;
             this.column_status.WordWrap = true;
             // 
-            // friends_list
+            // column_sid
             // 
-            this.friends_list.AllColumns.Add(this.column_friend);
-            this.friends_list.AllColumns.Add(this.column_status);
-            this.friends_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.friends_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_friend,
-            this.column_status});
-            this.friends_list.ContextMenuStrip = this.menu_friend;
-            this.friends_list.Location = new System.Drawing.Point(12, 55);
-            this.friends_list.MultiSelect = false;
-            this.friends_list.Name = "friends_list";
-            this.friends_list.SelectAllOnControlA = false;
-            this.friends_list.Size = new System.Drawing.Size(304, 369);
-            this.friends_list.TabIndex = 4;
-            this.friends_list.UseCompatibleStateImageBehavior = false;
-            this.friends_list.View = System.Windows.Forms.View.Details;
-            this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching);
-            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate);
+            this.column_sid.AspectName = "SID";
+            this.column_sid.CellPadding = null;
+            this.column_sid.DisplayIndex = 2;
+            this.column_sid.IsVisible = false;
+            this.column_sid.Searchable = false;
+            this.column_sid.Text = "SteamID";
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(189, 6);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(328, 461);
+            this.ClientSize = new System.Drawing.Size(300, 439);
+            this.Controls.Add(this.list_friendreq);
+            this.Controls.Add(this.friends_list);
             this.Controls.Add(this.avatarBox);
             this.Controls.Add(this.label_addfriend);
             this.Controls.Add(this.label_addfriend2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.friends_list);
             this.Controls.Add(this.steam_status);
             this.Controls.Add(this.steam_name);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -387,6 +522,8 @@
             this.menu_friend.ResumeLayout(false);
             this.menu_status.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.list_friendreq)).EndInit();
+            this.menu_friendreq.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.friends_list)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -424,8 +561,22 @@
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.PictureBox avatarBox;
         private System.Windows.Forms.ToolStripMenuItem viewGameInfoToolStripMenuItem;
+        public BrightIdeasSoftware.ObjectListView friends_list;
         private BrightIdeasSoftware.OLVColumn column_friend;
         private BrightIdeasSoftware.OLVColumn column_status;
-        public BrightIdeasSoftware.ObjectListView friends_list;
+        private System.Windows.Forms.ContextMenuStrip menu_friendreq;
+        private System.Windows.Forms.ToolStripMenuItem acceptFriendRequestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem denyFriendRequestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem viewProfileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showBackpackToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem steamRepStatusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewProfileToolStripMenuItem1;
+        private BrightIdeasSoftware.OLVColumn column_friendreq_name;
+        private BrightIdeasSoftware.OLVColumn column_friendreq_sid;
+        private BrightIdeasSoftware.OLVColumn column_sid;
+        public BrightIdeasSoftware.ObjectListView list_friendreq;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
     }
 }

@@ -253,12 +253,15 @@ namespace MistClient
                             }
                             catch (SteamTrade.Exceptions.TradeException ex)
                             {
-                                Console.WriteLine(ex);
-                                MessageBox.Show(ex + "\nYou can ignore this error. Just restart the trade.",
-                                    "Trade Error",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error,
-                                    MessageBoxDefaultButton.Button1);                                
+                                bot.main.Invoke((Action)(() =>
+                                {
+                                    Console.WriteLine(ex);
+                                    MessageBox.Show(ex + "\nYou can ignore this error. Just restart the trade. Sorry about that :(",
+                                        "Trade Error",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error,
+                                        MessageBoxDefaultButton.Button1);
+                                }));
                             }
                         }
                         else
@@ -269,11 +272,14 @@ namespace MistClient
                     catch (Exception ex)
                     {
                         Bot.Print(ex);
-                        MessageBox.Show("\nSomething weird happened. Here's the error:\n" + ex,
-                                    "Trade Error",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error,
-                                    MessageBoxDefaultButton.Button1);
+                        bot.main.Invoke((Action)(() =>
+                        {
+                            MessageBox.Show("\nSomething weird happened. Here's the error:\n" + ex,
+                                        "Trade Error",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error,
+                                        MessageBoxDefaultButton.Button1);
+                        }));
                     }
                 }
             }
@@ -289,29 +295,37 @@ namespace MistClient
 
         private void addAllItemsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bot.GetInventory();
-            foreach (var item in bot.MyInventory.Items)
+            DialogResult dialogResult = MessageBox.Show("Don't click Yes unless you haven't added any items to the trade yet. Are you sure you wish to continue?", "WARNING: Experimental Feature", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dialogResult == DialogResult.Yes)
             {
-                if (!item.IsNotTradeable)
+                bot.GetInventory();
+                foreach (var item in bot.MyInventory.Items)
                 {
-                    var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex);
-                    var name = GetItemName(currentItem, item);
-                    Bot.Print("Adding " + name + ", " + item.Id);
-                    bot.CurrentTrade.AddItem(item.Id);
-                    itemsAdded++;
-                    if (itemsAdded > 0)
+                    if (!item.IsNotTradeable)
                     {
-                        check_userready.Enabled = true;
+                        var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex);
+                        var name = GetItemName(currentItem, item);
+                        Bot.Print("Adding " + name + ", " + item.Id);
+                        bot.CurrentTrade.AddItem(item.Id);
+                        itemsAdded++;
+                        if (itemsAdded > 0)
+                        {
+                            check_userready.Enabled = true;
+                        }
+                        AppendText("You added: " + name);
+                        ResetTradeStatus();
+                        ListUserOfferings.Add(name, item.Id);
+                        ListInventory.Remove(name, item.Id);
+                        list_userofferings.SetObjects(ListUserOfferings.Get());
+                        list_inventory.SetObjects(ListInventory.Get());
                     }
-                    AppendText("You added: " + name);
-                    ResetTradeStatus();
-                    ListUserOfferings.Add(name, item.Id);
-                    ListInventory.Remove(name, item.Id);
-                    list_userofferings.SetObjects(ListUserOfferings.Get());
-                    list_inventory.SetObjects(ListInventory.Get());
                 }
+                Bot.Print("Done adding all items!");
             }
-            Bot.Print("Done adding all items!");
+            else if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
         }
 
         string GetItemName(SteamTrade.Schema.Item schemaItem, SteamTrade.Inventory.Item inventoryItem, bool id = false)

@@ -366,67 +366,45 @@ namespace MistClient
         private void showBackpackToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Friend's backpack
-            string selected = "";
-            try
-            {
-                selected = friends_list.SelectedItem.Text;
-            }
-            catch
-            {
-                selected = null;
-            }
-            if (selected != null)
-            {
-                ulong sid = ListFriends.GetSID(selected);
-                ShowBackpack showBP = new ShowBackpack(bot, sid);
-                showBP.Show();
-                showBP.Activate();
-            }
+            ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+            ShowBackpack showBP = new ShowBackpack(bot, sid);
+            showBP.Show();
+            showBP.Activate();            
         }
 
         private void openChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bot.main.Invoke((Action)(() =>
             {
-                string selected = "";
-                try
+                ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                if (!chat_opened)
                 {
-                    selected = friends_list.SelectedItem.Text;
+                    chat = new Chat(bot);
+                    chat.AddChat(selected, sid);
+                    chat.Show();
+                    chat.Focus();
+                    chat_opened = true;
                 }
-                catch
+                else
                 {
-                    selected = null;
-                }
-                if (selected != null)
-                {
-                    ulong sid = ListFriends.GetSID(selected);
-                    if (!chat_opened)
+                    bool found = false;
+                    foreach (TabPage tab in chat.ChatTabControl.TabPages)
                     {
-                        chat = new Chat(bot);
-                        chat.AddChat(selected, sid);
-                        chat.Show();
-                        chat.Focus();
-                        chat_opened = true;
-                    }
-                    else
-                    {
-                        bool found = false;
-                        foreach (TabPage tab in chat.ChatTabControl.TabPages)
+                        if (tab.Text == selected)
                         {
-                            if (tab.Text == selected)
-                            {
-                                chat.ChatTabControl.SelectedTab = tab;
-                                chat.Focus();
-                                found = true;
-                            }
-                        }
-                        if (!found)
-                        {
-                            chat.AddChat(selected, sid);
+                            chat.ChatTabControl.SelectedTab = tab;
                             chat.Focus();
+                            found = true;
                         }
                     }
+                    if (!found)
+                    {
+                        chat.AddChat(selected, sid);
+                        chat.Focus();
+                    }
                 }
+                
             }));
         }
 
@@ -434,75 +412,56 @@ namespace MistClient
         {
             bot.main.Invoke((Action)(() =>
             {
-                string selected = "";
-                try
+                ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                if (!chat_opened)
                 {
-                    selected = friends_list.SelectedItem.Text;
+                    chat = new Chat(bot);
+                    chat.AddChat(selected, sid);
+                    chat.Show();
+                    chat.Focus();
+                    chat_opened = true;
+                    chat.chatTab.tradeClicked();
                 }
-                catch
+                else
                 {
-                    selected = null;
-                }
-                if (selected != null)
-                {
-                    ulong sid = ListFriends.GetSID(selected);
-                    if (!chat_opened)
+                    bool found = false;
+                    foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
-                        chat = new Chat(bot);
+                        if (tab.Text == selected)
+                        {
+                            found = true;
+                            tab.Invoke((Action)(() =>
+                            {
+                                foreach (var item in tab.Controls)
+                                {
+                                    chat.chatTab = (ChatTab) item;
+                                    chat.chatTab.tradeClicked();
+                                }
+                            }));
+                            return;
+                        }
+                    }
+                    if (!found)
+                    {
                         chat.AddChat(selected, sid);
-                        chat.Show();
                         chat.Focus();
-                        chat_opened = true;
                         chat.chatTab.tradeClicked();
                     }
-                    else
-                    {
-                        bool found = false;
-                        foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
-                        {
-                            if (tab.Text == selected)
-                            {
-                                found = true;
-                                tab.Invoke((Action)(() =>
-                                {
-                                    foreach (var item in tab.Controls)
-                                    {
-                                        chat.chatTab = (ChatTab) item;
-                                        chat.chatTab.tradeClicked();
-                                    }
-                                }));
-                                return;
-                            }
-                        }
-                        if (!found)
-                        {
-                            chat.AddChat(selected, sid);
-                            chat.Focus();
-                            chat.chatTab.tradeClicked();
-                        }
-                    }
-                }
+                }                
             }));
         }
 
         private void removeFriendToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string selected = "";
-            try
+            if (friends_list.SelectedItem != null)
             {
-                selected = friends_list.SelectedItem.Text;
-            }
-            catch
-            {
-                selected = null;
-            }
-            if (selected != null)
-            {
-                ulong sid = ListFriends.GetSID(selected);
+                ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
                 bot.SteamFriends.RemoveFriend(sid);
+                bot.friends.Remove(sid);
                 ListFriends.Remove(sid);
-                friends_list.RemoveObject(friends_list.SelectedItem);
-                MessageBox.Show("You have removed " + selected,
+                friends_list.RemoveObject(friends_list.SelectedItem.RowObject);
+                MessageBox.Show("You have removed " + bot.SteamFriends.GetFriendPersonaName(sid),
                         "Remove Friend",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation,
@@ -512,25 +471,14 @@ namespace MistClient
 
         private void blockFriendToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string selected = "";
-            try
-            {
-                selected = friends_list.SelectedItem.Text;
-            }
-            catch
-            {
-                selected = null;
-            }
-            if (selected != null)
-            {
-                ulong sid = ListFriends.GetSID(selected);
-                bot.SteamFriends.IgnoreFriend(sid);
-                MessageBox.Show("You have blocked " + selected,
-                        "Block Friend",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation,
-                        MessageBoxDefaultButton.Button1);
-            }
+            ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+            string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+            bot.SteamFriends.IgnoreFriend(sid);
+            MessageBox.Show("You have blocked " + selected,
+                    "Block Friend",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation,
+                    MessageBoxDefaultButton.Button1);
         }
 
         public static string HTTPRequest(string url)
@@ -568,8 +516,7 @@ namespace MistClient
             {
                 if (friends_list.SelectedItem.Text != null)
                 {
-                    string selected = friends_list.SelectedItem.Text;
-                    ulong sid = ListFriends.GetSID(selected);
+                    ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
                     string url = "http://steamrep.com/api/beta/reputation/" + sid;
                     string response = HTTPRequest(url);
                     if (response != "")
@@ -659,8 +606,34 @@ namespace MistClient
             }
         }
 
+        public void GrowFriends()
+        {
+            bot.main.Invoke((Action)(() =>
+            {
+                if (!list_friendreq.Visible)
+                {
+                    friends_list.Height = friends_list.Height + list_friendreq.Height;
+                    friends_list.Location = new Point(friends_list.Left, friends_list.Top - list_friendreq.Height);
+                }
+            }));
+        }
+
+        public void ShrinkFriends()
+        {
+            bot.main.Invoke((Action)(() =>
+            {
+                if (list_friendreq.Visible)
+                {
+                    friends_list.Height = friends_list.Height - list_friendreq.Height;
+                    friends_list.Location = new Point(friends_list.Left, friends_list.Top + list_friendreq.Height);
+                }
+            }));
+        }
+
         private void Friends_Load(object sender, EventArgs e)
         {
+            friends_list.Height = friends_list.Height + list_friendreq.Height;
+            friends_list.Location = new Point(friends_list.Left, friends_list.Top - list_friendreq.Height);
             byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(bot.SteamUser.SteamID);
             bool validHash = avatarHash != null && !IsZeros(avatarHash);
 
@@ -680,21 +653,188 @@ namespace MistClient
             }
         }
 
+        public void NotifyFriendRequest()
+        {
+            bot.main.Invoke((Action)(() =>
+            {
+                if (!list_friendreq.Visible)
+                {
+                    list_friendreq.Visible = true;
+                    ShrinkFriends();
+                }
+            }));
+        }
+
+        public void HideFriendRequests()
+        {
+            bot.main.Invoke((Action)(() =>
+            {
+                list_friendreq.Visible = false;
+                if (!list_friendreq.Visible && friends_list.Height != (273+80))
+                {
+                    friends_list.Height = friends_list.Height + list_friendreq.Height;
+                    friends_list.Location = new Point(friends_list.Left, friends_list.Top - list_friendreq.Height);
+                }
+                list_friendreq.SetObjects(ListFriendRequests.Get());
+            }));
+        }
+
         private void viewGameInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string selected = "";
+            if (friends_list.SelectedItem != null)
+            {
+                ulong SteamID = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+            }
+        }
+
+        private void viewProfileToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (friends_list.SelectedItem != null)
+            {
+                string base_url = "http://steamcommunity.com/profiles/";
+                ulong SteamID = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                base_url += SteamID.ToString();
+                System.Diagnostics.Process.Start(base_url);
+            }
+        }
+
+        private void acceptFriendRequestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (list_friendreq.SelectedItem != null)
+            {
+                ulong SteamID = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
+                bot.SteamFriends.AddFriend(SteamID);
+                friends_list.AddObject(list_friendreq.SelectedItem.RowObject);
+                list_friendreq.SelectedItem.Remove();
+                ListFriendRequests.Remove(SteamID);
+            }
+        }
+
+        private void denyFriendRequestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (list_friendreq.SelectedItem != null)
+            {
+                ulong SteamID = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
+                bot.SteamFriends.IgnoreFriend(SteamID);
+                list_friendreq.SelectedItem.Remove();
+                ListFriendRequests.Remove(SteamID);
+            }
+        }
+
+        private void viewProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (list_friendreq.SelectedItem != null)
+            {
+                ulong SteamID = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
+                string base_url = "http://steamcommunity.com/profiles/";
+                base_url += SteamID.ToString();
+                System.Diagnostics.Process.Start(base_url);
+            }
+        }
+
+        private void showBackpackToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (list_friendreq.SelectedItem != null)
+            {
+                ulong sid = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
+                ShowBackpack showBP = new ShowBackpack(bot, sid);
+                showBP.Show();
+                showBP.Activate();
+            }
+        }
+
+        private void steamRepStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {            
             try
             {
-                selected = friends_list.SelectedItem.Text;
+                if (list_friendreq.SelectedItem != null)
+                {
+                    ulong sid = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
+                    string url = "http://steamrep.com/api/beta/reputation/" + sid;
+                    string response = HTTPRequest(url);
+                    if (response != "")
+                    {
+                        string status = ParseBetween(response, "<reputation>", "</reputation>");
+                        if (status == "")
+                        {
+                            MessageBox.Show("User has no special reputation.",
+                            "SteamRep Status",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation,
+                            MessageBoxDefaultButton.Button1);
+                        }
+                        else
+                        {
+                            MessageBox.Show(status,
+                            "SteamRep Status",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation,
+                            MessageBoxDefaultButton.Button1);
+                        }
+                    }
+                }
             }
             catch
             {
-                selected = null;
+
             }
-            if (selected != null)
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            list_friendreq.Visible = !list_friendreq.Visible;
+            if (list_friendreq.Visible)
             {
-                ulong sid = ListFriends.GetSID(selected);
+                ShrinkFriends();
             }
+            else
+            {
+                GrowFriends();
+            }
+            list_friendreq.SetObjects(ListFriendRequests.Get());
+        }
+
+        private void friends_list_ItemActivate_1(object sender, EventArgs e)
+        {
+            bot.main.Invoke((Action)(() =>
+            {
+                if (friends_list.SelectedItem != null)
+                {
+                    ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                    string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                    if (!chat_opened)
+                    {
+                        chat = new Chat(bot);
+                        chat.AddChat(selected, sid);
+                        chat.Show();
+                        chat.Focus();
+                        chat_opened = true;
+                    }
+                    else
+                    {
+                        bool found = false;
+                        foreach (TabPage tab in chat.ChatTabControl.TabPages)
+                        {
+                            if (tab.Text == selected)
+                            {
+                                chat.ChatTabControl.SelectedTab = tab;
+                                chat.Focus();
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            chat.AddChat(selected, sid);
+                            chat.Focus();
+                        }
+                    }
+                }
+            }));
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            list_friendreq.SetObjects(ListFriendRequests.Get());
         }
     }
 }

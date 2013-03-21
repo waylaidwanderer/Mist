@@ -68,6 +68,8 @@ namespace ToastNotifications
             // 
             // avatarBox
             // 
+            this.avatarBox.BackColor = System.Drawing.Color.Transparent;
+            this.avatarBox.InitialImage = global::ToastNotifications.Properties.Resources.IconUnknown;
             this.avatarBox.Location = new System.Drawing.Point(6, 29);
             this.avatarBox.Name = "avatarBox";
             this.avatarBox.Size = new System.Drawing.Size(40, 40);

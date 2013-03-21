@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="FlashWindow.cs" />
     <Compile Include="ListBackpack.cs" />
+    <Compile Include="ListFriendRequests.cs" />
     <Compile Include="ListFriends.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Friends.cs">
