@@ -97,7 +97,7 @@ namespace SteamBot
                 Password = _login.Password
             };
             ChatResponse = "";
-            TradePollingInterval = 300;
+            TradePollingInterval = 50;
             Admins = new ulong[1];
             Admins[0] = 123456789;
             this.apiKey = apiKey;
@@ -362,9 +362,9 @@ namespace SteamBot
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex);
-                        MessageBox.Show("Your API key is invalid! Please make sure you have obtained a proper one at http://steamcommunity.com/dev/apikey",
-                                    "Invalid API Key",
+                        log.Error(ex.ToString());
+                        MessageBox.Show("I can't fetch the schema! Your API key may be invalid or there may be a problem connecting to Steam. Please make sure you have obtained a proper API key at http://steamcommunity.com/dev/apikey",
+                                    "Schema Error",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error,
                                     MessageBoxDefaultButton.Button1);

@@ -301,8 +301,8 @@ namespace SteamTrade
 //                            OnError ("Error Polling Trade: " + e);
                         
                         // ok then we should stop polling...
-                        IsTradeThreadRunning = false;
-                        DebugPrint ("[TRADEMANAGER] general error caught: " + ex);
+                        //IsTradeThreadRunning = true;
+                        Console.WriteLine ("[TRADEMANAGER] general error caught: " + ex);
                     }
                 }
 

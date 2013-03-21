@@ -37,13 +37,33 @@ namespace MistClient
                 {
                     if (bot.CurrentTrade == null)
                     {
-                        Thread.Sleep(1000);
-                        if (bot.CurrentTrade == null)
+                        bot.main.Invoke((Action)(this.Dispose));
+                        bot.log.Warn("Trade expired.");
+                        if (Friends.chat_opened)
                         {
-                            bot.main.Invoke((Action)(this.Dispose));                            
-                            Bot.Print("Trade expired.");
-                            break;
+                            bot.main.Invoke((Action)(() =>
+                            {
+                                foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+                                {
+                                    if (tab.Text == bot.SteamFriends.GetFriendPersonaName(sid))
+                                    {
+                                        tab.Invoke((Action)(() =>
+                                        {
+                                            foreach (var item in tab.Controls)
+                                            {
+                                                Friends.chat.chatTab = (ChatTab)item;
+                                            }
+                                            string result = "The trade session has closed.";
+                                            bot.log.Warn(result);
+                                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
+                                        }));
+                                        break; ;
+                                    }
+                                }
+
+                            }));
                         }
+                        break;
                     }
                 }
             });
@@ -75,9 +95,9 @@ namespace MistClient
                         player.Play();
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(e.Message);
+                    bot.log.Error(ex.ToString());
                 }
                 FlashWindow.Flash(this);
             }
@@ -102,8 +122,9 @@ namespace MistClient
                 Thread.Sleep(2000);
                 this.Dispose();
             }
-            catch
+            catch (Exception ex)
             {
+                bot.log.Error(ex.ToString());
                 ClearAll();
                 Thread.Sleep(2000);
                 this.Dispose();
@@ -163,7 +184,7 @@ namespace MistClient
         {
             accepted = true;
             button_accept.Enabled = false;
-            button_accept.Text = "Waiting for other player...";
+            button_accept.Text = "Waiting for other user...";
             Thread.Sleep(500);
             while (!bot.otherAccepted)
             {
@@ -187,11 +208,13 @@ namespace MistClient
                                 if (success)
                                 {
                                     string result = String.Format("Trade completed with {0}.", bot.SteamFriends.GetFriendPersonaName(sid));
+                                    bot.log.Success(result);
                                     Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
                                 }
                                 else
                                 {
                                     string result = "The trade may have failed.";
+                                    bot.log.Warn(result);
                                     Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
                                 }
                             }));
@@ -210,9 +233,9 @@ namespace MistClient
                 ClearAll();
                 bot.CurrentTrade.CancelTrade();                
             }
-            catch
+            catch (Exception ex)
             {
-
+                bot.log.Error(ex.ToString());
             }
         }
 
@@ -255,7 +278,7 @@ namespace MistClient
                             {
                                 bot.main.Invoke((Action)(() =>
                                 {
-                                    Console.WriteLine(ex);
+                                    bot.log.Error(ex.ToString());
                                     MessageBox.Show(ex + "\nYou can ignore this error. Just restart the trade. Sorry about that :(",
                                         "Trade Error",
                                         MessageBoxButtons.OK,
@@ -266,12 +289,12 @@ namespace MistClient
                         }
                         else
                         {
-                            Bot.Print("Invalid item, skipping");
+                            bot.log.Warn("Invalid item, skipping");
                         }
                     }
                     catch (Exception ex)
                     {
-                        Bot.Print(ex);
+                        bot.log.Error(ex.ToString());
                         bot.main.Invoke((Action)(() =>
                         {
                             MessageBox.Show("\nSomething weird happened. Here's the error:\n" + ex,
@@ -283,7 +306,10 @@ namespace MistClient
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                bot.log.Error(ex.ToString());
+            }
         }
 
         public static void ClearAll()
@@ -305,22 +331,29 @@ namespace MistClient
                     {
                         var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex);
                         var name = GetItemName(currentItem, item);
-                        Bot.Print("Adding " + name + ", " + item.Id);
-                        bot.CurrentTrade.AddItem(item.Id);
-                        itemsAdded++;
-                        if (itemsAdded > 0)
+                        bot.log.Info("Adding " + name + ", " + item.Id);
+                        try
                         {
-                            check_userready.Enabled = true;
+                            bot.CurrentTrade.AddItem(item.Id);
+                            itemsAdded++;
+                            if (itemsAdded > 0)
+                            {
+                                check_userready.Enabled = true;
+                            }
+                            AppendText("You added: " + name);
+                            ResetTradeStatus();
+                            ListUserOfferings.Add(name, item.Id);
+                            ListInventory.Remove(name, item.Id);
+                            list_userofferings.SetObjects(ListUserOfferings.Get());
+                            list_inventory.SetObjects(ListInventory.Get());
                         }
-                        AppendText("You added: " + name);
-                        ResetTradeStatus();
-                        ListUserOfferings.Add(name, item.Id);
-                        ListInventory.Remove(name, item.Id);
-                        list_userofferings.SetObjects(ListUserOfferings.Get());
-                        list_inventory.SetObjects(ListInventory.Get());
+                        catch (Exception ex)
+                        {
+                            bot.log.Error(ex.ToString());
+                        }
                     }
                 }
-                Bot.Print("Done adding all items!");
+                bot.log.Info("Done adding all items!");
             }
             else if (dialogResult == DialogResult.No)
             {
@@ -444,17 +477,17 @@ namespace MistClient
                         }
                         catch (SteamTrade.Exceptions.TradeException ex)
                         {
-                            Console.WriteLine(ex);
+                            bot.log.Error(ex.ToString());
                         }
                     }
                     else
                     {
-                        Bot.Print("Invalid item, skipping");
+                        bot.log.Warn("Invalid item, skipping");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Bot.Print(ex);
+                    bot.log.Error(ex.ToString());
                 }
             }
         }
