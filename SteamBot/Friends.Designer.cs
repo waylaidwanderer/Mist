@@ -74,8 +74,7 @@
             this.column_friend = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimizeToTrayOnCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
@@ -193,10 +192,11 @@
             this.showBackpackToolStripMenuItem1,
             this.changeProfileNameToolStripMenuItem,
             this.toolStripMenuItem3,
+            this.minimizeToTrayOnCloseToolStripMenuItem,
             this.aboutMistToolStripMenuItem,
             this.checkForUpdatesToolStripMenuItem});
             this.menu_status.Name = "menu_status";
-            this.menu_status.Size = new System.Drawing.Size(197, 258);
+            this.menu_status.Size = new System.Drawing.Size(197, 280);
             // 
             // onlineToolStripMenuItem
             // 
@@ -382,11 +382,9 @@
             this.toolStripMenuItem4,
             this.viewProfileToolStripMenuItem,
             this.showBackpackToolStripMenuItem2,
-            this.steamRepStatusToolStripMenuItem,
-            this.toolStripMenuItem5,
-            this.refreshToolStripMenuItem});
+            this.steamRepStatusToolStripMenuItem});
             this.menu_friendreq.Name = "menu_friendreq";
-            this.menu_friendreq.Size = new System.Drawing.Size(193, 148);
+            this.menu_friendreq.Size = new System.Drawing.Size(193, 120);
             // 
             // acceptFriendRequestToolStripMenuItem
             // 
@@ -487,17 +485,13 @@
             this.column_sid.Searchable = false;
             this.column_sid.Text = "SteamID";
             // 
-            // toolStripMenuItem5
+            // minimizeToTrayOnCloseToolStripMenuItem
             // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(189, 6);
-            // 
-            // refreshToolStripMenuItem
-            // 
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            this.minimizeToTrayOnCloseToolStripMenuItem.CheckOnClick = true;
+            this.minimizeToTrayOnCloseToolStripMenuItem.Name = "minimizeToTrayOnCloseToolStripMenuItem";
+            this.minimizeToTrayOnCloseToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.minimizeToTrayOnCloseToolStripMenuItem.Text = "Minimize to Tray";
+            this.minimizeToTrayOnCloseToolStripMenuItem.Click += new System.EventHandler(this.minimizeToTrayOnCloseToolStripMenuItem_Click);
             // 
             // Friends
             // 
@@ -519,6 +513,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Friends_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Friends_FormClosed);
             this.Load += new System.EventHandler(this.Friends_Load);
+            this.ResizeEnd += new System.EventHandler(this.Friends_ResizeEnd);
             this.menu_friend.ResumeLayout(false);
             this.menu_status.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();
@@ -576,7 +571,6 @@
         private BrightIdeasSoftware.OLVColumn column_friendreq_sid;
         private BrightIdeasSoftware.OLVColumn column_sid;
         public BrightIdeasSoftware.ObjectListView list_friendreq;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minimizeToTrayOnCloseToolStripMenuItem;
     }
 }

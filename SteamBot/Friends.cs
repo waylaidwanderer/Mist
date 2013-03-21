@@ -27,7 +27,10 @@ namespace MistClient
         private ContextMenu trayMenu;
         public byte[] AvatarHash { get; set; } // checking if update is necessary
         SteamFriends SteamFriends;
-        string mist_ver = "1.0.0";
+        string mist_ver = "2.0.0";
+        int form_friendsHeight;
+        int form_friendreqHeight;
+        bool minimizeToTray = true;
 
         public Friends(SteamBot.Bot bot, string username)
         {
@@ -35,10 +38,14 @@ namespace MistClient
             this.Text = "Friends - Mist v" + mist_ver;
             this.steam_name.Text = username;
             this.bot = bot;
-            ListFriends.friends = this;
             this.steam_name.ContextMenuStrip = menu_status;
             this.steam_status.ContextMenuStrip = menu_status;
             this.label1.ContextMenuStrip = menu_status;
+            this.minimizeToTrayOnCloseToolStripMenuItem.Checked = true;
+            ListFriends.friends = this;
+            form_friendsHeight = friends_list.Height;
+            form_friendreqHeight = list_friendreq.Height;
+
             refreshTimer.Interval = TimerInterval;
             refreshTimer.Elapsed += (sender, e) => OnTimerElapsed(sender, e);
             refreshTimer.Start();            
@@ -58,7 +65,7 @@ namespace MistClient
 
             // Add menu to tray icon and show it.
             trayIcon.ContextMenu = trayMenu;
-            trayIcon.Visible = true;
+            trayIcon.Visible = false;
 
             trayIcon.DoubleClick += new System.EventHandler(this.OnTrayIconDoubleClick);
         }
@@ -165,6 +172,7 @@ namespace MistClient
         {
             Visible = true;
             ShowInTaskbar = true;
+            trayIcon.Visible = false;
             this.Show();
             this.Activate();
         }
@@ -248,6 +256,7 @@ namespace MistClient
         {
             trayIcon.Icon = null;
             trayIcon.Visible = false;
+            trayIcon.Dispose();
         }
 
         private void label1_MouseHover(object sender, EventArgs e)
@@ -555,10 +564,21 @@ namespace MistClient
 
         private void Friends_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Visible = false;
-            ShowInTaskbar = false;
-            trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
-            e.Cancel = true;
+            if (minimizeToTray)
+            {
+                Visible = false;
+                ShowInTaskbar = false;
+                trayIcon.Visible = true;
+                trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
+                e.Cancel = true;
+            }
+            else
+            {
+                trayIcon.Visible = false;
+                trayIcon.Icon = null;
+                trayIcon.Dispose();
+                OnExit(sender, e);
+            }
         }
 
         private void aboutMistToolStripMenuItem_Click(object sender, EventArgs e)
@@ -669,13 +689,13 @@ namespace MistClient
         {
             bot.main.Invoke((Action)(() =>
             {
-                list_friendreq.Visible = false;
-                if (!list_friendreq.Visible && friends_list.Height != (273+80))
+                if (list_friendreq.Visible)
                 {
+                    list_friendreq.Visible = false;
                     friends_list.Height = friends_list.Height + list_friendreq.Height;
                     friends_list.Location = new Point(friends_list.Left, friends_list.Top - list_friendreq.Height);
+                    list_friendreq.SetObjects(ListFriendRequests.Get());
                 }
-                list_friendreq.SetObjects(ListFriendRequests.Get());
             }));
         }
 
@@ -835,6 +855,17 @@ namespace MistClient
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             list_friendreq.SetObjects(ListFriendRequests.Get());
+        }
+
+        private void Friends_ResizeEnd(object sender, EventArgs e)
+        {
+            form_friendsHeight = friends_list.Height;
+            form_friendreqHeight = list_friendreq.Height;
+        }
+
+        private void minimizeToTrayOnCloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            minimizeToTray = minimizeToTrayOnCloseToolStripMenuItem.Checked;
         }
     }
 }
