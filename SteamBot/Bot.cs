@@ -11,6 +11,7 @@ using MistClient;
 using BrightIdeasSoftware;
 using SteamKit2;
 using SteamTrade;
+using System.Media;
 using ToastNotifications;
 
 namespace SteamBot
@@ -457,6 +458,19 @@ namespace SteamBot
                                             FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
                                             Notification toastNotification = new Notification(name, "has sent you a friend request.", duration, animationMethod, animationDirection);
                                             toastNotification.Show();
+                                            try
+                                            {
+                                                string soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
+                                                string soundFile = Path.Combine(soundsFolder + "trade_message.wav");
+                                                using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile))
+                                                {
+                                                    player.Play();
+                                                }
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Console.WriteLine(e.Message);
+                                            }
                                             showFriends.list_friendreq.SetObjects(ListFriendRequests.Get());
                                         }
                                         catch
