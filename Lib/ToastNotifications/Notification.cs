@@ -38,6 +38,8 @@ namespace ToastNotifications
 
             if (avatar != null)
                 avatarBox.Image = avatar.Image;
+            else
+                avatarBox.Image = avatarBox.InitialImage;
 
             this.animator = new FormAnimator(this, animation, direction, 500);
 
