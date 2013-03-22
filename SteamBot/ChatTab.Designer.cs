@@ -40,6 +40,7 @@
             this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steam_status = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
+            this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -116,10 +117,11 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewProfileToolStripMenuItem,
             this.showBackpackToolStripMenuItem,
             this.steamRepStatusToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 92);
             // 
             // showBackpackToolStripMenuItem
             // 
@@ -153,6 +155,13 @@
             this.avatarBox.Size = new System.Drawing.Size(40, 40);
             this.avatarBox.TabIndex = 10;
             this.avatarBox.TabStop = false;
+            // 
+            // viewProfileToolStripMenuItem
+            // 
+            this.viewProfileToolStripMenuItem.Name = "viewProfileToolStripMenuItem";
+            this.viewProfileToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewProfileToolStripMenuItem.Text = "View Profile";
+            this.viewProfileToolStripMenuItem.Click += new System.EventHandler(this.viewProfileToolStripMenuItem_Click);
             // 
             // ChatTab
             // 
@@ -191,6 +200,7 @@
         private System.Windows.Forms.ToolStripMenuItem showBackpackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem steamRepStatusToolStripMenuItem;
         public System.Windows.Forms.PictureBox avatarBox;
+        private System.Windows.Forms.ToolStripMenuItem viewProfileToolStripMenuItem;
 
     }
 }

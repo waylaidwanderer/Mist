@@ -375,5 +375,12 @@ namespace MistClient
 
             }
         }
+
+        private void viewProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string base_url = "http://steamcommunity.com/profiles/";
+            base_url += sid.ToString();
+            System.Diagnostics.Process.Start(base_url);
+        }
     }
 }
