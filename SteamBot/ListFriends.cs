@@ -86,6 +86,18 @@ namespace MistClient
             return 0;
         }
 
+        static internal List<ListFriends> Get(string name)
+        {
+            name = name.ToLower();
+            List<ListFriends> returnList = new List<ListFriends>();
+            foreach (ListFriends item in list)
+            {
+                if (item.name.ToLower().Contains(name))
+                    returnList.Add(item);
+            }
+            return returnList;
+        }
+
         static internal List<ListFriends> Get()
         {
             List<ListFriends> returnList = new List<ListFriends>();

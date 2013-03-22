@@ -54,6 +54,7 @@
             this.showBackpackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeProfileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.minimizeToTrayOnCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
@@ -74,7 +75,7 @@
             this.column_friend = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.minimizeToTrayOnCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.text_search = new System.Windows.Forms.TextBox();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
@@ -271,6 +272,14 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(193, 6);
             // 
+            // minimizeToTrayOnCloseToolStripMenuItem
+            // 
+            this.minimizeToTrayOnCloseToolStripMenuItem.CheckOnClick = true;
+            this.minimizeToTrayOnCloseToolStripMenuItem.Name = "minimizeToTrayOnCloseToolStripMenuItem";
+            this.minimizeToTrayOnCloseToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.minimizeToTrayOnCloseToolStripMenuItem.Text = "Minimize to Tray";
+            this.minimizeToTrayOnCloseToolStripMenuItem.Click += new System.EventHandler(this.minimizeToTrayOnCloseToolStripMenuItem_Click);
+            // 
             // aboutMistToolStripMenuItem
             // 
             this.aboutMistToolStripMenuItem.Name = "aboutMistToolStripMenuItem";
@@ -306,7 +315,7 @@
             this.label_addfriend2.AutoSize = true;
             this.label_addfriend2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_addfriend2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_addfriend2.Location = new System.Drawing.Point(10, 405);
+            this.label_addfriend2.Location = new System.Drawing.Point(10, 399);
             this.label_addfriend2.Name = "label_addfriend2";
             this.label_addfriend2.Size = new System.Drawing.Size(24, 25);
             this.label_addfriend2.TabIndex = 7;
@@ -322,7 +331,7 @@
             this.label_addfriend.AutoSize = true;
             this.label_addfriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_addfriend.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_addfriend.Location = new System.Drawing.Point(31, 410);
+            this.label_addfriend.Location = new System.Drawing.Point(31, 404);
             this.label_addfriend.Name = "label_addfriend";
             this.label_addfriend.Size = new System.Drawing.Size(109, 16);
             this.label_addfriend.TabIndex = 8;
@@ -348,9 +357,9 @@
             this.list_friendreq.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_friendreq_name});
             this.list_friendreq.ContextMenuStrip = this.menu_friendreq;
-            this.list_friendreq.Location = new System.Drawing.Point(12, 55);
+            this.list_friendreq.Location = new System.Drawing.Point(12, 81);
             this.list_friendreq.Name = "list_friendreq";
-            this.list_friendreq.Size = new System.Drawing.Size(278, 80);
+            this.list_friendreq.Size = new System.Drawing.Size(262, 80);
             this.list_friendreq.TabIndex = 16;
             this.list_friendreq.UseCompatibleStateImageBehavior = false;
             this.list_friendreq.View = System.Windows.Forms.View.Details;
@@ -438,11 +447,13 @@
             this.column_friend,
             this.column_status});
             this.friends_list.ContextMenuStrip = this.menu_friend;
-            this.friends_list.Location = new System.Drawing.Point(12, 134);
+            this.friends_list.Cursor = System.Windows.Forms.Cursors.Default;
+            this.friends_list.HeaderUsesThemes = false;
+            this.friends_list.Location = new System.Drawing.Point(12, 160);
             this.friends_list.MultiSelect = false;
             this.friends_list.Name = "friends_list";
             this.friends_list.SelectAllOnControlA = false;
-            this.friends_list.Size = new System.Drawing.Size(278, 273);
+            this.friends_list.Size = new System.Drawing.Size(262, 241);
             this.friends_list.TabIndex = 15;
             this.friends_list.UseCompatibleStateImageBehavior = false;
             this.friends_list.View = System.Windows.Forms.View.Details;
@@ -485,19 +496,28 @@
             this.column_sid.Searchable = false;
             this.column_sid.Text = "SteamID";
             // 
-            // minimizeToTrayOnCloseToolStripMenuItem
+            // text_search
             // 
-            this.minimizeToTrayOnCloseToolStripMenuItem.CheckOnClick = true;
-            this.minimizeToTrayOnCloseToolStripMenuItem.Name = "minimizeToTrayOnCloseToolStripMenuItem";
-            this.minimizeToTrayOnCloseToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.minimizeToTrayOnCloseToolStripMenuItem.Text = "Minimize to Tray";
-            this.minimizeToTrayOnCloseToolStripMenuItem.Click += new System.EventHandler(this.minimizeToTrayOnCloseToolStripMenuItem_Click);
+            this.text_search.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.text_search.BackColor = System.Drawing.SystemColors.Window;
+            this.text_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.text_search.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.text_search.Location = new System.Drawing.Point(12, 55);
+            this.text_search.Name = "text_search";
+            this.text_search.Size = new System.Drawing.Size(262, 20);
+            this.text_search.TabIndex = 18;
+            this.text_search.Text = "Search";
+            this.text_search.TextChanged += new System.EventHandler(this.text_search_TextChanged);
+            this.text_search.Enter += new System.EventHandler(this.text_search_Enter);
+            this.text_search.Leave += new System.EventHandler(this.text_search_Leave);
             // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 439);
+            this.ClientSize = new System.Drawing.Size(284, 430);
+            this.Controls.Add(this.text_search);
             this.Controls.Add(this.list_friendreq);
             this.Controls.Add(this.friends_list);
             this.Controls.Add(this.avatarBox);
@@ -572,5 +592,6 @@
         private BrightIdeasSoftware.OLVColumn column_sid;
         public BrightIdeasSoftware.ObjectListView list_friendreq;
         private System.Windows.Forms.ToolStripMenuItem minimizeToTrayOnCloseToolStripMenuItem;
+        private System.Windows.Forms.TextBox text_search;
     }
 }

@@ -13,6 +13,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using SteamKit2;
+using System.Collections;
 
 namespace MistClient
 {
@@ -385,35 +386,37 @@ namespace MistClient
         {
             bot.main.Invoke((Action)(() =>
             {
-                ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
-                string selected = bot.SteamFriends.GetFriendPersonaName(sid);
-                if (!chat_opened)
+                if (friends_list.SelectedItem != null)
                 {
-                    chat = new Chat(bot);
-                    chat.AddChat(selected, sid);
-                    chat.Show();
-                    chat.Focus();
-                    chat_opened = true;
-                }
-                else
-                {
-                    bool found = false;
-                    foreach (TabPage tab in chat.ChatTabControl.TabPages)
+                    ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                    string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                    if (!chat_opened)
                     {
-                        if (tab.Text == selected)
+                        chat = new Chat(bot);
+                        chat.AddChat(selected, sid);
+                        chat.Show();
+                        chat.Focus();
+                        chat_opened = true;
+                    }
+                    else
+                    {
+                        bool found = false;
+                        foreach (TabPage tab in chat.ChatTabControl.TabPages)
                         {
-                            chat.ChatTabControl.SelectedTab = tab;
+                            if (tab.Text == selected)
+                            {
+                                chat.ChatTabControl.SelectedTab = tab;
+                                chat.Focus();
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            chat.AddChat(selected, sid);
                             chat.Focus();
-                            found = true;
                         }
                     }
-                    if (!found)
-                    {
-                        chat.AddChat(selected, sid);
-                        chat.Focus();
-                    }
                 }
-                
             }));
         }
 
@@ -870,6 +873,34 @@ namespace MistClient
         private void minimizeToTrayOnCloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             minimizeToTray = minimizeToTrayOnCloseToolStripMenuItem.Checked;
+        }
+
+        private void text_search_Enter(object sender, EventArgs e)
+        {
+            if (text_search.Text == "Search")
+            {
+                text_search.Clear();
+                text_search.Font = new Font(text_search.Font, FontStyle.Regular);
+                text_search.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void text_search_Leave(object sender, EventArgs e)
+        {
+            if (text_search.Text == "")
+            {
+                text_search.Font = new Font(text_search.Font, FontStyle.Italic);
+                text_search.ForeColor = SystemColors.ControlDark;
+                text_search.Text = "Search";
+            }
+        }
+
+        private void text_search_TextChanged(object sender, EventArgs e)
+        {
+            if (text_search.Text == "")
+                this.friends_list.SetObjects(ListFriends.Get());
+            else
+                this.friends_list.SetObjects(ListFriends.Get(text_search.Text));
         }
     }
 }
