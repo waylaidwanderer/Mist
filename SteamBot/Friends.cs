@@ -522,6 +522,7 @@ namespace MistClient
         private void steamRepToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // This is a beta feature of SteamRep. Mattie! has informed me that this feature shouldn't be depended on and may die in the future.
+            // Don't depend on this.
             try
             {
                 if (friends_list.SelectedItem.Text != null)
@@ -765,8 +766,9 @@ namespace MistClient
         }
 
         private void steamRepStatusToolStripMenuItem_Click(object sender, EventArgs e)
-        {           
+        {
             // This is a beta feature of SteamRep. Mattie! has informed me that this feature shouldn't be depended on and may die in the future.
+            // Don't depend on this.
             try
             {
                 if (list_friendreq.SelectedItem != null)

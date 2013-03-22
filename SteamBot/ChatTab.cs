@@ -343,6 +343,8 @@ namespace MistClient
 
         private void steamRepStatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // This is a beta feature of SteamRep. Mattie! has informed me that this feature shouldn't be depended on and may die in the future.
+            // Don't depend on this.
             try
             {
                 string url = "http://steamrep.com/api/beta/reputation/" + sid;
