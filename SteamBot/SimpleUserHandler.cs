@@ -243,7 +243,7 @@ namespace SteamBot
                     var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
                     Console.WriteLine(OtherSID);
                     OpenChat(OtherSID);
-                    string update = "[" + DateTime.Now + "] - " + other + ": " + message + "\r\n";
+                    string update = "[" + DateTime.Now + "] " + other + ": " + message + "\r\n";
                     foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
                         if (tab.Text == other)
@@ -270,7 +270,7 @@ namespace SteamBot
             {
                 var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
                 OpenChat(OtherSID);
-                string update = "[" + DateTime.Now + "] - " + other + ": " + message + "\r\n";
+                string update = "[" + DateTime.Now + "] " + other + ": " + message + "\r\n";
                 foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                 {
                     if (tab.Text == other)
@@ -375,14 +375,14 @@ namespace SteamBot
                     {
                         Friends.chat.Invoke((Action)(() =>
                         {
-                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
+                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n");
                         }));
                     }
                     else
                     {
                         Friends.chat.Invoke((Action)(() =>
                         {
-                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
+                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error + "\r\n");
                         }));
                     }
                 }
@@ -433,14 +433,14 @@ namespace SteamBot
                             {
                                 Friends.chat.Invoke((Action)(() =>
                                 {
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n");
                                 }));
                             }
                             else
                             {
                                 Friends.chat.Invoke((Action)(() =>
                                 {
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error + "\r\n");
                                 }));
                             }
                         }

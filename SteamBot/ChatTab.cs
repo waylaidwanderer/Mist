@@ -171,7 +171,7 @@ namespace MistClient
                 case 3: // Other sent trade request - "Accept trade request"
                     button_trade.Enabled = true;
                     tradeMode = 3;
-                    text_log.AppendText("[" + DateTime.Now + "] - " + steam_name.Text + " has requested to trade with you.\r\n");
+                    text_log.AppendText("[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you.\r\n");
                     if (!Chat.hasFocus)
                     {
                         try
@@ -220,6 +220,7 @@ namespace MistClient
             // the label's text.
             Chat.chatTab.text_log.AppendText(text);
             Chat.chatTab.text_log.ScrollToCaret();
+            AppendLog(text);
             Chat.Flash();
             if (!Chat.hasFocus)
             {
@@ -256,7 +257,9 @@ namespace MistClient
             if (text_input.Text != "")
             {
                 bot.SteamFriends.SendChatMessage(sid, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
-                text_log.AppendText("[" + DateTime.Now + "] - " + Bot.displayName + ": " + text_input.Text + "\r\n");
+                string message = "[" + DateTime.Now + "] " + Bot.displayName + ": " + text_input.Text + "\r\n";
+                text_log.AppendText(message);
+                AppendLog(message);
                 clear();
             }
         }
@@ -270,7 +273,9 @@ namespace MistClient
                 {
                     e.Handled = true;
                     bot.SteamFriends.SendChatMessage(sid, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
-                    text_log.AppendText("[" + DateTime.Now + "] - " + Bot.displayName + ": " + text_input.Text + "\r\n");
+                    string message = "[" + DateTime.Now + "] " + Bot.displayName + ": " + text_input.Text + "\r\n";
+                    text_log.AppendText(message);
+                    AppendLog(message);
                     clear();
                 }
                 else
@@ -401,6 +406,26 @@ namespace MistClient
         private void text_log_Click(object sender, EventArgs e)
         {
             this.steam_name_Click(sender, e);
+        }
+
+        void AppendLog(string message)
+        {
+            string LogDirectory = Path.Combine(Application.StartupPath, "logs");
+            if (!Directory.Exists(LogDirectory))
+            {
+                try
+                {
+                    Directory.CreateDirectory(LogDirectory); // try making the cache directory
+                    Console.WriteLine("Creating log directory.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Unable to create log directory.\n{0}", ex.ToString());
+                    return;
+                }
+            }
+            string file = Path.Combine(Application.StartupPath, "logs", sid.ToString() + ".txt");
+            File.AppendAllText(file, message);
         }
     }
 }
