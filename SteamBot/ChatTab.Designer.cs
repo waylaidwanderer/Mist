@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.text_input = new System.Windows.Forms.TextBox();
-            this.text_log = new System.Windows.Forms.TextBox();
             this.button_send = new System.Windows.Forms.Button();
             this.chat_status = new System.Windows.Forms.Label();
             this.button_trade = new System.Windows.Forms.Button();
@@ -42,6 +41,7 @@
             this.steam_status = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
             this.checkrep = new System.ComponentModel.BackgroundWorker();
+            this.text_log = new System.Windows.Forms.RichTextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -57,22 +57,6 @@
             this.text_input.Size = new System.Drawing.Size(218, 61);
             this.text_input.TabIndex = 0;
             this.text_input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_input_KeyPress);
-            // 
-            // text_log
-            // 
-            this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_log.BackColor = System.Drawing.SystemColors.Window;
-            this.text_log.Location = new System.Drawing.Point(-2, 51);
-            this.text_log.Multiline = true;
-            this.text_log.Name = "text_log";
-            this.text_log.ReadOnly = true;
-            this.text_log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(369, 246);
-            this.text_log.TabIndex = 3;
-            this.text_log.Click += new System.EventHandler(this.text_log_Click);
-            this.text_log.DoubleClick += new System.EventHandler(this.text_log_DoubleClick);
             // 
             // button_send
             // 
@@ -171,17 +155,34 @@
             // 
             this.checkrep.DoWork += new System.ComponentModel.DoWorkEventHandler(this.checkrep_DoWork);
             // 
+            // text_log
+            // 
+            this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.text_log.BackColor = System.Drawing.SystemColors.Window;
+            this.text_log.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.text_log.Location = new System.Drawing.Point(0, 51);
+            this.text_log.Name = "text_log";
+            this.text_log.ReadOnly = true;
+            this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.text_log.Size = new System.Drawing.Size(369, 246);
+            this.text_log.TabIndex = 11;
+            this.text_log.Text = "";
+            this.text_log.Click += new System.EventHandler(this.text_log_Click);
+            this.text_log.DoubleClick += new System.EventHandler(this.text_log_DoubleClick);
+            // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.text_log);
             this.Controls.Add(this.avatarBox);
             this.Controls.Add(this.steam_status);
             this.Controls.Add(this.steam_name);
             this.Controls.Add(this.button_trade);
             this.Controls.Add(this.chat_status);
             this.Controls.Add(this.text_input);
-            this.Controls.Add(this.text_log);
             this.Controls.Add(this.button_send);
             this.MinimumSize = new System.Drawing.Size(286, 156);
             this.Name = "ChatTab";
@@ -200,7 +201,6 @@
 
         private System.Windows.Forms.TextBox text_input;
         private System.Windows.Forms.Button button_send;
-        public System.Windows.Forms.TextBox text_log;
         private System.Windows.Forms.Button button_trade;
         private System.Windows.Forms.Label steam_name;
         public System.Windows.Forms.Label chat_status;
@@ -211,6 +211,7 @@
         public System.Windows.Forms.PictureBox avatarBox;
         private System.Windows.Forms.ToolStripMenuItem viewProfileToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker checkrep;
+        private System.Windows.Forms.RichTextBox text_log;
 
     }
 }

@@ -85,7 +85,14 @@ namespace SteamBot
                     }
                 }
             }).Start();
-            Application.Run(login);
+            try
+            {
+                Application.Run(login);
+            }
+            catch
+            {
+
+            }
         }
 
         static void CleanUp()

@@ -12,7 +12,7 @@ namespace SteamBot
     public class SimpleUserHandler : UserHandler
     {
         ShowTrade ShowTrade;
-
+        
         public SimpleUserHandler(Bot bot, SteamID sid) : base(bot, sid) { }
 
         public void SendMessage(string message)
@@ -243,7 +243,8 @@ namespace SteamBot
                     var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
                     Console.WriteLine(OtherSID);
                     OpenChat(OtherSID);
-                    string update = "[" + DateTime.Now + "] " + other + ": " + message + "\r\n";
+                    string date = "[" + DateTime.Now + "] ";
+                    string name = other + ": ";
                     foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
                         if (tab.Text == other)
@@ -254,23 +255,30 @@ namespace SteamBot
                             }
                         }
                     }
-                    Friends.chat.chatTab.UpdateChat(update);
-                    if (!Chat.hasFocus)
+                    Friends.chat.chatTab.UpdateChat(date, name, message);
+                    new Thread(() =>
                     {
-                        int duration = 3;
-                        FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
-                        FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
-                        string title = Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " says:";
-                        Notification toastNotification = new Notification(title, message, duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox);
-                        toastNotification.Show();
-                    }
+                        if (!Chat.hasFocus)
+                        {
+                            int duration = 3;
+                            FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
+                            FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
+                            string title = Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " says:";
+                            Notification toastNotification = new Notification(title, message, duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox);
+                            Bot.main.Invoke((Action)(() =>
+                            {
+                                toastNotification.Show();
+                            }));
+                        }
+                    }).Start();
                 }));
             }
             else
             {
                 var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
                 OpenChat(OtherSID);
-                string update = "[" + DateTime.Now + "] " + other + ": " + message + "\r\n";
+                string date = "[" + DateTime.Now + "] ";
+                string name = other + ": ";
                 foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                 {
                     if (tab.Text == other)
@@ -281,7 +289,7 @@ namespace SteamBot
                         }
                     }
                 }
-                Friends.chat.chatTab.UpdateChat(update);
+                Friends.chat.chatTab.UpdateChat(date, name, message);
             }
         }
 

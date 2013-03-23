@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ToastNotifications
 {
     public partial class Notification : Form
     {
-        private static List<Notification> openNotifications = new List<Notification>();
+        private static List<Notification> openNotifications = new List<Notification>();        
         private bool allowFocus = false;
         private FormAnimator animator;
         private IntPtr currentForegroundWindow;
@@ -73,9 +74,26 @@ namespace ToastNotifications
                                       Screen.PrimaryScreen.WorkingArea.Height - this.Height);
 
             // Move each open form upwards to make room for this one
-            foreach (Notification openForm in Notification.openNotifications)
+            try
             {
-                openForm.Top -= this.Height;
+                foreach (Notification openForm in Notification.openNotifications)
+                {
+                    if (Notification.openNotifications.Count > 4)
+                    {
+                        openForm.Close();
+                    }
+                    else
+                    {
+                        openForm.Top -= this.Height;
+                    }
+                }
+            }
+            catch
+            {
+                foreach (Notification openForm in Notification.openNotifications)
+                {
+                    openForm.Top -= this.Height;
+                }
             }
 
             Notification.openNotifications.Add(this);

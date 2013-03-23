@@ -24,6 +24,7 @@ namespace MistClient
         public byte[] AvatarHash { get; set; } // checking if update is necessary
         public Chat Chat;
         public TabPage tab;
+        bool inGame = false;
 
         public ChatTab(Chat chat, Bot bot, ulong sid)
         {
@@ -80,10 +81,16 @@ namespace MistClient
         Bitmap GetHolder()
         {
             if (IsInGame())
+            {
+                inGame = true;
                 return MistClient.Properties.Resources.IconIngame;
+            }
 
             if (IsOnline())
+            {
+                inGame = false;
                 return MistClient.Properties.Resources.IconOnline;
+            }
 
             return MistClient.Properties.Resources.IconOffline;
         }
@@ -206,21 +213,30 @@ namespace MistClient
             button_trade.Enabled = false;
         }
 
-        public void UpdateChat(string text)
+        public void UpdateChat(string date, string name, string message)
         {
             // If the current thread is not the UI thread, InvokeRequired will be true
             if (text_log.InvokeRequired)
             {
                 // If so, call Invoke, passing it a lambda expression which calls
                 // UpdateText with the same label and text, but on the UI thread instead.
-                text_log.Invoke((Action)(() => UpdateChat(text)));
+                text_log.Invoke((Action)(() => UpdateChat(date, name, message)));
                 return;
             }
             // If we're running on the UI thread, we'll get here, and can safely update 
             // the label's text.
-            Chat.chatTab.text_log.AppendText(text);
-            Chat.chatTab.text_log.ScrollToCaret();
-            AppendLog(text);
+            Color prevColor = text_log.SelectionColor;
+            text_log.SelectionColor = Color.RoyalBlue;
+            if (inGame)
+            {
+                text_log.SelectionColor = Color.Green;
+            }
+            text_log.AppendText(date + name);
+            text_log.SelectionColor = prevColor;
+            message = message + "\r\n";
+            text_log.AppendText(message);
+            text_log.ScrollToCaret();
+            AppendLog(date + name + message);
             Chat.Flash();
             if (!Chat.hasFocus)
             {
@@ -233,6 +249,42 @@ namespace MistClient
                         player.Play();
                     }
                     
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                Chat.Flash();
+            }
+        }
+
+        public void UpdateChat(string text)
+        {
+            // If the current thread is not the UI thread, InvokeRequired will be true
+            if (text_log.InvokeRequired)
+            {
+                // If so, call Invoke, passing it a lambda expression which calls
+                // UpdateText with the same label and text, but on the UI thread instead.
+                text_log.Invoke((Action)(() => UpdateChat(text)));
+                return;
+            }
+            // If we're running on the UI thread, we'll get here, and can safely update 
+            // the label's text.
+            text_log.AppendText(text);
+            text_log.ScrollToCaret();            
+            AppendLog(text);
+            Chat.Flash();
+            if (!Chat.hasFocus)
+            {
+                try
+                {
+                    string soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
+                    string soundFile = Path.Combine(soundsFolder + "message.wav");
+                    using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile))
+                    {
+                        player.Play();
+                    }
+
                 }
                 catch (Exception e)
                 {
@@ -257,9 +309,20 @@ namespace MistClient
             if (text_input.Text != "")
             {
                 bot.SteamFriends.SendChatMessage(sid, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
-                string message = "[" + DateTime.Now + "] " + Bot.displayName + ": " + text_input.Text + "\r\n";
+                Color prevColor = text_log.SelectionColor;
+                text_log.SelectionColor = Color.RoyalBlue;
+                if (bot.SteamFriends.GetFriendGamePlayed(bot.SteamUser.SteamID) != 0)
+                {
+                    text_log.SelectionColor = Color.Green;
+                }
+                string date = "[" + DateTime.Now + "] ";
+                string name = Bot.displayName + ": ";
+                text_log.AppendText(date + name);
+                text_log.SelectionColor = prevColor;
+                string message = text_input.Text + "\r\n";
                 text_log.AppendText(message);
-                AppendLog(message);
+                text_log.ScrollToCaret();
+                AppendLog(date + name + message);
                 clear();
             }
         }
@@ -273,9 +336,20 @@ namespace MistClient
                 {
                     e.Handled = true;
                     bot.SteamFriends.SendChatMessage(sid, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
-                    string message = "[" + DateTime.Now + "] " + Bot.displayName + ": " + text_input.Text + "\r\n";
+                    Color prevColor = text_log.SelectionColor;
+                    text_log.SelectionColor = Color.RoyalBlue;
+                    if (bot.SteamFriends.GetFriendGamePlayed(bot.SteamUser.SteamID) != 0)
+                    {
+                        text_log.SelectionColor = Color.Green;
+                    }                    
+                    string date = "[" + DateTime.Now + "] ";
+                    string name = Bot.displayName + ": ";
+                    text_log.AppendText(date + name);
+                    text_log.SelectionColor = prevColor;
+                    string message = text_input.Text + "\r\n";
                     text_log.AppendText(message);
-                    AppendLog(message);
+                    text_log.ScrollToCaret();
+                    AppendLog(date + name + message);
                     clear();
                 }
                 else
@@ -398,16 +472,6 @@ namespace MistClient
             steam_name.Focus();
         }
 
-        private void text_log_DoubleClick(object sender, EventArgs e)
-        {
-            text_log.Focus();
-        }
-
-        private void text_log_Click(object sender, EventArgs e)
-        {
-            this.steam_name_Click(sender, e);
-        }
-
         void AppendLog(string message)
         {
             string LogDirectory = Path.Combine(Application.StartupPath, "logs");
@@ -520,6 +584,16 @@ namespace MistClient
                 newFile.Append(line + "\r\n");
             }
             File.WriteAllText(filePath, newFile.ToString());
+        }
+
+        private void text_log_DoubleClick(object sender, EventArgs e)
+        {
+            text_log.Focus();
+        }
+
+        private void text_log_Click(object sender, EventArgs e)
+        {
+            this.steam_name_Click(sender, e);
         }
     }
 }

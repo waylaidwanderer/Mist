@@ -55,6 +55,7 @@ namespace MistClient
                                             }
                                             string result = "The trade session has closed.";
                                             bot.log.Warn(result);
+                                            string date = "[" + DateTime.Now + "] ";
                                             Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
                                         }));
                                         break; ;
