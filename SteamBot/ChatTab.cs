@@ -448,7 +448,7 @@ namespace MistClient
                         DateTime dateLast = Convert.ToDateTime(lastChecked);
                         DateTime dateNow = DateTime.Now;
                         TimeSpan difference = dateNow - dateLast;
-                        if (difference.TotalSeconds > 10)
+                        if (difference.TotalDays > 1)
                         {
                             // Data last pulled over a day ago, so let's update the SR cache
                             string url = "http://api.steamrep.org/profiles/" + sid;
