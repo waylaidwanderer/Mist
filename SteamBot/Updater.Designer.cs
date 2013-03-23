@@ -55,7 +55,7 @@
             this.label_newver.Name = "label_newver";
             this.label_newver.Size = new System.Drawing.Size(203, 26);
             this.label_newver.TabIndex = 1;
-            this.label_newver.Text = "Mist v9.9.9 is available (you have v0.0.0).\r\nWould you like to download it now?";
+            this.label_newver.Text = "Mist v9001 is available (you have v0.0.0).\r\nWould you like to download it now?";
             // 
             // label3
             // 

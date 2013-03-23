@@ -137,7 +137,7 @@ namespace MistClient
                     }
                     catch (Exception err)
                     {
-                        log.Error("[UPDATER] " + err.Message);
+                        log.Error("[UPDATER] Error extracting: " + err.Message);
                     }
                 }
             }
