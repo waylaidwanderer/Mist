@@ -348,10 +348,10 @@ namespace MistClient
             try
             {
                 string url = "http://steamrep.com/api/beta/reputation/" + sid;
-                string response = Friends.HTTPRequest(url);
+                string response = Util.HTTPRequest(url);
                 if (response != "")
                 {
-                    string status = Friends.ParseBetween(response, "<reputation>", "</reputation>");
+                    string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
                     if (status == "")
                     {
                         MessageBox.Show("User has no special reputation.",
@@ -381,6 +381,11 @@ namespace MistClient
             string base_url = "http://steamcommunity.com/profiles/";
             base_url += sid.ToString();
             System.Diagnostics.Process.Start(base_url);
+        }
+
+        private void ChatTab_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MistClient
         private ContextMenu trayMenu;
         public byte[] AvatarHash { get; set; } // checking if update is necessary
         SteamFriends SteamFriends;
-        string mist_ver = "2.0.0";
+        public static string mist_ver = "2.0.0";
         int form_friendsHeight;
         int form_friendreqHeight;
         bool minimizeToTray = true;
@@ -493,34 +493,7 @@ namespace MistClient
                     MessageBoxDefaultButton.Button1);
         }
 
-        public static string HTTPRequest(string url)
-        {
-            var result = "";
-            try
-            {
-                using (var webClient = new WebClient())
-                {
-                    using (var stream = webClient.OpenRead(url))
-                    {
-                        using (var streamReader = new StreamReader(stream))
-                        {
-                            result = streamReader.ReadToEnd();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                var wtf = ex.Message;
-            }
-
-            return result;
-        }
-
-        public static string ParseBetween(string Subject, string Start, string End)
-        {
-            return Regex.Match(Subject, Regex.Replace(Start, @"[][{}()*+?.\\^$|]", @"\$0") + @"\s*(((?!" + Regex.Replace(Start, @"[][{}()*+?.\\^$|]", @"\$0") + @"|" + Regex.Replace(End, @"[][{}()*+?.\\^$|]", @"\$0") + @").)+)\s*" + Regex.Replace(End, @"[][{}()*+?.\\^$|]", @"\$0"), RegexOptions.IgnoreCase).Value.Replace(Start, "").Replace(End, "");
-        }
+        
 
         private void steamRepToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -532,10 +505,10 @@ namespace MistClient
                 {
                     ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
                     string url = "http://steamrep.com/api/beta/reputation/" + sid;
-                    string response = HTTPRequest(url);
+                    string response = Util.HTTPRequest(url);
                     if (response != "")
                     {
-                        string status = ParseBetween(response, "<reputation>", "</reputation>");
+                        string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
                         if (status == "")
                         {
                             MessageBox.Show("User has no special reputation.",
@@ -599,26 +572,17 @@ namespace MistClient
 
         private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string url = "http://www.thectscommunity.com/dev/mist_ver.php";
-            string response = HTTPRequest(url);
+            string url = "http://www.thectscommunity.com/dev/update_check.php";
+            string response = Util.HTTPRequest(url);
             if (response != "")
             {
-                if (response != mist_ver)
+                string latestVer = Util.ParseBetween(response, "<version>", "</version>");                                
+                if (latestVer != Friends.mist_ver)
                 {
-                    string message = "There is a new version of Mist available. Would you like to be taken to http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/ for the latest release? Click No to simply close this message box.";
-                    DialogResult choice = MessageBox.Show(new Form() { TopMost = true }, message,
-                                    "Outdated",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Warning,
-                                    MessageBoxDefaultButton.Button1);
-                    switch (choice)
-                    {
-                        case DialogResult.Yes:
-                            System.Diagnostics.Process.Start("http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/");
-                            break;
-                        case DialogResult.No:
-                            break;
-                    }
+                    string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
+                    Updater updater = new Updater(latestVer, changelog, bot.log);
+                    updater.ShowDialog();
+                    updater.Activate();
                 }
                 else
                 {
@@ -628,6 +592,14 @@ namespace MistClient
                         MessageBoxIcon.Information,
                         MessageBoxDefaultButton.Button1);
                 }
+            }
+            else
+            {
+                MessageBox.Show("Failed to connect to the update server! Please try again later.",
+                        "Update Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1);
             }
         }
 
@@ -778,10 +750,10 @@ namespace MistClient
                 {
                     ulong sid = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
                     string url = "http://steamrep.com/api/beta/reputation/" + sid;
-                    string response = HTTPRequest(url);
+                    string response = Util.HTTPRequest(url);
                     if (response != "")
                     {
-                        string status = ParseBetween(response, "<reputation>", "</reputation>");
+                        string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
                         if (status == "")
                         {
                             MessageBox.Show("User has no special reputation.",

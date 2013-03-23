@@ -36,11 +36,11 @@
             this.button_trade = new System.Windows.Forms.Button();
             this.steam_name = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showBackpackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steam_status = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
-            this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -121,7 +121,14 @@
             this.showBackpackToolStripMenuItem,
             this.steamRepStatusToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 70);
+            // 
+            // viewProfileToolStripMenuItem
+            // 
+            this.viewProfileToolStripMenuItem.Name = "viewProfileToolStripMenuItem";
+            this.viewProfileToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewProfileToolStripMenuItem.Text = "View Profile";
+            this.viewProfileToolStripMenuItem.Click += new System.EventHandler(this.viewProfileToolStripMenuItem_Click);
             // 
             // showBackpackToolStripMenuItem
             // 
@@ -156,13 +163,6 @@
             this.avatarBox.TabIndex = 10;
             this.avatarBox.TabStop = false;
             // 
-            // viewProfileToolStripMenuItem
-            // 
-            this.viewProfileToolStripMenuItem.Name = "viewProfileToolStripMenuItem";
-            this.viewProfileToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.viewProfileToolStripMenuItem.Text = "View Profile";
-            this.viewProfileToolStripMenuItem.Click += new System.EventHandler(this.viewProfileToolStripMenuItem_Click);
-            // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -178,6 +178,7 @@
             this.MinimumSize = new System.Drawing.Size(286, 156);
             this.Name = "ChatTab";
             this.Size = new System.Drawing.Size(370, 380);
+            this.Load += new System.EventHandler(this.ChatTab_Load);
             this.Enter += new System.EventHandler(this.ChatTab_Enter);
             this.Leave += new System.EventHandler(this.ChatTab_Leave);
             this.contextMenuStrip1.ResumeLayout(false);

@@ -45,7 +45,7 @@ namespace SteamBot
 
         // The log for the bot.  This logs with the bot's display name.
         public Log log;
-
+        
         public delegate UserHandler UserHandlerCreator(Bot bot, SteamID id);
         public UserHandlerCreator CreateHandler;
         Dictionary<ulong, UserHandler> userHandlers = new Dictionary<ulong, UserHandler>();

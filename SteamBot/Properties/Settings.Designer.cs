@@ -58,5 +58,29 @@ namespace MistClient.Properties {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SkipUpdate {
+            get {
+                return ((bool)(this["SkipUpdate"]));
+            }
+            set {
+                this["SkipUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SkippedVersion {
+            get {
+                return ((string)(this["SkippedVersion"]));
+            }
+            set {
+                this["SkippedVersion"] = value;
+            }
+        }
     }
 }

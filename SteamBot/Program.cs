@@ -15,6 +15,7 @@ namespace SteamBot
         [STAThread]
         public static void Main(string[] args)
         {
+            CleanUp();
             string LogDirectory = Path.Combine(Application.StartupPath, "logs");
             if (!Directory.Exists(LogDirectory))
             {
@@ -53,7 +54,7 @@ namespace SteamBot
                 mainLog = new Log(@"logs/Mist.log", "Mist", Log.LogLevel.Debug);
             }
             Application.EnableVisualStyles();
-            Login login = new Login();
+            Login login = new Login(mainLog);
             mainLog.Info("Launching Mist...");
             Configuration config = new Configuration();
             Configuration.BotInfo info = new Configuration.BotInfo();
@@ -85,6 +86,37 @@ namespace SteamBot
                 }
             }).Start();
             Application.Run(login);
+        }
+
+        static void CleanUp()
+        {
+            int max = 5;
+            for (int count = 0; count < max; count++)
+            {
+                try
+                {
+                    foreach (var file in Directory.GetFiles(Application.StartupPath))
+                    {
+                        if (file.EndsWith(".old") || file.EndsWith(".PendingOverwrite") || file.EndsWith(".tmp"))
+                        {
+                            Console.WriteLine("Deleting {0}...", file);
+                            File.Delete(file);
+                        }
+                    }
+                    foreach (var file in Directory.GetFiles(Path.Combine(Application.StartupPath, "lib")))
+                    {
+                        if (file.EndsWith(".old") || file.EndsWith(".PendingOverwrite") || file.EndsWith(".tmp"))
+                        {
+                            Console.WriteLine("Deleting {0}...", file);
+                            File.Delete(file);
+                        }
+                    }
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                }
+            }
         }
     }
 }

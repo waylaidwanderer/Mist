@@ -41,6 +41,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.text_api = new System.Windows.Forms.TextBox();
             this.check_remember = new System.Windows.Forms.CheckBox();
+            this.updatechecker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -135,7 +136,6 @@
             this.label4.TabIndex = 10;
             this.label4.Text = "API Key";
             this.label4.Click += new System.EventHandler(this.label4_Click);
-            this.label4.DoubleClick += new System.EventHandler(this.label4_DoubleClick);
             this.label4.MouseHover += new System.EventHandler(this.label4_MouseHover);
             // 
             // text_api
@@ -154,6 +154,10 @@
             this.check_remember.TabIndex = 11;
             this.check_remember.Text = "Remember Password";
             this.check_remember.UseVisualStyleBackColor = true;
+            // 
+            // updatechecker
+            // 
+            this.updatechecker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.updatechecker_DoWork);
             // 
             // Login
             // 
@@ -174,6 +178,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.text_password);
             this.Controls.Add(this.text_username);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Login";
@@ -201,5 +206,6 @@
         public System.Windows.Forms.TextBox text_username;
         public System.Windows.Forms.TextBox text_password;
         public System.Windows.Forms.TextBox text_api;
+        private System.ComponentModel.BackgroundWorker updatechecker;
     }
 }

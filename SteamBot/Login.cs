@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Configuration;
+using SteamBot;
 
 namespace MistClient
 {
@@ -22,12 +23,14 @@ namespace MistClient
         public string APIKey;
         public static bool LoginClicked = false;
         public bool wrongAPI = false;
+        Log log;
 
-        public Login()
+        public Login(Log log)
         {
             InitializeComponent();
-            this.Text = "Login - Mist";
+            this.Text = "Login - Mist v" + Friends.mist_ver;
             MakePortable(Properties.Settings.Default);
+            this.log = log;
         }
 
         private static void MakePortable(ApplicationSettingsBase settings)
@@ -66,6 +69,7 @@ namespace MistClient
 
         private void Login_Load(object sender, EventArgs e)
         {
+            updatechecker.RunWorkerAsync();
             label4.ForeColor = Color.Blue;
             label4.Font =
             new Font
@@ -146,16 +150,9 @@ namespace MistClient
             }
         }
 
-        private void label4_DoubleClick(object sender, EventArgs e)
-        {
-            
-        }
-
         private void label4_MouseHover(object sender, EventArgs e)
         {
             ToolTip APIToolTip = new ToolTip();
-            //The below are optional, of course,
-
             APIToolTip.ToolTipIcon = ToolTipIcon.Info;
             APIToolTip.IsBalloon = true;
             APIToolTip.ShowAlways = true;
@@ -178,6 +175,36 @@ namespace MistClient
                     break;
                 case DialogResult.No:
                     break;
+            }
+        }
+
+        private void updatechecker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string url = "http://www.thectscommunity.com/dev/update_check.php";
+            string response = Util.HTTPRequest(url);
+            if (response != "")
+            {
+                string latestVer = Util.ParseBetween(response, "<version>", "</version>");
+                if (Properties.Settings.Default.SkipUpdate && Properties.Settings.Default.SkippedVersion != latestVer)
+                {
+                    Properties.Settings.Default.SkipUpdate = false;
+                    Properties.Settings.Default.Save();
+                    string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
+                    Updater updater = new Updater(latestVer, changelog, log);
+                    updater.ShowDialog();
+                    updater.Activate();
+                }
+                else if (!Properties.Settings.Default.SkipUpdate && latestVer != Friends.mist_ver)
+                {
+                    string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
+                    Updater updater = new Updater(latestVer, changelog, log);
+                    updater.ShowDialog();
+                    updater.Activate();
+                }
+                else
+                {
+
+                }
             }
         }
     }
