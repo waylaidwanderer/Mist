@@ -390,7 +390,7 @@ namespace MistClient
 
         private void ChatTab_Load(object sender, EventArgs e)
         {
-
+            checkrep.RunWorkerAsync();
         }
 
         private void steam_name_Click(object sender, EventArgs e)
@@ -426,6 +426,100 @@ namespace MistClient
             }
             string file = Path.Combine(Application.StartupPath, "logs", sid.ToString() + ".txt");
             File.AppendAllText(file, message);
+        }
+
+        private void checkrep_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string file = Path.Combine(Application.StartupPath, "steamrep.cache");
+            if (!File.Exists(file))
+            {
+                File.Create(file);
+            }
+            else
+            {
+                bool found = false;
+                //string toFind = "SteamID: 7691248515251; Rep: None; LC: Date.";
+                foreach (var line in File.ReadAllLines(file))
+                {
+                    if (line.Contains(sid.ToString()))
+                    {
+                        found = true;
+                        string lastChecked = Util.ParseBetween(line, "Date:", ".");
+                        DateTime dateLast = Convert.ToDateTime(lastChecked);
+                        DateTime dateNow = DateTime.Now;
+                        TimeSpan difference = dateNow - dateLast;
+                        if (difference.TotalSeconds > 10)
+                        {
+                            // Data last pulled over a day ago, so let's update the SR cache
+                            string url = "http://api.steamrep.org/profiles/" + sid;
+                            string response = Util.HTTPRequest(url);
+                            if (response != "")
+                            {
+                                string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
+                                if (status == "")
+                                {
+                                    // No special rep
+                                    UpdateSRCache(sid.ToString(), "None");
+                                }
+                                else
+                                {
+                                    // Special rep
+                                    UpdateSRCache(sid.ToString(), status);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string result = Util.ParseBetween(line, "Rep:", ";");
+                            Console.WriteLine(result);
+                        }
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    // This is a new user, so we should add them to the cache
+                    string url = "http://api.steamrep.org/profiles/" + sid;
+                    string response = Util.HTTPRequest(url);
+                    if (response != "")
+                    {
+                        string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
+                        if (status == "")
+                        {
+                            // No special rep
+                            status = "None";
+                            string add = "SteamID:" + sid + ";Rep:" + status + ";Date:" + DateTime.Now + ".\r\n";
+                            File.AppendAllText(file, add);
+                        }
+                        else
+                        {
+                            // Special rep
+                            string add = "SteamID:" + sid + ";Rep:" + status + ";Date:" + DateTime.Now + ".\r\n";
+                            File.AppendAllText(file, add);
+                        }
+                    }                    
+                }
+            }
+        }
+
+        void UpdateSRCache(string sid, string rep)
+        {
+            StringBuilder newFile = new StringBuilder();
+            string temp = "";
+            string filePath = Path.Combine(Application.StartupPath, "steamrep.cache");
+            string[] file = File.ReadAllLines(filePath);
+            foreach (string line in file)
+            {
+                if (line.Contains(sid))
+                {
+                    string add = "SteamID:" + sid + ";Rep:" + rep + ";Date:" + DateTime.Now + ".\r\n";
+                    temp = line.Replace(line, add);
+                    newFile.Append(temp);
+                    continue;
+                }
+                newFile.Append(line + "\r\n");
+            }
+            File.WriteAllText(filePath, newFile.ToString());
         }
     }
 }

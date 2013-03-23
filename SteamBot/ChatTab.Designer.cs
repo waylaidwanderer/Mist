@@ -41,6 +41,7 @@
             this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steam_status = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
+            this.checkrep = new System.ComponentModel.BackgroundWorker();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -166,6 +167,10 @@
             this.avatarBox.TabIndex = 10;
             this.avatarBox.TabStop = false;
             // 
+            // checkrep
+            // 
+            this.checkrep.DoWork += new System.ComponentModel.DoWorkEventHandler(this.checkrep_DoWork);
+            // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -205,6 +210,7 @@
         private System.Windows.Forms.ToolStripMenuItem steamRepStatusToolStripMenuItem;
         public System.Windows.Forms.PictureBox avatarBox;
         private System.Windows.Forms.ToolStripMenuItem viewProfileToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker checkrep;
 
     }
 }
