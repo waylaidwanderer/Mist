@@ -70,6 +70,8 @@
             this.text_log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.text_log.Size = new System.Drawing.Size(369, 246);
             this.text_log.TabIndex = 3;
+            this.text_log.Click += new System.EventHandler(this.text_log_Click);
+            this.text_log.DoubleClick += new System.EventHandler(this.text_log_DoubleClick);
             // 
             // button_send
             // 
@@ -113,6 +115,7 @@
             this.steam_name.Size = new System.Drawing.Size(96, 16);
             this.steam_name.TabIndex = 8;
             this.steam_name.Text = "steam_name";
+            this.steam_name.Click += new System.EventHandler(this.steam_name_Click);
             // 
             // contextMenuStrip1
             // 

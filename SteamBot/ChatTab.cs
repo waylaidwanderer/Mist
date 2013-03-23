@@ -387,5 +387,20 @@ namespace MistClient
         {
 
         }
+
+        private void steam_name_Click(object sender, EventArgs e)
+        {
+            steam_name.Focus();
+        }
+
+        private void text_log_DoubleClick(object sender, EventArgs e)
+        {
+            text_log.Focus();
+        }
+
+        private void text_log_Click(object sender, EventArgs e)
+        {
+            this.steam_name_Click(sender, e);
+        }
     }
 }
