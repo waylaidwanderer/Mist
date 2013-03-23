@@ -861,6 +861,7 @@ namespace MistClient
                 text_search.Font = new Font(text_search.Font, FontStyle.Italic);
                 text_search.ForeColor = SystemColors.ControlDark;
                 text_search.Text = "Search";
+                this.friends_list.SetObjects(ListFriends.Get());
             }
         }
 
