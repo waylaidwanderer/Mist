@@ -415,7 +415,7 @@ namespace MistClient
             {
                 try
                 {
-                    Directory.CreateDirectory(LogDirectory); // try making the cache directory
+                    Directory.CreateDirectory(LogDirectory); // try making the log directory
                     Console.WriteLine("Creating log directory.");
                 }
                 catch (Exception ex)
