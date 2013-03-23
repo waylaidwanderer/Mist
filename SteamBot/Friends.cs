@@ -27,7 +27,6 @@ namespace MistClient
         private NotifyIcon trayIcon;
         private ContextMenu trayMenu;
         public byte[] AvatarHash { get; set; } // checking if update is necessary
-        SteamFriends SteamFriends;
         public static string mist_ver = "2.0.0";
         int form_friendsHeight;
         int form_friendreqHeight;
@@ -497,14 +496,13 @@ namespace MistClient
 
         private void steamRepToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // This is a beta feature of SteamRep. Mattie! has informed me that this feature shouldn't be depended on and may die in the future.
-            // Don't depend on this.
+            // This is a proxy for SteamRep's beta API. Not recommended for heavy/wide usage.
             try
             {
                 if (friends_list.SelectedItem.Text != null)
                 {
                     ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
-                    string url = "http://steamrep.com/api/beta/reputation/" + sid;
+                    string url = "http://api.steamrep.org/profiles/" + sid;
                     string response = Util.HTTPRequest(url);
                     if (response != "")
                     {
@@ -742,14 +740,13 @@ namespace MistClient
 
         private void steamRepStatusToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // This is a beta feature of SteamRep. Mattie! has informed me that this feature shouldn't be depended on and may die in the future.
-            // Don't depend on this.
+            // This is a proxy for SteamRep's beta API. Not recommended for heavy/wide usage.
             try
             {
                 if (list_friendreq.SelectedItem != null)
                 {
                     ulong sid = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
-                    string url = "http://steamrep.com/api/beta/reputation/" + sid;
+                    string url = "http://api.steamrep.org/profiles/" + sid;
                     string response = Util.HTTPRequest(url);
                     if (response != "")
                     {

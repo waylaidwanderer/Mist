@@ -185,7 +185,7 @@ namespace MistClient
             if (response != "")
             {
                 string latestVer = Util.ParseBetween(response, "<version>", "</version>");
-                if (Properties.Settings.Default.SkipUpdate && Properties.Settings.Default.SkippedVersion != latestVer)
+                if (Properties.Settings.Default.SkipUpdate && Properties.Settings.Default.SkippedVersion != latestVer.Trim())
                 {
                     Properties.Settings.Default.SkipUpdate = false;
                     Properties.Settings.Default.Save();
@@ -194,7 +194,7 @@ namespace MistClient
                     updater.ShowDialog();
                     updater.Activate();
                 }
-                else if (!Properties.Settings.Default.SkipUpdate && latestVer != Friends.mist_ver)
+                else if (!Properties.Settings.Default.SkipUpdate && latestVer.Trim() != Friends.mist_ver)
                 {
                     string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
                     Updater updater = new Updater(latestVer, changelog, log);
