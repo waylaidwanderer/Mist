@@ -27,7 +27,7 @@ namespace MistClient
         private NotifyIcon trayIcon;
         private ContextMenu trayMenu;
         public byte[] AvatarHash { get; set; } // checking if update is necessary
-        public static string mist_ver = "2.0.0";
+        public static string mist_ver = Application.ProductVersion.Remove(Application.ProductVersion.LastIndexOf('.'));
         int form_friendsHeight;
         int form_friendreqHeight;
         bool minimizeToTray = true;

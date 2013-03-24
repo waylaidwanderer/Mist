@@ -35,12 +35,15 @@
             this.column_defindex = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_url = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.LargeImageList = new System.Windows.Forms.ImageList(this.components);
+            this.column_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.SuspendLayout();
             // 
             // list_inventory
             // 
             this.list_inventory.AllColumns.Add(this.column_inventory);
+            this.list_inventory.AllColumns.Add(this.column_value);
             this.list_inventory.AllColumns.Add(this.column_defindex);
             this.list_inventory.AllColumns.Add(this.column_url);
             this.list_inventory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -52,7 +55,7 @@
             this.list_inventory.Location = new System.Drawing.Point(12, 12);
             this.list_inventory.MultiSelect = false;
             this.list_inventory.Name = "list_inventory";
-            this.list_inventory.Size = new System.Drawing.Size(335, 406);
+            this.list_inventory.Size = new System.Drawing.Size(335, 390);
             this.list_inventory.SmallImageList = this.LargeImageList;
             this.list_inventory.StateImageList = this.LargeImageList;
             this.list_inventory.TabIndex = 0;
@@ -65,7 +68,7 @@
             this.column_inventory.CellPadding = null;
             this.column_inventory.FillsFreeSpace = true;
             this.column_inventory.HeaderTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.column_inventory.Text = "Inventory";
+            this.column_inventory.Text = "Item";
             this.column_inventory.UseInitialLetterForGroup = true;
             // 
             // column_defindex
@@ -87,11 +90,34 @@
             this.LargeImageList.ImageSize = new System.Drawing.Size(64, 64);
             this.LargeImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // column_value
+            // 
+            this.column_value.AspectName = "ItemPrice";
+            this.column_value.CellPadding = null;
+            this.column_value.DisplayIndex = 1;
+            this.column_value.Groupable = false;
+            this.column_value.IsVisible = false;
+            this.column_value.Text = "Value";
+            this.column_value.Width = 90;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(242, 408);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(105, 17);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Text = "View item values";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // ShowBackpack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(359, 430);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.list_inventory);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ShowBackpack";
@@ -100,6 +126,7 @@
             this.Load += new System.EventHandler(this.ShowBackpack_Load);
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -110,5 +137,7 @@
         private BrightIdeasSoftware.OLVColumn column_inventory;
         private BrightIdeasSoftware.OLVColumn column_url;
         private BrightIdeasSoftware.OLVColumn column_defindex;
+        private BrightIdeasSoftware.OLVColumn column_value;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

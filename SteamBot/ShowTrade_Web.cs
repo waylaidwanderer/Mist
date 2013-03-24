@@ -38,12 +38,13 @@ namespace MistClient
 
         private void WriteNewDocument()
         {
-            var data = new NameValueCollection();
-            data.Add("sessionid", Trade.sessionIdEsc);
-            data.Add("logpos", "" + Trade.LogPos);
-            data.Add("version", "" + Trade.Version);
-            InternetSetCookie(trade_url, null, Trade.cookies.GetCookieHeader(new Uri(trade_url)) + "; expires = Sun, 01-Jan-2014 00:00:00 GMT");
-            webBrowser1.Navigate(trade_url, true);
+            string cookies = Trade.cookies.GetCookieHeader(new Uri(trade_url));
+            cookies += "; steamMachineAuth76561198065838051=" + SteamBot.Bot.MachineAuthData
+                + "; strInventoryLastContext=440_2; "
+            + "bCompletedTradeTutorial=true; strTradeLastInventoryContext=440_2";
+            Console.WriteLine(cookies);
+            InternetSetCookie(trade_url, null, cookies);
+            webBrowser1.Navigate(trade_url);
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

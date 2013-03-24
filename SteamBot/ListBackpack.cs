@@ -10,13 +10,15 @@ namespace MistClient
         string itemName;
         int defindex;
         string url;
+        string price;
         static List<ListBackpack> list = new List<ListBackpack>();
 
-        public ListBackpack(string itemName, int defindex, string url)
+        public ListBackpack(string itemName, int defindex, string url, string price)
         {
             this.itemName = itemName;
             this.defindex = defindex;
             this.url = url;
+            this.price = price;
         }
 
         public string ItemName
@@ -37,9 +39,15 @@ namespace MistClient
             set { }
         }
 
-        public static void Add(string itemName, int defindex, string url)
+        public string ItemPrice
         {
-            ListBackpack item = new ListBackpack(itemName, defindex, url);
+            get { return price; }
+            set { }
+        }
+
+        public static void Add(string itemName, int defindex, string url, string price = null)
+        {
+            ListBackpack item = new ListBackpack(itemName, defindex, url, price);
             list.Add(item);
         }
 

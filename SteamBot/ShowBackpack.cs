@@ -31,7 +31,7 @@ namespace MistClient
         }
 
         void LoadBP()
-        {
+        {            
             ListBackpack.Clear();
             bot.GetOtherInventory(SID);
             Inventory.Item[] inventory = bot.OtherInventory.Items;
@@ -52,14 +52,18 @@ namespace MistClient
             }));
             foreach (Inventory.Item item in inventory)
             {
+                bool isGift = false;
+                bool isUnusual = false;
                 var currentItem = Trade.CurrentSchema.GetItem(item.Defindex);
                 string name = "";
+                string price = null;
                 var type = Convert.ToInt32(item.Quality.ToString());
                 if (QualityToName(type) != "Unique")
                     name += QualityToName(type) + " ";
                 name += currentItem.ItemName;
                 if (QualityToName(type) == "Unusual")
                 {
+                    isUnusual = true;
                     try
                     {
                         for (int count = 0; count < item.Attributes.Length; count++)
@@ -67,6 +71,7 @@ namespace MistClient
                             if (item.Attributes[count].Defindex == 134)
                             {
                                 name += " (Effect: " + EffectToName(item.Attributes[count].FloatValue) + ")";
+                                price = GetPrice(item.Defindex, type, (int)item.Attributes[count].FloatValue);
                             }
                         }
                     }
@@ -105,11 +110,13 @@ namespace MistClient
                 }
                 if (currentItem.Name == "Wrapped Gift")
                 {
+                    isGift = true;
                     // Untested!
                     try
                     {
                         var containedItem = Trade.CurrentSchema.GetItem(item.ContainedItem.Defindex);
                         var containedName = GetItemName(containedItem, item.ContainedItem);
+                        price = GetPrice(item.ContainedItem.Defindex, Convert.ToInt32(item.ContainedItem.Quality.ToString()));
                         name += " (Contains: " + containedName + ")";
                     }
                     catch (Exception ex)
@@ -122,7 +129,15 @@ namespace MistClient
                     name += " (Uncraftable)";
                 if (item.IsNotTradeable)
                     name += " (Untradeable)";
-                ListBackpack.Add(name, item.Defindex, currentItem.ImageURL);
+                if (!isGift && !isUnusual)
+                {
+                    price = GetPrice(currentItem.Defindex, type);
+                    ListBackpack.Add(name, item.Defindex, currentItem.ImageURL, price);
+                }
+                else
+                {
+                    ListBackpack.Add(name, item.Defindex, currentItem.ImageURL, price);
+                }
                 list_inventory.SetObjects(ListBackpack.Get());
             }            
         }
@@ -426,6 +441,35 @@ namespace MistClient
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(myResponse.GetResponseStream());
             myResponse.Close();
             return bmp;
+        }
+
+        string GetPrice(int defindex, int quality, int attribute = 0)
+        {
+            BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
+            try
+            {
+                return BackpackTF.CurrentSchema.Response.Prices[defindex][quality][attribute].Value.ToString() + " ref";
+            }
+            catch
+            {
+                return "Unknown";
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                list_inventory.View = View.Details;
+                column_value.IsVisible = true;
+                list_inventory.RebuildColumns();
+            }
+            else
+            {
+                list_inventory.View = View.Tile;
+                column_value.IsVisible = false;
+                list_inventory.RebuildColumns();
+            }
         }
     }
 }

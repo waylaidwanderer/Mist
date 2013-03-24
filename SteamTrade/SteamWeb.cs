@@ -32,7 +32,8 @@ namespace SteamTrade
             request.Host = "steamcommunity.com";
             request.UserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11";
             request.Referer = "http://steamcommunity.com/trade/1";
-
+            request.AllowAutoRedirect = true;
+            request.MaximumAutomaticRedirections = request.MaximumAutomaticRedirections * 2;
             if (ajax)
             {
                 request.Headers.Add ("X-Requested-With", "XMLHttpRequest");

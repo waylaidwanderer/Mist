@@ -88,6 +88,8 @@ namespace SteamBot
 
         Friends showFriends;
 
+        public static string MachineAuthData;
+
         public Bot(Configuration.BotInfo config, Log log, string apiKey, UserHandlerCreator handlerCreator, Login _login, bool debug = false)
         {
             this.main = _login;
@@ -788,6 +790,14 @@ namespace SteamBot
         void OnUpdateMachineAuthCallback (SteamUser.UpdateMachineAuthCallback machineAuth, JobID jobId)
         {
             byte[] hash = SHAHash (machineAuth.Data);
+
+            StringBuilder sb = new StringBuilder();
+            for (int count = 0; count < hash.Length; count++)
+            {
+                sb.Append(hash[count]);
+            }
+
+            MachineAuthData = sb.ToString();
 
             File.WriteAllBytes (String.Format ("{0}.sentryfile", logOnDetails.Username), machineAuth.Data);
             

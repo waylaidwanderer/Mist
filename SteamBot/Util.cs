@@ -34,6 +34,27 @@ namespace MistClient
             return result;
         }
 
+        public static HttpWebResponse Fetch(string url)
+        {
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.Method = "POST";
+            HttpWebResponse response;
+            for (int count = 0; count < 10; count++)
+            {
+                try
+                {
+                    response = request.GetResponse() as HttpWebResponse;
+                    return response;
+                }
+                catch
+                {
+                    System.Threading.Thread.Sleep(100);
+                    Console.WriteLine("retry");
+                }
+            }
+            return null;
+        }
+
         public static string ParseBetween(string Subject, string Start, string End)
         {
             return Regex.Match(Subject, Regex.Replace(Start, @"[][{}()*+?.\\^$|]", @"\$0") + @"\s*(((?!" + Regex.Replace(Start, @"[][{}()*+?.\\^$|]", @"\$0") + @"|" + Regex.Replace(End, @"[][{}()*+?.\\^$|]", @"\$0") + @").)+)\s*" + Regex.Replace(End, @"[][{}()*+?.\\^$|]", @"\$0"), RegexOptions.IgnoreCase).Value.Replace(Start, "").Replace(End, "");
