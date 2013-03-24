@@ -146,37 +146,37 @@ namespace SteamBot
                         tab.Invoke((Action)(() =>
                         {
                             if (message == "had asked to trade with you, but has cancelled their request.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n", true);
                             if (message == "Lost connection to Steam. Reconnecting as soon as possible...")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message);
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message, false);
                             if (message == "has declined your trade request.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n", true);
                             if (message == "An error has occurred in sending the trade request.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "You are already in a trade so you cannot trade someone else.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "You cannot trade the other user because they are already in trade with someone else.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "did not respond to the trade request.")
                             {
                                 if (Friends.chat.chatTab.otherSentTrade)
                                 {
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " had asked to trade with you, but you did not respond in time." + "\r\n");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " had asked to trade with you, but you did not respond in time." + "\r\n", true);
                                     Friends.chat.chatTab.otherSentTrade = false;
                                 }
                                 else
                                 {
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n", true);
                                 }
                             }
                             if (message == "It is too soon to send a new trade request. Try again later.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "You are trade-banned and cannot trade.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "You cannot trade with this person because they are trade-banned.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "Trade failed to initialize because either you or the user are not logged in.")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n");
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             Friends.chat.chatTab.TradeButtonMode(1);
                         }));
                         return;
@@ -383,14 +383,14 @@ namespace SteamBot
                     {
                         Friends.chat.Invoke((Action)(() =>
                         {
-                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n");
+                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n", true);
                         }));
                     }
                     else
                     {
                         Friends.chat.Invoke((Action)(() =>
                         {
-                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error + "\r\n");
+                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error + "\r\n", true);
                         }));
                     }
                 }
@@ -417,14 +417,14 @@ namespace SteamBot
                                 {
                                     Friends.chat.Invoke((Action)(() =>
                                     {
-                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.");
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.", true);
                                     }));
                                 }
                                 else
                                 {
                                     Friends.chat.Invoke((Action)(() =>
                                     {
-                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error);
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error, true);
                                     }));
                                 }
                                 found = true;
@@ -441,14 +441,14 @@ namespace SteamBot
                             {
                                 Friends.chat.Invoke((Action)(() =>
                                 {
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n", true);
                                 }));
                             }
                             else
                             {
                                 Friends.chat.Invoke((Action)(() =>
                                 {
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error + "\r\n");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] Error: " + error + "\r\n", true);
                                 }));
                             }
                         }
@@ -488,7 +488,7 @@ namespace SteamBot
                 Friends.chat.Invoke((Action)(() =>
                 {
                     Friends.chat.chatTab.TradeButtonMode(1);
-                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has expired.\r\n");
+                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has expired.\r\n", false);
                 }));
             }));
         }
@@ -511,7 +511,7 @@ namespace SteamBot
             Friends.chat.Invoke((Action)(() =>
             {
                 Friends.chat.chatTab.UpdateButton("Currently in Trade");
-                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " has accepted your trade request.\r\n");
+                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " has accepted your trade request.\r\n", false);
             }));
             ShowTrade.loading = true;
             Bot.main.Invoke((Action)(() =>

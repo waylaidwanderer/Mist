@@ -197,6 +197,11 @@ namespace MistClient
                 avatarBox.Image = ComposeAvatar(null);
             }
             bot.LoadFriends();
+            if (Application.OpenForms.Count < 1)
+            {
+                this.Show();
+                this.Activate();
+            }
             friends_list.SetObjects(ListFriends.Get());
             Console.WriteLine("Friends list refreshed.");
         }

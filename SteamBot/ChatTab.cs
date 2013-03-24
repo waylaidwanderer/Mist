@@ -24,6 +24,7 @@ namespace MistClient
         public byte[] AvatarHash { get; set; } // checking if update is necessary
         public Chat Chat;
         public TabPage tab;
+        string prevStatus;
         bool inGame = false;
 
         public ChatTab(Chat chat, Bot bot, ulong sid)
@@ -33,7 +34,7 @@ namespace MistClient
             this.sid = sid;
             this.bot = bot;
             this.steam_name.Text = bot.SteamFriends.GetFriendPersonaName(sid);
-            this.steam_status.Text = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
+            this.steam_status.Text = prevStatus = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
             this.chat_status.Text = "";
             SteamKit2.SteamID SteamID = sid;
             byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(SteamID);
@@ -258,14 +259,14 @@ namespace MistClient
             }
         }
 
-        public void UpdateChat(string text)
+        public void UpdateChat(string text, bool notify)
         {
             // If the current thread is not the UI thread, InvokeRequired will be true
             if (text_log.InvokeRequired)
             {
                 // If so, call Invoke, passing it a lambda expression which calls
                 // UpdateText with the same label and text, but on the UI thread instead.
-                text_log.Invoke((Action)(() => UpdateChat(text)));
+                text_log.Invoke((Action)(() => UpdateChat(text, notify)));
                 return;
             }
             // If we're running on the UI thread, we'll get here, and can safely update 
@@ -273,24 +274,27 @@ namespace MistClient
             text_log.AppendText(text);
             text_log.ScrollToCaret();            
             AppendLog(text);
-            Chat.Flash();
-            if (!Chat.hasFocus)
+            if (notify)
             {
-                try
-                {
-                    string soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
-                    string soundFile = Path.Combine(soundsFolder + "message.wav");
-                    using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile))
-                    {
-                        player.Play();
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
                 Chat.Flash();
+                if (!Chat.hasFocus)
+                {
+                    try
+                    {
+                        string soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
+                        string soundFile = Path.Combine(soundsFolder + "message.wav");
+                        using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile))
+                        {
+                            player.Play();
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    Chat.Flash();
+                }
             }
         }
 
@@ -318,10 +322,11 @@ namespace MistClient
                 string date = "[" + DateTime.Now + "] ";
                 string name = Bot.displayName + ": ";
                 text_log.AppendText(date + name);
-                text_log.SelectionColor = prevColor;
+                text_log.SelectionColor = Color.DimGray;
                 string message = text_input.Text + "\r\n";
                 text_log.AppendText(message);
                 text_log.ScrollToCaret();
+                text_log.SelectionColor = prevColor;
                 AppendLog(date + name + message);
                 clear();
             }
@@ -345,10 +350,11 @@ namespace MistClient
                     string date = "[" + DateTime.Now + "] ";
                     string name = Bot.displayName + ": ";
                     text_log.AppendText(date + name);
-                    text_log.SelectionColor = prevColor;
+                    text_log.SelectionColor = Color.DimGray;
                     string message = text_input.Text + "\r\n";
                     text_log.AppendText(message);
                     text_log.ScrollToCaret();
+                    text_log.SelectionColor = prevColor;
                     AppendLog(date + name + message);
                     clear();
                 }
@@ -378,7 +384,7 @@ namespace MistClient
                     bot.SteamTrade.Trade(sid);
                     tradeMode = 2;
                     button_trade.Text = "Cancel Trade Request";
-                    UpdateChat("[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request.\r\n");
+                    UpdateChat("[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request.\r\n", false);
                     break;
                 case 2: // User sent trade request - "Cancel trade request"
                     bot.SteamTrade.CancelTrade(sid);
@@ -465,6 +471,7 @@ namespace MistClient
         private void ChatTab_Load(object sender, EventArgs e)
         {
             checkrep.RunWorkerAsync();
+            status_update.RunWorkerAsync();
         }
 
         private void steam_name_Click(object sender, EventArgs e)
@@ -523,7 +530,7 @@ namespace MistClient
                                 if (status == "")
                                 {
                                     // No special rep
-                                    UpdateSRCache(sid.ToString(), "None");
+                                    UpdateSRCache(sid.ToString(), "None");                                    
                                 }
                                 else
                                 {
@@ -594,6 +601,39 @@ namespace MistClient
         private void text_log_Click(object sender, EventArgs e)
         {
             this.steam_name_Click(sender, e);
+        }
+
+        private void status_update_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                this.steam_name.Text = bot.SteamFriends.GetFriendPersonaName(sid);
+                this.steam_status.Text = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
+                SteamKit2.SteamID SteamID = sid;
+                byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(SteamID);
+                bool validHash = avatarHash != null && !IsZeros(avatarHash);
+
+                if ((AvatarHash == null && !validHash && avatarBox.Image != null) || (AvatarHash != null && AvatarHash.SequenceEqual(avatarHash)))
+                {
+                    // avatar is already up to date, no operations necessary
+                }
+                else if (validHash)
+                {
+                    AvatarHash = avatarHash;
+                    CDNCache.DownloadAvatar(SteamID, avatarHash, AvatarDownloaded);
+                }
+                else
+                {
+                    AvatarHash = null;
+                    avatarBox.Image = ComposeAvatar(null);
+                }
+                if (this.steam_status.Text != prevStatus)
+                {
+                    UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n", false);
+                    prevStatus = this.steam_status.Text;
+                }
+                System.Threading.Thread.Sleep(1000);
+            }
         }
     }
 }

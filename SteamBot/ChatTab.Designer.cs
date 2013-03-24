@@ -42,6 +42,7 @@
             this.avatarBox = new System.Windows.Forms.PictureBox();
             this.checkrep = new System.ComponentModel.BackgroundWorker();
             this.text_log = new System.Windows.Forms.RichTextBox();
+            this.status_update = new System.ComponentModel.BackgroundWorker();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -172,6 +173,10 @@
             this.text_log.Click += new System.EventHandler(this.text_log_Click);
             this.text_log.DoubleClick += new System.EventHandler(this.text_log_DoubleClick);
             // 
+            // status_update
+            // 
+            this.status_update.DoWork += new System.ComponentModel.DoWorkEventHandler(this.status_update_DoWork);
+            // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -212,6 +217,7 @@
         private System.Windows.Forms.ToolStripMenuItem viewProfileToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker checkrep;
         private System.Windows.Forms.RichTextBox text_log;
+        private System.ComponentModel.BackgroundWorker status_update;
 
     }
 }

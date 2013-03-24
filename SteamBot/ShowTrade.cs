@@ -56,7 +56,7 @@ namespace MistClient
                                             string result = "The trade session has closed.";
                                             bot.log.Warn(result);
                                             string date = "[" + DateTime.Now + "] ";
-                                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
+                                            Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
                                         }));
                                         break; ;
                                     }
@@ -210,13 +210,13 @@ namespace MistClient
                                 {
                                     string result = String.Format("Trade completed with {0}.", bot.SteamFriends.GetFriendPersonaName(sid));
                                     bot.log.Success(result);
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
                                 }
                                 else
                                 {
                                     string result = "The trade may have failed.";
                                     bot.log.Warn(result);
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n");
+                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
                                 }
                             }));
                             break; ;
