@@ -530,19 +530,92 @@ namespace MistClient
                                 if (status == "")
                                 {
                                     // No special rep
-                                    UpdateSRCache(sid.ToString(), "None");                                    
+                                    UpdateSRCache(sid.ToString(), "None");
+                                    string date = "[" + DateTime.Now + "] ";
+                                    Color prevColor = text_log.SelectionColor;
+                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.AppendText(date);
+                                    text_log.SelectionColor = prevColor;
+                                    string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
+                                    text_log.AppendText(message);
                                 }
                                 else
                                 {
                                     // Special rep
                                     UpdateSRCache(sid.ToString(), status);
+                                    if (status.Contains("SCAMMER"))
+                                    {
+                                        string date = "[" + DateTime.Now + "] ";
+                                        Color prevColor = text_log.SelectionColor;
+                                        text_log.SelectionColor = Color.DimGray;
+                                        text_log.AppendText(date);
+                                        text_log.SelectionColor = Color.Red;
+                                        string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
+                                            + status + ". Be careful!\r\n";
+                                        text_log.AppendText(message);
+                                        text_log.SelectionColor = prevColor;
+                                    }
+                                    else
+                                    {
+                                        string date = "[" + DateTime.Now + "] ";
+                                        Color prevColor = text_log.SelectionColor;
+                                        text_log.SelectionColor = Color.DimGray;
+                                        text_log.AppendText(date);
+                                        text_log.SelectionColor = Color.Green;
+                                        string message = "[SteamRep] This user has special reputation, with tags: "
+                                            + status + ".\r\n";
+                                        text_log.AppendText(message);
+                                        text_log.SelectionColor = prevColor;
+                                    }
                                 }
                             }
                         }
                         else
                         {
                             string result = Util.ParseBetween(line, "Rep:", ";");
-                            Console.WriteLine(result);
+                            if (result == "None")
+                            {
+                                this.Invoke((Action)(() =>
+                                {
+                                    string date = "[" + DateTime.Now + "] ";
+                                    Color prevColor = text_log.SelectionColor;
+                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.AppendText(date);
+                                    text_log.SelectionColor = prevColor;
+                                    string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
+                                    text_log.AppendText(message);
+                                }));
+                            }
+                            else if (result.Contains("SCAMMER"))
+                            {
+                                this.Invoke((Action)(() =>
+                                {
+                                    string date = "[" + DateTime.Now + "] ";
+                                    Color prevColor = text_log.SelectionColor;
+                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.AppendText(date);
+                                    text_log.SelectionColor = Color.Red;
+                                    string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
+                                        + result + ". Be careful!\r\n";
+                                    text_log.AppendText(message);
+                                    text_log.SelectionColor = prevColor;
+                                }));
+                            }
+                            else
+                            {
+                                this.Invoke((Action)(() =>
+                                {
+                                    string date = "[" + DateTime.Now + "] ";
+                                    Color prevColor = text_log.SelectionColor;
+                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.AppendText(date);
+                                    text_log.SelectionColor = Color.Green;
+                                    string message = "[SteamRep] This user has special reputation, with tags: "
+                                        + result + ".\r\n";
+                                    text_log.AppendText(message);
+                                    text_log.SelectionColor = prevColor;
+                                }));
+                            }
                         }
                         break;
                     }
@@ -561,12 +634,52 @@ namespace MistClient
                             status = "None";
                             string add = "SteamID:" + sid + ";Rep:" + status + ";Date:" + DateTime.Now + ".\r\n";
                             File.AppendAllText(file, add);
+                            this.Invoke((Action)(() =>
+                            {
+                                string date = "[" + DateTime.Now + "] ";
+                                Color prevColor = text_log.SelectionColor;
+                                text_log.SelectionColor = Color.DimGray;
+                                text_log.AppendText(date);
+                                text_log.SelectionColor = prevColor;
+                                string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
+                                text_log.AppendText(message);
+                            }));
                         }
                         else
                         {
                             // Special rep
                             string add = "SteamID:" + sid + ";Rep:" + status + ";Date:" + DateTime.Now + ".\r\n";
                             File.AppendAllText(file, add);
+                            if (status.Contains("SCAMMER"))
+                            {
+                                this.Invoke((Action)(() =>
+                                {
+                                    string date = "[" + DateTime.Now + "] ";
+                                    Color prevColor = text_log.SelectionColor;
+                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.AppendText(date);
+                                    text_log.SelectionColor = Color.Red;
+                                    string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
+                                        + status + ". Be careful!\r\n";
+                                    text_log.AppendText(message);
+                                    text_log.SelectionColor = prevColor;
+                                }));
+                            }
+                            else
+                            {
+                                this.Invoke((Action)(() =>
+                                {
+                                    string date = "[" + DateTime.Now + "] ";
+                                    Color prevColor = text_log.SelectionColor;
+                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.AppendText(date);
+                                    text_log.SelectionColor = Color.Green;
+                                    string message = "[SteamRep] This user has special reputation, with tags: "
+                                        + status + ".\r\n";
+                                    text_log.AppendText(message);
+                                    text_log.SelectionColor = prevColor;
+                                }));
+                            }
                         }
                     }                    
                 }
