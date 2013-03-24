@@ -199,8 +199,9 @@ namespace MistClient
             bot.LoadFriends();
             if (Application.OpenForms.Count < 1)
             {
-                this.Show();
-                this.Activate();
+                Friends friends = new Friends(bot, steam_name.Text);
+                friends.Show();
+                friends.Activate();
             }
             friends_list.SetObjects(ListFriends.Get());
             Console.WriteLine("Friends list refreshed.");
@@ -428,43 +429,46 @@ namespace MistClient
         {
             bot.main.Invoke((Action)(() =>
             {
-                ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
-                string selected = bot.SteamFriends.GetFriendPersonaName(sid);
-                if (!chat_opened)
+                if (friends_list.SelectedItem != null)
                 {
-                    chat = new Chat(bot);
-                    chat.AddChat(selected, sid);
-                    chat.Show();
-                    chat.Focus();
-                    chat_opened = true;
-                    chat.chatTab.tradeClicked();
-                }
-                else
-                {
-                    bool found = false;
-                    foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+                    ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                    string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                    if (!chat_opened)
                     {
-                        if (tab.Text == selected)
-                        {
-                            found = true;
-                            tab.Invoke((Action)(() =>
-                            {
-                                foreach (var item in tab.Controls)
-                                {
-                                    chat.chatTab = (ChatTab) item;
-                                    chat.chatTab.tradeClicked();
-                                }
-                            }));
-                            return;
-                        }
-                    }
-                    if (!found)
-                    {
+                        chat = new Chat(bot);
                         chat.AddChat(selected, sid);
+                        chat.Show();
                         chat.Focus();
+                        chat_opened = true;
                         chat.chatTab.tradeClicked();
                     }
-                }                
+                    else
+                    {
+                        bool found = false;
+                        foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+                        {
+                            if (tab.Text == selected)
+                            {
+                                found = true;
+                                tab.Invoke((Action)(() =>
+                                {
+                                    foreach (var item in tab.Controls)
+                                    {
+                                        chat.chatTab = (ChatTab)item;
+                                        chat.chatTab.tradeClicked();
+                                    }
+                                }));
+                                return;
+                            }
+                        }
+                        if (!found)
+                        {
+                            chat.AddChat(selected, sid);
+                            chat.Focus();
+                            chat.chatTab.tradeClicked();
+                        }
+                    }
+                }
             }));
         }
 

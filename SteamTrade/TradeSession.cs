@@ -20,9 +20,9 @@ namespace SteamTrade
         public static CookieContainer cookies;
         public static string browser_data;
 
-        internal int LogPos { get; set; }
+        public static int LogPos { get; set; }
 
-        internal int Version { get; set; }
+        public static int Version { get; set; }
 
         StatusObj GetStatus ()
         {

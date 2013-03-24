@@ -28,32 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.extendedWebBrowser1 = new MistClient.ExtendedWebBrowser();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
-            // extendedWebBrowser1
+            // webBrowser1
             // 
-            this.extendedWebBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extendedWebBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.extendedWebBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.extendedWebBrowser1.Name = "extendedWebBrowser1";
-            this.extendedWebBrowser1.Size = new System.Drawing.Size(533, 460);
-            this.extendedWebBrowser1.TabIndex = 0;
-            this.extendedWebBrowser1.UserAgent = null;
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.ScriptErrorsSuppressed = true;
+            this.webBrowser1.Size = new System.Drawing.Size(533, 460);
+            this.webBrowser1.TabIndex = 0;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // ShowTrade_Web
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 460);
-            this.Controls.Add(this.extendedWebBrowser1);
+            this.Controls.Add(this.webBrowser1);
             this.Name = "ShowTrade_Web";
             this.Text = "ShowTrade_Web";
+            this.Load += new System.EventHandler(this.ShowTrade_Web_Load);
             this.ResumeLayout(false);
 
         }
         #endregion
 
-        private ExtendedWebBrowser extendedWebBrowser1;
+        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+
+
     }
 }

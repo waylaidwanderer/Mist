@@ -417,7 +417,7 @@ namespace SteamBot
                                 {
                                     Friends.chat.Invoke((Action)(() =>
                                     {
-                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.", true);
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has been cancelled.\r\n", true);
                                     }));
                                 }
                                 else
@@ -495,7 +495,6 @@ namespace SteamBot
 
         public override void OnTradeInit()
         {
-            
             ShowTrade.itemsAdded = 0;
             Bot.log.Success("Trade successfully initialized.");
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
@@ -519,6 +518,11 @@ namespace SteamBot
                 ShowTrade.ClearAll();
             }));
             TradeCountInventory();
+            Bot.main.Invoke((Action)(() =>
+            {
+                ShowTrade_Web test = new ShowTrade_Web();
+                test.Show();
+            }));
         }
 
         public override void OnTradeClose()

@@ -14,6 +14,8 @@ using System.Web;
 using System.Collections.Specialized;
 using System.Threading;
 using System.IO;
+using Awesomium.Core;
+using Awesomium.Windows.Forms;
 
 namespace MistClient
 {
@@ -21,12 +23,32 @@ namespace MistClient
     {
         string trade_url = SteamTrade.Trade.baseTradeURL;
 
-        public ShowTrade_Web(SteamID OtherSID)
+        public ShowTrade_Web()
         {
             InitializeComponent();
-            
-            extendedWebBrowser1.UserAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11";
-            extendedWebBrowser1.Navigate(trade_url, null, null, "Cookies: " + Trade.cookies.GetCookieHeader(new Uri(trade_url)) + Environment.NewLine);
+        }
+
+        private void ShowTrade_Web_Load(object sender, EventArgs e)
+        {
+            backgroundWorker1.RunWorkerAsync();
+        }
+
+        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern bool InternetSetCookie(string lpszUrlName, string lpszCookieName, string lpszCookieData);
+
+        private void WriteNewDocument()
+        {
+            var data = new NameValueCollection();
+            data.Add("sessionid", Trade.sessionIdEsc);
+            data.Add("logpos", "" + Trade.LogPos);
+            data.Add("version", "" + Trade.Version);
+            InternetSetCookie(trade_url, null, Trade.cookies.GetCookieHeader(new Uri(trade_url)) + "; expires = Sun, 01-Jan-2014 00:00:00 GMT");
+            webBrowser1.Navigate(trade_url, true);
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            WriteNewDocument();
         }
     }
 }
