@@ -134,6 +134,10 @@ namespace MistClient
 
         private void text_input_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (e.KeyChar == 1)
+            {
+                text_input.SelectAll();
+            }
             if (e.KeyChar == (char)Keys.Enter)
             {
                 if (text_input.Text != "")
