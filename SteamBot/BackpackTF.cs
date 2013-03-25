@@ -22,12 +22,21 @@ namespace MistClient
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = null;
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch
+            {
+
+            }
 
             DateTime SchemaLastRequested = response.LastModified;
             TimeSpan difference = DateTime.Now - System.IO.File.GetCreationTime(cachefile);
 
-            if (!System.IO.File.Exists(cachefile) || (difference.TotalMinutes > 5))
+            if (!System.IO.File.Exists(cachefile) || ((difference.TotalMinutes > 5) && response != null))
             {
                 using (StreamReader sr = new StreamReader(response.GetResponseStream()))
                 {

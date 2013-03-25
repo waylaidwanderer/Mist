@@ -59,8 +59,6 @@ namespace SteamBot
             Configuration config = new Configuration();
             Configuration.BotInfo info = new Configuration.BotInfo();
             info.BotControlClass = "SteamBot.SimpleUserHandler";
-            login.Show();
-            login.Activate();    
             new Thread(() =>
             {
                 while (!Login.LoginClicked)
@@ -88,6 +86,8 @@ namespace SteamBot
             try
             {
                 Application.Run(login);
+                login.Show();
+                login.Activate();   
             }
             catch
             {

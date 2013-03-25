@@ -62,7 +62,6 @@ namespace MistClient
 
         public static string GetPrice(int defindex, int quality, SteamTrade.Inventory.Item inventoryItem, bool gifted = false, int attribute = 0)
         {
-            BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
             try
             {
                 double value = BackpackTF.CurrentSchema.Response.Prices[defindex][quality][attribute].Value;

@@ -48,6 +48,9 @@
             this.check_userready = new System.Windows.Forms.CheckBox();
             this.check_otherready = new System.Windows.Forms.CheckBox();
             this.text_log = new System.Windows.Forms.RichTextBox();
+            this.column_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_uo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_oo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
@@ -57,12 +60,14 @@
             // list_inventory
             // 
             this.list_inventory.AllColumns.Add(this.column_inventory);
+            this.list_inventory.AllColumns.Add(this.column_value);
             this.list_inventory.AllColumns.Add(this.column_id);
             this.list_inventory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.list_inventory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_inventory});
+            this.column_inventory,
+            this.column_value});
             this.list_inventory.ContextMenuStrip = this.contextMenuStrip1;
             this.list_inventory.Location = new System.Drawing.Point(14, 15);
             this.list_inventory.Name = "list_inventory";
@@ -107,9 +112,11 @@
             // 
             this.list_userofferings.AllColumns.Add(this.column_userofferings);
             this.list_userofferings.AllColumns.Add(this.column_uo_id);
+            this.list_userofferings.AllColumns.Add(this.column_uo_value);
             this.list_userofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_userofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_userofferings});
+            this.column_userofferings,
+            this.column_uo_value});
             this.list_userofferings.Location = new System.Drawing.Point(369, 15);
             this.list_userofferings.Name = "list_userofferings";
             this.list_userofferings.Size = new System.Drawing.Size(248, 145);
@@ -189,9 +196,11 @@
             // 
             this.list_otherofferings.AllColumns.Add(this.column_otherofferings);
             this.list_otherofferings.AllColumns.Add(this.column_oo_id);
+            this.list_otherofferings.AllColumns.Add(this.column_oo_value);
             this.list_otherofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_otherofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_otherofferings});
+            this.column_otherofferings,
+            this.column_oo_value});
             this.list_otherofferings.Location = new System.Drawing.Point(369, 188);
             this.list_otherofferings.Name = "list_otherofferings";
             this.list_otherofferings.Size = new System.Drawing.Size(248, 145);
@@ -249,6 +258,25 @@
             this.text_log.TabIndex = 14;
             this.text_log.Text = "";
             // 
+            // column_value
+            // 
+            this.column_value.AspectName = "ItemPrice";
+            this.column_value.CellPadding = null;
+            this.column_value.Text = "Value";
+            this.column_value.Width = 90;
+            // 
+            // column_uo_value
+            // 
+            this.column_uo_value.AspectName = "ItemPrice";
+            this.column_uo_value.CellPadding = null;
+            this.column_uo_value.Text = "Value";
+            // 
+            // column_oo_value
+            // 
+            this.column_oo_value.AspectName = "ItemPrice";
+            this.column_oo_value.CellPadding = null;
+            this.column_oo_value.Text = "Value";
+            // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -302,5 +330,8 @@
         public System.Windows.Forms.CheckBox check_userready;
         public System.Windows.Forms.Button button_accept;
         private System.Windows.Forms.RichTextBox text_log;
+        private BrightIdeasSoftware.OLVColumn column_value;
+        private BrightIdeasSoftware.OLVColumn column_uo_value;
+        private BrightIdeasSoftware.OLVColumn column_oo_value;
     }
 }

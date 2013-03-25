@@ -9,14 +9,15 @@ namespace MistClient
     {
         string itemName;
         ulong itemID;
-        public static ShowTrade ShowTrade;
+        string price;
 
         static List<ListUserOfferings> list = new List<ListUserOfferings>();
 
-        public ListUserOfferings(string itemName, ulong itemID)
+        public ListUserOfferings(string itemName, ulong itemID, string price)
         {
             this.itemName = itemName;
             this.itemID = itemID;
+            this.price = price;
         }
 
         public string ItemName
@@ -31,9 +32,15 @@ namespace MistClient
             set { itemID = value; }
         }
 
-        public static void Add(string itemName, ulong itemID)
+        public string ItemPrice
         {
-            ListUserOfferings item = new ListUserOfferings(itemName, itemID);
+            get { return price; }
+            set { }
+        }
+
+        public static void Add(string itemName, ulong itemID, string price = null)
+        {
+            ListUserOfferings item = new ListUserOfferings(itemName, itemID, price);
             list.Add(item);
         }
 

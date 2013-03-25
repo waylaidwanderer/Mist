@@ -558,6 +558,7 @@ namespace SteamBot
                 ShowTrade = new ShowTrade(Bot, Bot.SteamFriends.GetFriendPersonaName(OtherSID));
                 ShowTrade.Show();
             }));
+            BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
             // Let's count our inventory
             Thread loadInventory = new Thread(() =>
             {   
@@ -640,7 +641,8 @@ namespace SteamBot
                                 // Guess this doesn't work :P.
                             }
                         }
-                        ListInventory.Add(name, item.Id, currentItem.ImageURL);
+                        string price = Util.GetPrice(item.Defindex, currentItem.ItemQuality, item);
+                        ListInventory.Add(name, item.Id, currentItem.ImageURL, price);
                     }
                 }
                 try
@@ -750,7 +752,8 @@ namespace SteamBot
             {
                 string completeName = GetItemName(schemaItem, inventoryItem);
                 ulong itemID = inventoryItem.Id;
-                ListOtherOfferings.Add(completeName, itemID);
+                string price = Util.GetPrice(schemaItem.Defindex, schemaItem.ItemQuality, inventoryItem);
+                ListOtherOfferings.Add(completeName, itemID, price);
                 ShowTrade.list_otherofferings.SetObjects(ListOtherOfferings.Get());
                 ShowTrade.itemsAdded++;
                 if (ShowTrade.itemsAdded > 0)
