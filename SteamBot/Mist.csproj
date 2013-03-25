@@ -115,6 +115,12 @@
     <Compile Include="Chat.Designer.cs">
       <DependentUpon>Chat.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChatLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChatLog.Designer.cs">
+      <DependentUpon>ChatLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChatTab.cs">
       <SubType>UserControl</SubType>
       <CustomToolNamespace>ChatTab</CustomToolNamespace>
@@ -208,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Chat.resx">
       <DependentUpon>Chat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChatLog.resx">
+      <DependentUpon>ChatLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ChatTab.resx">
       <DependentUpon>ChatTab.cs</DependentUpon>
