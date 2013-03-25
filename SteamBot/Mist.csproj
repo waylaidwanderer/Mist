@@ -67,10 +67,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Bin\Debug\lib\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="SteamKit2, Version=1.3.0.22755, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\Debug\lib\SteamKit2.dll</HintPath>
-    </Reference>
     <Reference Include="SteamTrade, Version=0.1.0.22754, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Bin\Debug\lib\SteamTrade.dll</HintPath>
@@ -307,6 +303,10 @@
     <ProjectReference Include="..\Lib\ObjectListView\ObjectListView2010.csproj">
       <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
       <Name>ObjectListView2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\SteamKit2\SteamKit2\SteamKit2.csproj">
+      <Project>{beb5bf07-bb56-402a-97a3-a41c6444c6a5}</Project>
+      <Name>SteamKit2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lib\ToastNotifications\ToastNotifications.csproj">
       <Project>{380d8d88-386c-4c50-9a54-800f79fdf7d2}</Project>
