@@ -211,18 +211,10 @@ namespace MistClient
         {
             bot.main.Invoke((Action)(() =>
             {
-                string selected = "";
-                try
+                if (friends_list.SelectedItem != null)
                 {
-                    selected = friends_list.SelectedItem.Text;
-                }
-                catch
-                {
-                    selected = null;
-                }
-                if (selected != null)
-                {
-                    ulong sid = ListFriends.GetSID(selected);
+                    ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                    string selected = bot.SteamFriends.GetFriendPersonaName(sid);
                     if (!chat_opened)
                     {
                         chat = new Chat(bot);

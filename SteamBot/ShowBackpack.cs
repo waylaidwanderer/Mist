@@ -71,7 +71,7 @@ namespace MistClient
                             if (item.Attributes[count].Defindex == 134)
                             {
                                 name += " (Effect: " + EffectToName(item.Attributes[count].FloatValue) + ")";
-                                price = GetPrice(item.Defindex, type, (int)item.Attributes[count].FloatValue);
+                                price = Util.GetPrice(item.Defindex, type, item, false, (int)item.Attributes[count].FloatValue);
                             }
                         }
                     }
@@ -116,7 +116,7 @@ namespace MistClient
                     {
                         var containedItem = Trade.CurrentSchema.GetItem(item.ContainedItem.Defindex);
                         var containedName = GetItemName(containedItem, item.ContainedItem);
-                        price = GetPrice(item.ContainedItem.Defindex, Convert.ToInt32(item.ContainedItem.Quality.ToString()));
+                        price = Util.GetPrice(item.ContainedItem.Defindex, Convert.ToInt32(item.ContainedItem.Quality.ToString()), item, true);
                         name += " (Contains: " + containedName + ")";
                     }
                     catch (Exception ex)
@@ -131,7 +131,7 @@ namespace MistClient
                     name += " (Untradeable)";
                 if (!isGift && !isUnusual)
                 {
-                    price = GetPrice(currentItem.Defindex, type);
+                    price = Util.GetPrice(currentItem.Defindex, type, item);
                     ListBackpack.Add(name, item.Defindex, currentItem.ImageURL, price);
                 }
                 else
@@ -373,6 +373,12 @@ namespace MistClient
 
         private void ShowBackpack_Load(object sender, EventArgs e)
         {
+            ToolTip priceTip = new ToolTip();
+            priceTip.ToolTipIcon = ToolTipIcon.Info;
+            priceTip.IsBalloon = true;
+            priceTip.ShowAlways = true;
+            priceTip.ToolTipTitle = "Item prices are from backpack.tf";
+            priceTip.SetToolTip(checkBox1, "What the price checker doesn't do:\n-Factor in the cost of paint\n-Factor in the cost of strange parts\n-Calculate values of low craft numbers\nPrices are not guaranteed to be accurate.");
             this.Invoke((Action)(() =>
             {
                 loadBP = new Thread(LoadBP);
@@ -441,19 +447,6 @@ namespace MistClient
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(myResponse.GetResponseStream());
             myResponse.Close();
             return bmp;
-        }
-
-        string GetPrice(int defindex, int quality, int attribute = 0)
-        {
-            BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
-            try
-            {
-                return BackpackTF.CurrentSchema.Response.Prices[defindex][quality][attribute].Value.ToString() + " ref";
-            }
-            catch
-            {
-                return "Unknown";
-            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
