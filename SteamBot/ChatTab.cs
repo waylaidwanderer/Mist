@@ -238,7 +238,8 @@ namespace MistClient
             message = message + "\r\n";
             text_log.AppendText(message);
             text_log.ScrollToCaret();
-            AppendLog(date + name + message);
+            if (Friends.keepLog)
+                AppendLog(sid, date + name + message);
             Chat.Flash();
             if (!Chat.hasFocus)
             {
@@ -274,7 +275,8 @@ namespace MistClient
             // the label's text.
             text_log.AppendText(text);
             text_log.ScrollToCaret();            
-            AppendLog(text);
+            if (Friends.keepLog)
+                AppendLog(sid, text);
             if (notify)
             {
                 Chat.Flash();
@@ -328,7 +330,8 @@ namespace MistClient
                 text_log.AppendText(message);
                 text_log.ScrollToCaret();
                 text_log.SelectionColor = prevColor;
-                AppendLog(date + name + message);
+                if (Friends.keepLog)
+                    AppendLog(sid, date + name + message);
                 clear();
             }
         }
@@ -360,7 +363,8 @@ namespace MistClient
                     text_log.AppendText(message);
                     text_log.ScrollToCaret();
                     text_log.SelectionColor = prevColor;
-                    AppendLog(date + name + message);
+                    if (!Friends.keepLog)
+                        AppendLog(sid, date + name + message);
                     clear();
                 }
                 else
@@ -484,7 +488,7 @@ namespace MistClient
             steam_name.Focus();
         }
 
-        void AppendLog(string message)
+        public static void AppendLog(ulong sid, string message)
         {
             string LogDirectory = Path.Combine(Application.StartupPath, "logs");
             if (!Directory.Exists(LogDirectory))

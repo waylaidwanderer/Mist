@@ -5,6 +5,7 @@ using System.Threading;
 using System;
 using MistClient;
 using System.Windows.Forms;
+using System.IO;
 using ToastNotifications;
 
 namespace SteamBot
@@ -495,6 +496,7 @@ namespace SteamBot
         public override void OnTradeInit()
         {
             ShowTrade.itemsAdded = 0;
+            ChatTab.AppendLog(OtherSID, "==========[TRADE STARTED]==========\r\n");            
             Bot.log.Success("Trade successfully initialized.");
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
             {
@@ -755,7 +757,9 @@ namespace SteamBot
                 {
                     ShowTrade.check_userready.Enabled = true;
                 }
-                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: ", GetItemName(schemaItem, inventoryItem, false));
+                string itemName = GetItemName(schemaItem, inventoryItem, false);
+                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: ", itemName);
+                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + itemName);
                 ShowTrade.ResetTradeStatus();
             }));
         }
@@ -773,7 +777,9 @@ namespace SteamBot
                 {
                     ShowTrade.check_userready.Enabled = false;                    
                 }
-                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: ", GetItemName(schemaItem, inventoryItem, false));
+                string itemName = GetItemName(schemaItem, inventoryItem, false);
+                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: ", itemName);
+                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: " + itemName + "\r\n");
                 ShowTrade.ResetTradeStatus();
             }));
         }
@@ -862,6 +868,7 @@ namespace SteamBot
             {
                 string send = Bot.SteamFriends.GetFriendPersonaName(OtherSID) + ": " + message + " [" + DateTime.Now.ToLongTimeString() + "]\r\n";
                 ShowTrade.UpdateChat(send);
+                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + send);
                 if (!ShowTrade.focused)
                 {
                     int duration = 3;
@@ -880,10 +887,14 @@ namespace SteamBot
             {
                 ShowTrade.check_otherready.Checked = ready;
                 if (ready)
+                {
                     ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is ready.");
+                    ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is ready. [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                }
                 else
                 {
-                    ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is not ready. [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                    ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is not ready.");
+                    ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is not ready. [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                     ShowTrade.ResetTradeStatus();
                 }
                 if (ready && ShowTrade.check_userready.Checked)
@@ -902,7 +913,5 @@ namespace SteamBot
             }
             OnTradeClose();
         }
-
     }
-
 }

@@ -41,6 +41,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.viewProfileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.showBackpackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steamRepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_status = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,9 +55,11 @@
             this.showBackpackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeProfileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.logConversationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minimizeToTrayOnCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitMistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label_addfriend2 = new System.Windows.Forms.Label();
             this.label_addfriend = new System.Windows.Forms.Label();
@@ -76,7 +79,6 @@
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_search = new System.Windows.Forms.TextBox();
-            this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
@@ -117,7 +119,7 @@
             this.viewChatLogToolStripMenuItem,
             this.steamRepToolStripMenuItem});
             this.menu_friend.Name = "menu_friend";
-            this.menu_friend.Size = new System.Drawing.Size(163, 230);
+            this.menu_friend.Size = new System.Drawing.Size(163, 208);
             // 
             // openChatToolStripMenuItem
             // 
@@ -174,6 +176,13 @@
             this.showBackpackToolStripMenuItem.Text = "View Backpack";
             this.showBackpackToolStripMenuItem.Click += new System.EventHandler(this.showBackpackToolStripMenuItem_Click);
             // 
+            // viewChatLogToolStripMenuItem
+            // 
+            this.viewChatLogToolStripMenuItem.Name = "viewChatLogToolStripMenuItem";
+            this.viewChatLogToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewChatLogToolStripMenuItem.Text = "View Chat Log";
+            this.viewChatLogToolStripMenuItem.Click += new System.EventHandler(this.viewChatLogToolStripMenuItem_Click);
+            // 
             // steamRepToolStripMenuItem
             // 
             this.steamRepToolStripMenuItem.Name = "steamRepToolStripMenuItem";
@@ -195,11 +204,13 @@
             this.showBackpackToolStripMenuItem1,
             this.changeProfileNameToolStripMenuItem,
             this.toolStripMenuItem3,
+            this.logConversationsToolStripMenuItem,
             this.minimizeToTrayOnCloseToolStripMenuItem,
             this.aboutMistToolStripMenuItem,
-            this.checkForUpdatesToolStripMenuItem});
+            this.checkForUpdatesToolStripMenuItem,
+            this.exitMistToolStripMenuItem});
             this.menu_status.Name = "menu_status";
-            this.menu_status.Size = new System.Drawing.Size(197, 280);
+            this.menu_status.Size = new System.Drawing.Size(197, 324);
             // 
             // onlineToolStripMenuItem
             // 
@@ -274,9 +285,20 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(193, 6);
             // 
+            // logConversationsToolStripMenuItem
+            // 
+            this.logConversationsToolStripMenuItem.Checked = true;
+            this.logConversationsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.logConversationsToolStripMenuItem.Name = "logConversationsToolStripMenuItem";
+            this.logConversationsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.logConversationsToolStripMenuItem.Text = "Log Conversations";
+            this.logConversationsToolStripMenuItem.Click += new System.EventHandler(this.logConversationsToolStripMenuItem_Click);
+            // 
             // minimizeToTrayOnCloseToolStripMenuItem
             // 
+            this.minimizeToTrayOnCloseToolStripMenuItem.Checked = true;
             this.minimizeToTrayOnCloseToolStripMenuItem.CheckOnClick = true;
+            this.minimizeToTrayOnCloseToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimizeToTrayOnCloseToolStripMenuItem.Name = "minimizeToTrayOnCloseToolStripMenuItem";
             this.minimizeToTrayOnCloseToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.minimizeToTrayOnCloseToolStripMenuItem.Text = "Minimize to Tray";
@@ -295,6 +317,12 @@
             this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
+            // exitMistToolStripMenuItem
+            // 
+            this.exitMistToolStripMenuItem.Name = "exitMistToolStripMenuItem";
+            this.exitMistToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.exitMistToolStripMenuItem.Text = "Exit Mist";
             // 
             // label1
             // 
@@ -512,14 +540,8 @@
             this.text_search.Text = "Search";
             this.text_search.TextChanged += new System.EventHandler(this.text_search_TextChanged);
             this.text_search.Enter += new System.EventHandler(this.text_search_Enter);
+            this.text_search.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_search_KeyPress);
             this.text_search.Leave += new System.EventHandler(this.text_search_Leave);
-            // 
-            // viewChatLogToolStripMenuItem
-            // 
-            this.viewChatLogToolStripMenuItem.Name = "viewChatLogToolStripMenuItem";
-            this.viewChatLogToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.viewChatLogToolStripMenuItem.Text = "View Chat Log";
-            this.viewChatLogToolStripMenuItem.Click += new System.EventHandler(this.viewChatLogToolStripMenuItem_Click);
             // 
             // Friends
             // 
@@ -603,5 +625,7 @@
         private System.Windows.Forms.ToolStripMenuItem minimizeToTrayOnCloseToolStripMenuItem;
         private System.Windows.Forms.TextBox text_search;
         private System.Windows.Forms.ToolStripMenuItem viewChatLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logConversationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitMistToolStripMenuItem;
     }
 }

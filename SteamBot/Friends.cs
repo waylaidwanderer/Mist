@@ -21,6 +21,7 @@ namespace MistClient
     {
         public static bool chat_opened = false;
         public static Chat chat;
+        public static bool keepLog;
         SteamBot.Bot bot;
         static int TimerInterval = 30000;
         System.Timers.Timer refreshTimer = new System.Timers.Timer(TimerInterval);
@@ -41,7 +42,9 @@ namespace MistClient
             this.steam_name.ContextMenuStrip = menu_status;
             this.steam_status.ContextMenuStrip = menu_status;
             this.label1.ContextMenuStrip = menu_status;
-            this.minimizeToTrayOnCloseToolStripMenuItem.Checked = true;
+            this.minimizeToTrayOnCloseToolStripMenuItem.Checked = Properties.Settings.Default.MinimizeToTray;
+            logConversationsToolStripMenuItem.Checked = Properties.Settings.Default.KeepLog;
+            keepLog = logConversationsToolStripMenuItem.Checked;
             ListFriends.friends = this;
             form_friendsHeight = friends_list.Height;
             form_friendreqHeight = list_friendreq.Height;
@@ -843,6 +846,8 @@ namespace MistClient
         private void minimizeToTrayOnCloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             minimizeToTray = minimizeToTrayOnCloseToolStripMenuItem.Checked;
+            Properties.Settings.Default.MinimizeToTray = minimizeToTray;
+            Properties.Settings.Default.Save();
         }
 
         private void text_search_Enter(object sender, EventArgs e)
@@ -900,6 +905,22 @@ namespace MistClient
                     chatLog.Show();
                     chatLog.Activate();
                 }
+            }
+        }
+
+        private void logConversationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            keepLog = logConversationsToolStripMenuItem.Checked;
+            Properties.Settings.Default.KeepLog = keepLog;
+            Properties.Settings.Default.Save();
+        }
+
+        private void text_search_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 27)
+            {
+                text_search.Clear();
+                this.friends_list.SetObjects(ListFriends.Get());
             }
         }
     }

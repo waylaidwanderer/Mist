@@ -57,6 +57,7 @@ namespace MistClient
                                             bot.log.Warn(result);
                                             string date = "[" + DateTime.Now + "] ";
                                             Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
+                                            ChatTab.AppendLog(sid, "===========[TRADE ENDED]===========\r\n");
                                         }));
                                         break; ;
                                     }
@@ -145,6 +146,7 @@ namespace MistClient
                     e.Handled = true;                
                     bot.CurrentTrade.SendMessage(text_input.Text);
                     text_log.AppendText(Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                    ChatTab.AppendLog(sid, "[Trade Chat] " + Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                     clear();
                 }
                 else
@@ -230,6 +232,7 @@ namespace MistClient
             {
                 bot.CurrentTrade.SendMessage(text_input.Text);
                 text_log.AppendText(Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                ChatTab.AppendLog(sid, "[Trade Chat] " + Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                 clear();
             }
         }
@@ -288,14 +291,10 @@ namespace MistClient
 
         private void ShowTrade_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
+            if (bot.CurrentTrade != null)
             {
                 ClearAll();
-                bot.CurrentTrade.CancelTrade();                
-            }
-            catch (Exception ex)
-            {
-                bot.log.Error(ex.ToString());
+                bot.CurrentTrade.CancelTrade();
             }
         }
 
@@ -628,5 +627,7 @@ namespace MistClient
         {
             focused = false;
         }
+
+        
     }
 }
