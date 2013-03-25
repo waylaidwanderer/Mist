@@ -43,6 +43,7 @@
             this.checkrep = new System.ComponentModel.BackgroundWorker();
             this.text_log = new System.Windows.Forms.RichTextBox();
             this.status_update = new System.ComponentModel.BackgroundWorker();
+            this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -108,9 +109,10 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewProfileToolStripMenuItem,
             this.showBackpackToolStripMenuItem,
+            this.viewChatLogToolStripMenuItem,
             this.steamRepStatusToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 114);
             // 
             // viewProfileToolStripMenuItem
             // 
@@ -123,7 +125,7 @@
             // 
             this.showBackpackToolStripMenuItem.Name = "showBackpackToolStripMenuItem";
             this.showBackpackToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.showBackpackToolStripMenuItem.Text = "Show Backpack";
+            this.showBackpackToolStripMenuItem.Text = "View Backpack";
             this.showBackpackToolStripMenuItem.Click += new System.EventHandler(this.showBackpackToolStripMenuItem_Click);
             // 
             // steamRepStatusToolStripMenuItem
@@ -177,6 +179,12 @@
             // 
             this.status_update.DoWork += new System.ComponentModel.DoWorkEventHandler(this.status_update_DoWork);
             // 
+            // viewChatLogToolStripMenuItem
+            // 
+            this.viewChatLogToolStripMenuItem.Name = "viewChatLogToolStripMenuItem";
+            this.viewChatLogToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewChatLogToolStripMenuItem.Text = "View Chat Log";
+            // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -218,6 +226,7 @@
         private System.ComponentModel.BackgroundWorker checkrep;
         private System.Windows.Forms.RichTextBox text_log;
         private System.ComponentModel.BackgroundWorker status_update;
+        private System.Windows.Forms.ToolStripMenuItem viewChatLogToolStripMenuItem;
 
     }
 }

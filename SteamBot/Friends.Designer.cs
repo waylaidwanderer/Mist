@@ -76,6 +76,7 @@
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_search = new System.Windows.Forms.TextBox();
+            this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
@@ -113,9 +114,10 @@
             this.toolStripMenuItem2,
             this.viewProfileToolStripMenuItem1,
             this.showBackpackToolStripMenuItem,
+            this.viewChatLogToolStripMenuItem,
             this.steamRepToolStripMenuItem});
             this.menu_friend.Name = "menu_friend";
-            this.menu_friend.Size = new System.Drawing.Size(163, 186);
+            this.menu_friend.Size = new System.Drawing.Size(163, 230);
             // 
             // openChatToolStripMenuItem
             // 
@@ -169,7 +171,7 @@
             // 
             this.showBackpackToolStripMenuItem.Name = "showBackpackToolStripMenuItem";
             this.showBackpackToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.showBackpackToolStripMenuItem.Text = "Show Backpack";
+            this.showBackpackToolStripMenuItem.Text = "View Backpack";
             this.showBackpackToolStripMenuItem.Click += new System.EventHandler(this.showBackpackToolStripMenuItem_Click);
             // 
             // steamRepToolStripMenuItem
@@ -425,7 +427,7 @@
             // 
             this.showBackpackToolStripMenuItem2.Name = "showBackpackToolStripMenuItem2";
             this.showBackpackToolStripMenuItem2.Size = new System.Drawing.Size(192, 22);
-            this.showBackpackToolStripMenuItem2.Text = "Show Backpack";
+            this.showBackpackToolStripMenuItem2.Text = "View Backpack";
             this.showBackpackToolStripMenuItem2.Click += new System.EventHandler(this.showBackpackToolStripMenuItem2_Click);
             // 
             // steamRepStatusToolStripMenuItem
@@ -512,6 +514,13 @@
             this.text_search.Enter += new System.EventHandler(this.text_search_Enter);
             this.text_search.Leave += new System.EventHandler(this.text_search_Leave);
             // 
+            // viewChatLogToolStripMenuItem
+            // 
+            this.viewChatLogToolStripMenuItem.Name = "viewChatLogToolStripMenuItem";
+            this.viewChatLogToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewChatLogToolStripMenuItem.Text = "View Chat Log";
+            this.viewChatLogToolStripMenuItem.Click += new System.EventHandler(this.viewChatLogToolStripMenuItem_Click);
+            // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -593,5 +602,6 @@
         public BrightIdeasSoftware.ObjectListView list_friendreq;
         private System.Windows.Forms.ToolStripMenuItem minimizeToTrayOnCloseToolStripMenuItem;
         private System.Windows.Forms.TextBox text_search;
+        private System.Windows.Forms.ToolStripMenuItem viewChatLogToolStripMenuItem;
     }
 }

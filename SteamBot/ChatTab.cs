@@ -24,6 +24,7 @@ namespace MistClient
         public byte[] AvatarHash { get; set; } // checking if update is necessary
         public Chat Chat;
         public TabPage tab;
+        string prevName;
         string prevStatus;
         bool inGame = false;
 
@@ -33,7 +34,7 @@ namespace MistClient
             this.Chat = chat;
             this.sid = sid;
             this.bot = bot;
-            this.steam_name.Text = bot.SteamFriends.GetFriendPersonaName(sid);
+            this.steam_name.Text = prevName = bot.SteamFriends.GetFriendPersonaName(sid);
             this.steam_status.Text = prevStatus = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
             this.chat_status.Text = "";
             SteamKit2.SteamID SteamID = sid;
@@ -750,6 +751,11 @@ namespace MistClient
                 {
                     UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n", false);
                     prevStatus = this.steam_status.Text;
+                }
+                if (this.steam_name.Text != prevName)
+                {
+                    UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n", false);
+                    prevName = this.steam_name.Text;
                 }
                 System.Threading.Thread.Sleep(1000);
             }
