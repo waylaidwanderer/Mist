@@ -38,7 +38,6 @@
             this.list_userofferings = new BrightIdeasSoftware.ObjectListView();
             this.column_userofferings = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_uo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.text_log = new System.Windows.Forms.TextBox();
             this.text_input = new System.Windows.Forms.TextBox();
             this.button_send = new System.Windows.Forms.Button();
             this.button_accept = new System.Windows.Forms.Button();
@@ -48,6 +47,7 @@
             this.column_oo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.check_userready = new System.Windows.Forms.CheckBox();
             this.check_otherready = new System.Windows.Forms.CheckBox();
+            this.text_log = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
@@ -94,12 +94,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addAllItemsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 26);
             // 
             // addAllItemsToolStripMenuItem
             // 
             this.addAllItemsToolStripMenuItem.Name = "addAllItemsToolStripMenuItem";
-            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.addAllItemsToolStripMenuItem.Text = "Add All Items";
             this.addAllItemsToolStripMenuItem.Click += new System.EventHandler(this.addAllItemsToolStripMenuItem_Click);
             // 
@@ -133,19 +133,6 @@
             this.column_uo_id.CellPadding = null;
             this.column_uo_id.IsVisible = false;
             this.column_uo_id.Text = "ItemID";
-            // 
-            // text_log
-            // 
-            this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_log.BackColor = System.Drawing.SystemColors.Window;
-            this.text_log.Location = new System.Drawing.Point(14, 263);
-            this.text_log.Multiline = true;
-            this.text_log.Name = "text_log";
-            this.text_log.ReadOnly = true;
-            this.text_log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(349, 156);
-            this.text_log.TabIndex = 3;
             // 
             // text_input
             // 
@@ -253,12 +240,22 @@
             this.check_otherready.Text = "Ready to trade?";
             this.check_otherready.UseVisualStyleBackColor = true;
             // 
+            // text_log
+            // 
+            this.text_log.Location = new System.Drawing.Point(14, 263);
+            this.text_log.Name = "text_log";
+            this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.text_log.Size = new System.Drawing.Size(349, 156);
+            this.text_log.TabIndex = 14;
+            this.text_log.Text = "";
+            // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(631, 497);
+            this.Controls.Add(this.text_log);
             this.Controls.Add(this.check_otherready);
             this.Controls.Add(this.check_userready);
             this.Controls.Add(this.list_otherofferings);
@@ -266,7 +263,6 @@
             this.Controls.Add(this.button_accept);
             this.Controls.Add(this.button_send);
             this.Controls.Add(this.text_input);
-            this.Controls.Add(this.text_log);
             this.Controls.Add(this.list_userofferings);
             this.Controls.Add(this.list_inventory);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -295,7 +291,6 @@
         private BrightIdeasSoftware.OLVColumn column_otherofferings;
         public BrightIdeasSoftware.ObjectListView list_inventory;
         public BrightIdeasSoftware.ObjectListView list_userofferings;
-        public System.Windows.Forms.TextBox text_log;
         public BrightIdeasSoftware.ObjectListView list_otherofferings;
         public System.Windows.Forms.CheckBox check_otherready;
         private BrightIdeasSoftware.OLVColumn column_uo_id;
@@ -306,5 +301,6 @@
         private System.Windows.Forms.ToolStripMenuItem addAllItemsToolStripMenuItem;
         public System.Windows.Forms.CheckBox check_userready;
         public System.Windows.Forms.Button button_accept;
+        private System.Windows.Forms.RichTextBox text_log;
     }
 }

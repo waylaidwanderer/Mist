@@ -165,6 +165,61 @@ namespace MistClient
             text_log.AppendText(message + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
         }
 
+        public void AppendText(string message, string itemName)
+        {
+            Color prevColor = text_log.SelectionColor;
+            text_log.AppendText(message);            
+            if (itemName.Contains("Strange"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#CF6A32");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else if (itemName.Contains("Vintage"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#476291");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else if (itemName.Contains("Unusual"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#8650AC");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else if (itemName.Contains("Geniune"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#4D7455");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else if (itemName.Contains("Haunted"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#38F3AB");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else if (itemName.Contains("Community") || itemName.Contains("Self-Made"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#70B04A");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else if (itemName.Contains("Valve"))
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#A50F79");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            else
+            {
+                text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                text_log.AppendText(itemName);
+                text_log.SelectionColor = prevColor;
+            }
+            text_log.AppendText(" [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+        }
+
         private void button_send_Click(object sender, EventArgs e)
         {
             if (text_input.Text != "")
@@ -261,13 +316,63 @@ namespace MistClient
                         {
                             try
                             {
+                                Color prevColor = text_log.SelectionColor;
                                 bot.CurrentTrade.AddItem(itemID);
                                 itemsAdded++;
                                 if (itemsAdded > 0)
                                 {
                                     check_userready.Enabled = true;                                    
                                 }
-                                AppendText("You added: " + itemName);
+                                text_log.AppendText("You added: ");
+                                if (itemName.Contains("Strange"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#CF6A32");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else if (itemName.Contains("Vintage"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#476291");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else if (itemName.Contains("Unusual"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#8650AC");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else if (itemName.Contains("Geniune"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#4D7455");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else if (itemName.Contains("Haunted"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#38F3AB");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else if (itemName.Contains("Community") || itemName.Contains("Self-Made"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#70B04A");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else if (itemName.Contains("Valve"))
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#A50F79");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                else
+                                {
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                    text_log.AppendText(itemName);
+                                    text_log.SelectionColor = prevColor;
+                                }
+                                text_log.AppendText(" [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                                 ResetTradeStatus();
                                 list_inventory.SelectedItem.Remove();
                                 ListUserOfferings.Add(itemName, itemID);

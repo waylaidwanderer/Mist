@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Bin\Debug\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ObjectListView, Version=2.5.1.22755, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\Debug\lib\ObjectListView.dll</HintPath>
-    </Reference>
     <Reference Include="protobuf-net, Version=2.0.0.420, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Bin\Debug\lib\protobuf-net.dll</HintPath>
@@ -308,6 +304,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lib\ObjectListView\ObjectListView2010.csproj">
+      <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
+      <Name>ObjectListView2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lib\ToastNotifications\ToastNotifications.csproj">
       <Project>{380d8d88-386c-4c50-9a54-800f79fdf7d2}</Project>
       <Name>ToastNotifications</Name>

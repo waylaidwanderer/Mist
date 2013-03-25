@@ -313,7 +313,6 @@ namespace SteamBot
                     bool found = false;
                     try
                     {
-                        Console.WriteLine("Trying");
                         foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                         {
                             Console.WriteLine("Looking at " + tab.Text);
@@ -518,11 +517,6 @@ namespace SteamBot
                 ShowTrade.ClearAll();
             }));
             TradeCountInventory();
-            Bot.main.Invoke((Action)(() =>
-            {
-                ShowTrade_Web test = new ShowTrade_Web();
-                test.Show();
-            }));
         }
 
         public override void OnTradeClose()
@@ -761,7 +755,7 @@ namespace SteamBot
                 {
                     ShowTrade.check_userready.Enabled = true;
                 }
-                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + GetItemName(schemaItem, inventoryItem, false));
+                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: ", GetItemName(schemaItem, inventoryItem, false));
                 ShowTrade.ResetTradeStatus();
             }));
         }
@@ -779,7 +773,7 @@ namespace SteamBot
                 {
                     ShowTrade.check_userready.Enabled = false;                    
                 }
-                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: " + GetItemName(schemaItem, inventoryItem, false));
+                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: ", GetItemName(schemaItem, inventoryItem, false));
                 ShowTrade.ResetTradeStatus();
             }));
         }
