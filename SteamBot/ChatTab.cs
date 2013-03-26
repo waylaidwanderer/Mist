@@ -181,6 +181,7 @@ namespace MistClient
                     button_trade.Enabled = true;
                     tradeMode = 3;
                     text_log.AppendText("[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you.\r\n");
+                    text_log.ScrollToCaret();
                     if (!Chat.hasFocus)
                     {
                         try
@@ -549,6 +550,7 @@ namespace MistClient
                                         text_log.SelectionColor = prevColor;
                                         string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
                                         text_log.AppendText(message);
+                                        text_log.ScrollToCaret();
                                     }));
                                 }
                                 else
@@ -567,6 +569,7 @@ namespace MistClient
                                             string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
                                                 + status + ". Be careful!\r\n";
                                             text_log.AppendText(message);
+                                            text_log.ScrollToCaret();
                                             text_log.SelectionColor = prevColor;
                                         }
                                         else
@@ -579,6 +582,7 @@ namespace MistClient
                                             string message = "[SteamRep] This user has special reputation, with tags: "
                                                 + status + ".\r\n";
                                             text_log.AppendText(message);
+                                            text_log.ScrollToCaret();
                                             text_log.SelectionColor = prevColor;
                                         }
                                     }));
@@ -599,6 +603,7 @@ namespace MistClient
                                     text_log.SelectionColor = prevColor;
                                     string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
                                     text_log.AppendText(message);
+                                    text_log.ScrollToCaret();
                                 }));
                             }
                             else if (result.Contains("SCAMMER"))
@@ -613,6 +618,7 @@ namespace MistClient
                                     string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
                                         + result + ". Be careful!\r\n";
                                     text_log.AppendText(message);
+                                    text_log.ScrollToCaret();
                                     text_log.SelectionColor = prevColor;
                                 }));
                             }
@@ -628,6 +634,7 @@ namespace MistClient
                                     string message = "[SteamRep] This user has special reputation, with tags: "
                                         + result + ".\r\n";
                                     text_log.AppendText(message);
+                                    text_log.ScrollToCaret();
                                     text_log.SelectionColor = prevColor;
                                 }));
                             }
@@ -658,6 +665,7 @@ namespace MistClient
                                 text_log.SelectionColor = prevColor;
                                 string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
                                 text_log.AppendText(message);
+                                text_log.ScrollToCaret();
                             }));
                         }
                         else
@@ -677,6 +685,7 @@ namespace MistClient
                                     string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
                                         + status + ". Be careful!\r\n";
                                     text_log.AppendText(message);
+                                    text_log.ScrollToCaret();
                                     text_log.SelectionColor = prevColor;
                                 }));
                             }
@@ -692,6 +701,7 @@ namespace MistClient
                                     string message = "[SteamRep] This user has special reputation, with tags: "
                                         + status + ".\r\n";
                                     text_log.AppendText(message);
+                                    text_log.ScrollToCaret();
                                     text_log.SelectionColor = prevColor;
                                 }));
                             }
