@@ -67,10 +67,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Bin\Debug\lib\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="SteamTrade, Version=0.1.0.22754, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\Debug\lib\SteamTrade.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Design" />
@@ -311,6 +307,10 @@
     <ProjectReference Include="..\Lib\ToastNotifications\ToastNotifications.csproj">
       <Project>{380d8d88-386c-4c50-9a54-800f79fdf7d2}</Project>
       <Name>ToastNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SteamTrade\SteamTrade.csproj">
+      <Project>{6cec0333-81eb-40ee-85d1-941363626fc7}</Project>
+      <Name>SteamTrade</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -268,6 +268,14 @@ namespace SteamBot
             {
                 log.Debug ("Logged On Callback: " + callback.Result);
 
+                if (callback.Result == EResult.OK)
+                {
+                    main.Invoke((Action)(() =>
+                    {
+                        main.label_status.Text = "Logging in to Steam..."; ;
+                    }));
+                }
+
                 if (callback.Result != EResult.OK)
                 {
                     log.Error ("Login Error: " + callback.Result);
