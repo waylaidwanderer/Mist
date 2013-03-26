@@ -233,7 +233,8 @@ namespace MistClient
             }
             else
             {
-                text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                //text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                text_log.SelectionColor = Color.DarkGoldenrod;
                 text_log.AppendText(itemName);
                 text_log.SelectionColor = prevColor;
             }
@@ -423,7 +424,8 @@ namespace MistClient
                                 }
                                 else
                                 {
-                                    text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                    //text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                    text_log.SelectionColor = Color.DarkGoldenrod;
                                     text_log.AppendText(itemName);
                                     text_log.SelectionColor = prevColor;
                                 }
@@ -712,7 +714,8 @@ namespace MistClient
                             }
                             else
                             {
-                                text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                //text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                text_log.SelectionColor = Color.DarkGoldenrod;
                                 text_log.AppendText(itemName);
                                 text_log.SelectionColor = prevColor;
                             }
