@@ -433,7 +433,6 @@ namespace MistClient
                                 text_log.ScrollToCaret();
                                 ResetTradeStatus();
                                 list_inventory.SelectedItem.Remove();
-                                Console.WriteLine("Inserting value: " + itemValue);
                                 ListUserOfferings.Add(itemName, itemID, itemValue);
                                 ListInventory.Remove(itemName, itemID);
                                 list_userofferings.SetObjects(ListUserOfferings.Get());
@@ -723,7 +722,6 @@ namespace MistClient
                             text_log.ScrollToCaret();
                             ResetTradeStatus();
                             list_userofferings.SelectedItem.Remove();
-                            Console.WriteLine("Inserting value: " + itemValue);
                             ListInventory.Add(itemName, itemID, img, itemValue);
                             ListUserOfferings.Remove(itemName, itemID);
                             list_inventory.SetObjects(ListInventory.Get());

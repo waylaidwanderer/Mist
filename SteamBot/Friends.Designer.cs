@@ -513,7 +513,6 @@
             this.column_status.IsEditable = false;
             this.column_status.MinimumWidth = 100;
             this.column_status.Searchable = false;
-            this.column_status.Sortable = false;
             this.column_status.Text = "Status";
             this.column_status.Width = 100;
             this.column_status.WordWrap = true;
