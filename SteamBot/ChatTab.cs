@@ -326,7 +326,7 @@ namespace MistClient
                 string date = "[" + DateTime.Now + "] ";
                 string name = Bot.displayName + ": ";
                 text_log.AppendText(date + name);
-                text_log.SelectionColor = Color.DimGray;
+                text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                 string message = text_input.Text + "\r\n";
                 text_log.AppendText(message);
                 text_log.ScrollToCaret();
@@ -359,7 +359,7 @@ namespace MistClient
                     string date = "[" + DateTime.Now + "] ";
                     string name = Bot.displayName + ": ";
                     text_log.AppendText(date + name);
-                    text_log.SelectionColor = Color.DimGray;
+                    text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                     string message = text_input.Text + "\r\n";
                     text_log.AppendText(message);
                     text_log.ScrollToCaret();
@@ -486,6 +486,7 @@ namespace MistClient
         {
             checkrep.RunWorkerAsync();
             status_update.RunWorkerAsync();
+            text_input.Focus();
         }
 
         private void steam_name_Click(object sender, EventArgs e)
@@ -551,7 +552,7 @@ namespace MistClient
                                         {
                                             string date = "[" + DateTime.Now + "] ";
                                             Color prevColor = text_log.SelectionColor;
-                                            text_log.SelectionColor = Color.DimGray;
+                                            text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                             text_log.AppendText(date);
                                             text_log.SelectionColor = prevColor;
                                             string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
@@ -569,7 +570,7 @@ namespace MistClient
                                             {
                                                 string date = "[" + DateTime.Now + "] ";
                                                 Color prevColor = text_log.SelectionColor;
-                                                text_log.SelectionColor = Color.DimGray;
+                                                text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                                 text_log.AppendText(date);
                                                 text_log.SelectionColor = Color.Red;
                                                 string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
@@ -582,7 +583,7 @@ namespace MistClient
                                             {
                                                 string date = "[" + DateTime.Now + "] ";
                                                 Color prevColor = text_log.SelectionColor;
-                                                text_log.SelectionColor = Color.DimGray;
+                                                text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                                 text_log.AppendText(date);
                                                 text_log.SelectionColor = Color.Green;
                                                 string message = "[SteamRep] This user has special reputation, with tags: "
@@ -606,7 +607,7 @@ namespace MistClient
                                 {
                                     string date = "[" + DateTime.Now + "] ";
                                     Color prevColor = text_log.SelectionColor;
-                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                     text_log.AppendText(date);
                                     text_log.SelectionColor = prevColor;
                                     string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
@@ -620,7 +621,7 @@ namespace MistClient
                                 {
                                     string date = "[" + DateTime.Now + "] ";
                                     Color prevColor = text_log.SelectionColor;
-                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                     text_log.AppendText(date);
                                     text_log.SelectionColor = Color.Red;
                                     string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
@@ -636,7 +637,7 @@ namespace MistClient
                                 {
                                     string date = "[" + DateTime.Now + "] ";
                                     Color prevColor = text_log.SelectionColor;
-                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                     text_log.AppendText(date);
                                     text_log.SelectionColor = Color.Green;
                                     string message = "[SteamRep] This user has special reputation, with tags: "
@@ -670,7 +671,7 @@ namespace MistClient
                                 {
                                     string date = "[" + DateTime.Now + "] ";
                                     Color prevColor = text_log.SelectionColor;
-                                    text_log.SelectionColor = Color.DimGray;
+                                    text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                     text_log.AppendText(date);
                                     text_log.SelectionColor = prevColor;
                                     string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
@@ -689,7 +690,7 @@ namespace MistClient
                                     {
                                         string date = "[" + DateTime.Now + "] ";
                                         Color prevColor = text_log.SelectionColor;
-                                        text_log.SelectionColor = Color.DimGray;
+                                        text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                         text_log.AppendText(date);
                                         text_log.SelectionColor = Color.Red;
                                         string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
@@ -705,7 +706,7 @@ namespace MistClient
                                     {
                                         string date = "[" + DateTime.Now + "] ";
                                         Color prevColor = text_log.SelectionColor;
-                                        text_log.SelectionColor = Color.DimGray;
+                                        text_log.SelectionColor = ColorTranslator.FromHtml("#2E2E2E");
                                         text_log.AppendText(date);
                                         text_log.SelectionColor = Color.Green;
                                         string message = "[SteamRep] This user has special reputation, with tags: "
