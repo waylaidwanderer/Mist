@@ -178,7 +178,8 @@ namespace SteamBot
                                 Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "Trade failed to initialize because either you or the user are not logged in.")
                                 Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
-                            Friends.chat.chatTab.TradeButtonMode(1);
+                            if (Friends.chat_opened)
+                                Friends.chat.chatTab.TradeButtonMode(1);
                         }));
                         return;
                     }
@@ -242,7 +243,6 @@ namespace SteamBot
                 Bot.main.Invoke((Action)(() =>
                 {
                     var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
-                    Console.WriteLine(OtherSID);
                     OpenChat(OtherSID);
                     string date = "[" + DateTime.Now + "] ";
                     string name = other + ": ";
@@ -487,8 +487,11 @@ namespace SteamBot
                 }
                 Friends.chat.Invoke((Action)(() =>
                 {
-                    Friends.chat.chatTab.TradeButtonMode(1);
-                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has expired.\r\n", false);
+                    if (Friends.chat_opened)
+                    {
+                        Friends.chat.chatTab.TradeButtonMode(1);
+                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has expired.\r\n", false);
+                    }
                 }));
             }));
         }
@@ -546,7 +549,10 @@ namespace SteamBot
             }
             Friends.chat.Invoke((Action)(() =>
             {
-                Friends.chat.chatTab.TradeButtonMode(1);
+                if (Friends.chat_opened)
+                {
+                    Friends.chat.chatTab.TradeButtonMode(1);
+                }
             }));
             base.OnTradeClose();
         }
@@ -557,6 +563,7 @@ namespace SteamBot
             {
                 ShowTrade = new ShowTrade(Bot, Bot.SteamFriends.GetFriendPersonaName(OtherSID));
                 ShowTrade.Show();
+                ShowTrade.Activate();
             }));
             BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
             // Let's count our inventory
@@ -571,6 +578,7 @@ namespace SteamBot
                     {
                         var currentItem = Trade.CurrentSchema.GetItem(item.Defindex);
                         string name = "";
+                        string itemValue = "";
                         var type = Convert.ToInt32(item.Quality.ToString());
                         if (QualityToName(type) != "Unique")
                             name += QualityToName(type) + " ";                        
@@ -632,7 +640,7 @@ namespace SteamBot
                             try
                             {                           
                                 var containedItem = Trade.CurrentSchema.GetItem(item.ContainedItem.Defindex);
-                                var containedName = GetItemName(containedItem, item.ContainedItem);
+                                var containedName = GetItemName(containedItem, item.ContainedItem, out itemValue);
                                 name += " (Contains: " + containedName + ")";
                             }
                             catch (Exception ex)
@@ -750,17 +758,55 @@ namespace SteamBot
         {
             Bot.main.Invoke((Action)(() =>
             {
-                string completeName = GetItemName(schemaItem, inventoryItem);
+                string itemValue = "";
+                string completeName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
                 ulong itemID = inventoryItem.Id;
-                string price = Util.GetPrice(schemaItem.Defindex, schemaItem.ItemQuality, inventoryItem);
-                ListOtherOfferings.Add(completeName, itemID, price);
+                //string itemValue = Util.GetPrice(schemaItem.Defindex, schemaItem.ItemQuality, inventoryItem);
+                double value = 0;
+                if (itemValue.Contains("ref"))
+                {
+                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "ref", "");
+                    value = Convert.ToDouble(newValue);
+                }
+                else if (itemValue.Contains("key"))
+                {
+                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "keys", "");
+                    value = Convert.ToDouble(newValue);
+                    value = value * BackpackTF.KeyPrice;
+                }
+                else if (itemValue.Contains("bud"))
+                {
+                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "buds", "");
+                    value = Convert.ToDouble(newValue);
+                    value = value * BackpackTF.BudPrice;
+                }
+                ShowTrade.OtherTotalValue += value;
+                if (ShowTrade.OtherTotalValue >= BackpackTF.BudPrice * 1.33)
+                {
+                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.BudPrice;
+                    string label = "Total Value: " + formatPrice.ToString("0.00") + " buds";
+                    ShowTrade.UpdateLabel(label);
+                }
+                else if (ShowTrade.OtherTotalValue >= BackpackTF.KeyPrice)
+                {
+                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.KeyPrice;
+                    string label = "Total Value: " + formatPrice.ToString("0.00") + " keys";
+                    ShowTrade.UpdateLabel(label);
+                }
+                else
+                {
+                    double formatPrice = ShowTrade.OtherTotalValue;
+                    string label = "Total Value: " + formatPrice.ToString("0.00") + " ref";
+                    ShowTrade.UpdateLabel(label);
+                }
+                ListOtherOfferings.Add(completeName, itemID, itemValue);
                 ShowTrade.list_otherofferings.SetObjects(ListOtherOfferings.Get());
                 ShowTrade.itemsAdded++;
                 if (ShowTrade.itemsAdded > 0)
                 {
                     ShowTrade.check_userready.Enabled = true;
                 }
-                string itemName = GetItemName(schemaItem, inventoryItem, false);
+                string itemName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
                 ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: ", itemName);
                 ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + itemName + "\r\n");
                 ShowTrade.ResetTradeStatus();
@@ -771,8 +817,46 @@ namespace SteamBot
         {
             Bot.main.Invoke((Action)(() =>
             {
-                string completeName = GetItemName(schemaItem, inventoryItem);
+                string itemValue = "";
+                string completeName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
                 ulong itemID = inventoryItem.Id;
+                double value = 0;
+                if (itemValue.Contains("ref"))
+                {
+                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "ref", "");
+                    value = Convert.ToDouble(newValue);
+                }
+                else if (itemValue.Contains("key"))
+                {
+                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "keys", "");
+                    value = Convert.ToDouble(newValue);
+                    value = value * BackpackTF.KeyPrice;
+                }
+                else if (itemValue.Contains("bud"))
+                {
+                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "buds", "");
+                    value = Convert.ToDouble(newValue);
+                    value = value * BackpackTF.BudPrice;
+                }
+                ShowTrade.OtherTotalValue -= value;
+                if (ShowTrade.OtherTotalValue >= BackpackTF.BudPrice * 1.33)
+                {
+                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.BudPrice;
+                    string label = "Total Value: " + formatPrice.ToString("0.00") + " buds";
+                    ShowTrade.UpdateLabel(label);
+                }
+                else if (ShowTrade.OtherTotalValue >= BackpackTF.KeyPrice)
+                {
+                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.KeyPrice;
+                    string label = "Total Value: " + formatPrice.ToString("0.00") + " keys";
+                    ShowTrade.UpdateLabel(label);
+                }
+                else
+                {
+                    double formatPrice = ShowTrade.OtherTotalValue;
+                    string label = "Total Value: " + formatPrice.ToString("0.00") + " ref";
+                    ShowTrade.UpdateLabel(label);
+                }
                 ListOtherOfferings.Remove(completeName, itemID);
                 ShowTrade.list_otherofferings.SetObjects(ListOtherOfferings.Get());
                 ShowTrade.itemsAdded--;
@@ -780,15 +864,18 @@ namespace SteamBot
                 {
                     ShowTrade.check_userready.Enabled = false;                    
                 }
-                string itemName = GetItemName(schemaItem, inventoryItem, false);
+                string itemName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
                 ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: ", itemName);
                 ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: " + itemName + "\r\n");
                 ShowTrade.ResetTradeStatus();
             }));
         }
 
-        string GetItemName(Schema.Item schemaItem, Inventory.Item inventoryItem, bool id = false)
+        string GetItemName(Schema.Item schemaItem, Inventory.Item inventoryItem, out string price, bool id = false)
         {
+            price = "Unknown";
+            bool isGifted = false;
+            bool isUnusual = false;
             var currentItem = Trade.CurrentSchema.GetItem(schemaItem.Defindex);
             string name = "";
             var type = Convert.ToInt32(inventoryItem.Quality.ToString());
@@ -797,6 +884,7 @@ namespace SteamBot
             name += currentItem.ItemName;
             if (QualityToName(type) == "Unusual")
             {
+                isUnusual = true;
                 try
                 {
                     for (int count = 0; count < inventoryItem.Attributes.Length; count++)
@@ -804,6 +892,7 @@ namespace SteamBot
                         if (inventoryItem.Attributes[count].Defindex == 134)
                         {
                             name += " (Effect: " + EffectToName(inventoryItem.Attributes[count].FloatValue) + ")";
+                            price = Util.GetPrice(schemaItem.Defindex, type, inventoryItem, false, (int)inventoryItem.Attributes[count].FloatValue);
                         }
                     }
                 }
@@ -832,6 +921,7 @@ namespace SteamBot
                     }
                     if (inventoryItem.Attributes[count].Defindex == 186)
                     {
+                        isGifted = true;
                         name += " (Gifted)";
                     }
                 }
@@ -844,6 +934,7 @@ namespace SteamBot
                 name += " (Uncraftable)";
             if (currentItem.Name == "Wrapped Gift")
             {
+                isGifted = true;
                 // Untested!
                 try
                 {
@@ -851,7 +942,8 @@ namespace SteamBot
                     for (int count = 0; count < size; count++)
                     {
                         var containedItem = Trade.CurrentSchema.GetItem(inventoryItem.ContainedItem.Defindex);
-                        var containedName = GetItemName(containedItem, inventoryItem.ContainedItem);
+                        var containedName = GetItemName(containedItem, inventoryItem.ContainedItem, out price, false);
+                        price = Util.GetPrice(inventoryItem.ContainedItem.Defindex, Convert.ToInt32(inventoryItem.ContainedItem.Quality.ToString()), inventoryItem, true);
                         name += " (Contains: " + containedName + ")";
                     }
                 }
@@ -862,6 +954,15 @@ namespace SteamBot
             }
             if (id)
                 name += " :" + inventoryItem.Id;
+            if (!isGifted && !isUnusual)
+            {
+                price = Util.GetPrice(currentItem.Defindex, type, inventoryItem);
+                ListBackpack.Add(name, inventoryItem.Defindex, currentItem.ImageURL, price);
+            }
+            else
+            {
+                ListBackpack.Add(name, inventoryItem.Defindex, currentItem.ImageURL, price);
+            }
             return name;
         }
 

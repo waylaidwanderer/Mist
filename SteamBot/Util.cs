@@ -147,7 +147,7 @@ namespace MistClient
                     value = value / budValue;
                     result = value.ToString("0.00") + " buds";
                 }
-                else if (value > keyValue)
+                else if (value >= keyValue)
                 {
                     value = value / keyValue;
                     result = value.ToString("0.00") + " keys";

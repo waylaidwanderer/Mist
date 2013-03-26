@@ -101,6 +101,7 @@ namespace MistClient
                         }
                         if (item.Attributes[count].Defindex == 186)
                         {
+                            isGift = true;
                             name += " (Gifted)";
                         }
                     }

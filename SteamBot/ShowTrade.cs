@@ -21,6 +21,8 @@ namespace MistClient
         public static int itemsAdded = 0;
         public static bool accepted = false;
         public bool focused = false;
+        public double OtherTotalValue = 0;
+        double YourTotalValue = 0;
 
         public ShowTrade(Bot bot, string name)
         {
@@ -103,6 +105,16 @@ namespace MistClient
                 }
                 FlashWindow.Flash(this);
             }
+        }
+
+        public void UpdateLabel(string text)
+        {
+            if (label_othervalue.InvokeRequired)
+            {
+                label_othervalue.Invoke((Action)(() => UpdateLabel(text)));
+                return;
+            }
+            label_othervalue.Text = text;
         }
 
         private void label_cancel_MouseEnter(object sender, EventArgs e)
@@ -308,6 +320,41 @@ namespace MistClient
             {
                 ulong itemID = Convert.ToUInt64(column_id.GetValue(list_inventory.SelectedItem.RowObject));
                 string itemValue = column_value.GetValue(list_inventory.SelectedItem.RowObject).ToString();
+                // Check whether in ref, keys or buds first
+                double value = 0;
+                if (itemValue.Contains("ref"))
+                {
+                    string newValue = ReplaceLastOccurrence(itemValue, "ref", "");
+                    value = Convert.ToDouble(newValue);
+                }
+                else if (itemValue.Contains("key"))
+                {
+                    string newValue = ReplaceLastOccurrence(itemValue, "keys", "");
+                    Console.WriteLine("{0}, {1}", itemValue, newValue);
+                    value = Convert.ToDouble(newValue);
+                    value = value * BackpackTF.KeyPrice;
+                }
+                else if (itemValue.Contains("bud"))
+                {
+                    string newValue = ReplaceLastOccurrence(itemValue, "buds", "");
+                    value = Convert.ToDouble(newValue);
+                    value = value * BackpackTF.BudPrice;
+                }
+                YourTotalValue += value;
+                if (YourTotalValue >= BackpackTF.BudPrice * 1.33)
+                {
+                    double formatPrice = YourTotalValue / BackpackTF.BudPrice;
+                    label_yourvalue.Text = "Total Value: " + formatPrice.ToString("0.00") + " buds";
+                }
+                else if (YourTotalValue >= BackpackTF.KeyPrice)
+                {
+                    double formatPrice = YourTotalValue / BackpackTF.KeyPrice;
+                    label_yourvalue.Text = "Total Value: " + formatPrice.ToString("0.00") + " keys";
+                }
+                else
+                {
+                    label_yourvalue.Text = "Total Value: " + YourTotalValue.ToString("0.00") + " ref";
+                }
                 if (itemID != 0)
                 {
                     try
@@ -384,6 +431,7 @@ namespace MistClient
                                 text_log.ScrollToCaret();
                                 ResetTradeStatus();
                                 list_inventory.SelectedItem.Remove();
+                                Console.WriteLine("Inserting value: " + itemValue);
                                 ListUserOfferings.Add(itemName, itemID, itemValue);
                                 ListInventory.Remove(itemName, itemID);
                                 list_userofferings.SetObjects(ListUserOfferings.Get());
@@ -558,6 +606,40 @@ namespace MistClient
         {
             ulong itemID = Convert.ToUInt64(column_uo_id.GetValue(list_userofferings.SelectedItem.RowObject));
             string itemValue = column_uo_value.GetValue(list_userofferings.SelectedItem.RowObject).ToString();
+            double value = 0;
+            if (itemValue.Contains("ref"))
+            {
+                string newValue = ReplaceLastOccurrence(itemValue, "ref", "");
+                value = Convert.ToDouble(newValue);
+            }
+            else if (itemValue.Contains("key"))
+            {
+                string newValue = ReplaceLastOccurrence(itemValue, "keys", "");
+                value = Convert.ToDouble(newValue);
+                value = value * BackpackTF.KeyPrice;
+            }
+            else if (itemValue.Contains("bud"))
+            {
+                string newValue = ReplaceLastOccurrence(itemValue, "buds", "");
+                value = Convert.ToDouble(newValue);
+                value = value * BackpackTF.BudPrice;
+            }
+            YourTotalValue -= value;
+            Console.WriteLine(YourTotalValue);
+            if (YourTotalValue >= BackpackTF.BudPrice * 1.33)
+            {
+                double formatPrice = YourTotalValue / BackpackTF.BudPrice;
+                label_yourvalue.Text = "Total Value: " + formatPrice.ToString("0.00") + " buds";
+            }
+            else if (YourTotalValue >= BackpackTF.KeyPrice)
+            {
+                double formatPrice = YourTotalValue / BackpackTF.KeyPrice;
+                label_yourvalue.Text = "Total Value: " + formatPrice.ToString("0.00") + " keys";
+            }
+            else
+            {
+                label_yourvalue.Text = "Total Value: " + YourTotalValue.ToString("0.00") + " ref";
+            }
             if (itemID != 0)
             {
                 try
@@ -638,6 +720,7 @@ namespace MistClient
                             text_log.ScrollToCaret();
                             ResetTradeStatus();
                             list_userofferings.SelectedItem.Remove();
+                            Console.WriteLine("Inserting value: " + itemValue);
                             ListInventory.Add(itemName, itemID, img, itemValue);
                             ListUserOfferings.Remove(itemName, itemID);
                             list_inventory.SetObjects(ListInventory.Get());
@@ -685,8 +768,29 @@ namespace MistClient
         private void ShowTrade_Load(object sender, EventArgs e)
         {
             focused = false;
+            ToolTip priceTip = new ToolTip();
+            priceTip.ToolTipIcon = ToolTipIcon.Info;
+            priceTip.IsBalloon = true;
+            priceTip.ShowAlways = true;
+            priceTip.ToolTipTitle = "Item prices are from backpack.tf";
+            string caution = "What the price checker doesn't do:\n-Factor in the cost of paint\n-Factor in the cost of strange parts\n-Calculate values of low craft numbers\nPrices are not guaranteed to be accurate.";
+            priceTip.SetToolTip(label_yourvalue, caution);
+            priceTip.SetToolTip(label_othervalue, caution);
         }
 
-        
+        public static string ReplaceLastOccurrence(string Source, string Find, string Replace)
+        {
+            int Place = Source.LastIndexOf(Find);
+            string result = Source.Remove(Place, Find.Length).Insert(Place, Replace);
+            return result;
+        }
+
+        private void disableGroupingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool checkedState = disableGroupingToolStripMenuItem.Checked;
+            list_inventory.ShowGroups = !checkedState;
+            list_userofferings.ShowGroups = !checkedState;
+            list_otherofferings.ShowGroups = !checkedState;
+        }
     }
 }

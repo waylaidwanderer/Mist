@@ -12,6 +12,9 @@ namespace MistClient
     class BackpackTF
     {
         public static BackpackTF CurrentSchema;
+        public static double KeyPrice;
+        public static double BillPrice;
+        public static double BudPrice;
 
         public static BackpackTF FetchSchema()
         {
@@ -56,7 +59,15 @@ namespace MistClient
             response.Close();
 
             BackpackTF schemaResult = JsonConvert.DeserializeObject<BackpackTF>(result);
+            UpdateBasePrices(schemaResult);
             return schemaResult ?? null;
+        }
+
+        static void UpdateBasePrices(BackpackTF schemaResult)
+        {
+            KeyPrice = schemaResult.Response.Prices[5021][6][0].Value;
+            BillPrice = schemaResult.Response.Prices[126][6][0].Value;
+            BudPrice = schemaResult.Response.Prices[143][6][0].Value;
         }
 
         [JsonProperty("response")]

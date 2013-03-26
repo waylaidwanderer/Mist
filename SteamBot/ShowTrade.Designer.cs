@@ -32,12 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShowTrade));
             this.list_inventory = new BrightIdeasSoftware.ObjectListView();
             this.column_inventory = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addAllItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.list_userofferings = new BrightIdeasSoftware.ObjectListView();
             this.column_userofferings = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_uo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_uo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_input = new System.Windows.Forms.TextBox();
             this.button_send = new System.Windows.Forms.Button();
             this.button_accept = new System.Windows.Forms.Button();
@@ -45,12 +47,13 @@
             this.list_otherofferings = new BrightIdeasSoftware.ObjectListView();
             this.column_otherofferings = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_oo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_oo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.check_userready = new System.Windows.Forms.CheckBox();
             this.check_otherready = new System.Windows.Forms.CheckBox();
             this.text_log = new System.Windows.Forms.RichTextBox();
-            this.column_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.column_uo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.column_oo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.label_yourvalue = new System.Windows.Forms.Label();
+            this.label_othervalue = new System.Windows.Forms.Label();
+            this.disableGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
@@ -71,7 +74,7 @@
             this.list_inventory.ContextMenuStrip = this.contextMenuStrip1;
             this.list_inventory.Location = new System.Drawing.Point(14, 15);
             this.list_inventory.Name = "list_inventory";
-            this.list_inventory.Size = new System.Drawing.Size(349, 242);
+            this.list_inventory.Size = new System.Drawing.Size(364, 242);
             this.list_inventory.TabIndex = 0;
             this.list_inventory.UseCompatibleStateImageBehavior = false;
             this.list_inventory.View = System.Windows.Forms.View.Details;
@@ -87,6 +90,13 @@
             this.column_inventory.UseInitialLetterForGroup = true;
             this.column_inventory.Width = 91;
             // 
+            // column_value
+            // 
+            this.column_value.AspectName = "ItemPrice";
+            this.column_value.CellPadding = null;
+            this.column_value.Text = "Value";
+            this.column_value.Width = 90;
+            // 
             // column_id
             // 
             this.column_id.AspectName = "ItemID";
@@ -97,14 +107,15 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addAllItemsToolStripMenuItem});
+            this.addAllItemsToolStripMenuItem,
+            this.disableGroupingToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(166, 70);
             // 
             // addAllItemsToolStripMenuItem
             // 
             this.addAllItemsToolStripMenuItem.Name = "addAllItemsToolStripMenuItem";
-            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.addAllItemsToolStripMenuItem.Text = "Add All Items";
             this.addAllItemsToolStripMenuItem.Click += new System.EventHandler(this.addAllItemsToolStripMenuItem_Click);
             // 
@@ -117,7 +128,7 @@
             this.list_userofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_userofferings,
             this.column_uo_value});
-            this.list_userofferings.Location = new System.Drawing.Point(369, 15);
+            this.list_userofferings.Location = new System.Drawing.Point(384, 15);
             this.list_userofferings.Name = "list_userofferings";
             this.list_userofferings.Size = new System.Drawing.Size(248, 145);
             this.list_userofferings.TabIndex = 1;
@@ -141,6 +152,12 @@
             this.column_uo_id.IsVisible = false;
             this.column_uo_id.Text = "ItemID";
             // 
+            // column_uo_value
+            // 
+            this.column_uo_value.AspectName = "ItemPrice";
+            this.column_uo_value.CellPadding = null;
+            this.column_uo_value.Text = "Value";
+            // 
             // text_input
             // 
             this.text_input.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -149,14 +166,14 @@
             this.text_input.MaxLength = 2048;
             this.text_input.Multiline = true;
             this.text_input.Name = "text_input";
-            this.text_input.Size = new System.Drawing.Size(249, 57);
+            this.text_input.Size = new System.Drawing.Size(264, 57);
             this.text_input.TabIndex = 4;
             this.text_input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_input_KeyPress);
             // 
             // button_send
             // 
             this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.Location = new System.Drawing.Point(269, 425);
+            this.button_send.Location = new System.Drawing.Point(284, 425);
             this.button_send.Name = "button_send";
             this.button_send.Size = new System.Drawing.Size(94, 57);
             this.button_send.TabIndex = 5;
@@ -166,10 +183,11 @@
             // 
             // button_accept
             // 
-            this.button_accept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_accept.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.button_accept.Enabled = false;
             this.button_accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_accept.Location = new System.Drawing.Point(369, 362);
+            this.button_accept.Location = new System.Drawing.Point(384, 362);
             this.button_accept.Name = "button_accept";
             this.button_accept.Size = new System.Drawing.Size(248, 89);
             this.button_accept.TabIndex = 9;
@@ -182,7 +200,7 @@
             this.label_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label_cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_cancel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_cancel.Location = new System.Drawing.Point(369, 454);
+            this.label_cancel.Location = new System.Drawing.Point(384, 454);
             this.label_cancel.Name = "label_cancel";
             this.label_cancel.Size = new System.Drawing.Size(248, 28);
             this.label_cancel.TabIndex = 10;
@@ -201,7 +219,7 @@
             this.list_otherofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_otherofferings,
             this.column_oo_value});
-            this.list_otherofferings.Location = new System.Drawing.Point(369, 188);
+            this.list_otherofferings.Location = new System.Drawing.Point(384, 188);
             this.list_otherofferings.Name = "list_otherofferings";
             this.list_otherofferings.Size = new System.Drawing.Size(248, 145);
             this.list_otherofferings.TabIndex = 11;
@@ -224,12 +242,18 @@
             this.column_oo_id.IsVisible = false;
             this.column_oo_id.Text = "ItemID";
             // 
+            // column_oo_value
+            // 
+            this.column_oo_value.AspectName = "ItemPrice";
+            this.column_oo_value.CellPadding = null;
+            this.column_oo_value.Text = "Value";
+            // 
             // check_userready
             // 
             this.check_userready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.check_userready.AutoSize = true;
             this.check_userready.Enabled = false;
-            this.check_userready.Location = new System.Drawing.Point(369, 166);
+            this.check_userready.Location = new System.Drawing.Point(384, 166);
             this.check_userready.Name = "check_userready";
             this.check_userready.Size = new System.Drawing.Size(102, 17);
             this.check_userready.TabIndex = 12;
@@ -242,7 +266,7 @@
             this.check_otherready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.check_otherready.AutoSize = true;
             this.check_otherready.Enabled = false;
-            this.check_otherready.Location = new System.Drawing.Point(369, 339);
+            this.check_otherready.Location = new System.Drawing.Point(384, 339);
             this.check_otherready.Name = "check_otherready";
             this.check_otherready.Size = new System.Drawing.Size(102, 17);
             this.check_otherready.TabIndex = 13;
@@ -251,48 +275,64 @@
             // 
             // text_log
             // 
+            this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.text_log.Location = new System.Drawing.Point(14, 263);
             this.text_log.Name = "text_log";
             this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(349, 156);
+            this.text_log.Size = new System.Drawing.Size(364, 156);
             this.text_log.TabIndex = 14;
             this.text_log.Text = "";
             // 
-            // column_value
+            // label_yourvalue
             // 
-            this.column_value.AspectName = "ItemPrice";
-            this.column_value.CellPadding = null;
-            this.column_value.Text = "Value";
-            this.column_value.Width = 90;
+            this.label_yourvalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_yourvalue.BackColor = System.Drawing.Color.Transparent;
+            this.label_yourvalue.Location = new System.Drawing.Point(492, 167);
+            this.label_yourvalue.Name = "label_yourvalue";
+            this.label_yourvalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label_yourvalue.Size = new System.Drawing.Size(140, 13);
+            this.label_yourvalue.TabIndex = 15;
+            this.label_yourvalue.Text = "Total Value: None";
             // 
-            // column_uo_value
+            // label_othervalue
             // 
-            this.column_uo_value.AspectName = "ItemPrice";
-            this.column_uo_value.CellPadding = null;
-            this.column_uo_value.Text = "Value";
+            this.label_othervalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_othervalue.BackColor = System.Drawing.Color.Transparent;
+            this.label_othervalue.Location = new System.Drawing.Point(492, 340);
+            this.label_othervalue.Name = "label_othervalue";
+            this.label_othervalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label_othervalue.Size = new System.Drawing.Size(140, 13);
+            this.label_othervalue.TabIndex = 16;
+            this.label_othervalue.Text = "Total Value: None";
             // 
-            // column_oo_value
+            // disableGroupingToolStripMenuItem
             // 
-            this.column_oo_value.AspectName = "ItemPrice";
-            this.column_oo_value.CellPadding = null;
-            this.column_oo_value.Text = "Value";
+            this.disableGroupingToolStripMenuItem.CheckOnClick = true;
+            this.disableGroupingToolStripMenuItem.Name = "disableGroupingToolStripMenuItem";
+            this.disableGroupingToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.disableGroupingToolStripMenuItem.Text = "Disable Grouping";
+            this.disableGroupingToolStripMenuItem.Click += new System.EventHandler(this.disableGroupingToolStripMenuItem_Click);
             // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(631, 497);
+            this.ClientSize = new System.Drawing.Size(646, 497);
+            this.Controls.Add(this.label_cancel);
+            this.Controls.Add(this.button_accept);
+            this.Controls.Add(this.label_othervalue);
             this.Controls.Add(this.text_log);
             this.Controls.Add(this.check_otherready);
             this.Controls.Add(this.check_userready);
             this.Controls.Add(this.list_otherofferings);
-            this.Controls.Add(this.label_cancel);
-            this.Controls.Add(this.button_accept);
             this.Controls.Add(this.button_send);
             this.Controls.Add(this.text_input);
             this.Controls.Add(this.list_userofferings);
             this.Controls.Add(this.list_inventory);
+            this.Controls.Add(this.label_yourvalue);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(587, 536);
             this.Name = "ShowTrade";
@@ -333,5 +373,8 @@
         private BrightIdeasSoftware.OLVColumn column_value;
         private BrightIdeasSoftware.OLVColumn column_uo_value;
         private BrightIdeasSoftware.OLVColumn column_oo_value;
+        private System.Windows.Forms.Label label_yourvalue;
+        private System.Windows.Forms.Label label_othervalue;
+        private System.Windows.Forms.ToolStripMenuItem disableGroupingToolStripMenuItem;
     }
 }
