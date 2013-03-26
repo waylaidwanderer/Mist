@@ -119,7 +119,7 @@
             this.viewChatLogToolStripMenuItem,
             this.steamRepToolStripMenuItem});
             this.menu_friend.Name = "menu_friend";
-            this.menu_friend.Size = new System.Drawing.Size(163, 208);
+            this.menu_friend.Size = new System.Drawing.Size(163, 230);
             // 
             // openChatToolStripMenuItem
             // 
@@ -137,7 +137,6 @@
             // 
             // viewGameInfoToolStripMenuItem
             // 
-            this.viewGameInfoToolStripMenuItem.Enabled = false;
             this.viewGameInfoToolStripMenuItem.Name = "viewGameInfoToolStripMenuItem";
             this.viewGameInfoToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.viewGameInfoToolStripMenuItem.Text = "View Game Info";

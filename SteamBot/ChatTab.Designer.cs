@@ -37,13 +37,13 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showBackpackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steam_status = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
             this.checkrep = new System.ComponentModel.BackgroundWorker();
             this.text_log = new System.Windows.Forms.RichTextBox();
             this.status_update = new System.ComponentModel.BackgroundWorker();
-            this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             this.SuspendLayout();
@@ -128,6 +128,13 @@
             this.showBackpackToolStripMenuItem.Text = "View Backpack";
             this.showBackpackToolStripMenuItem.Click += new System.EventHandler(this.showBackpackToolStripMenuItem_Click);
             // 
+            // viewChatLogToolStripMenuItem
+            // 
+            this.viewChatLogToolStripMenuItem.Name = "viewChatLogToolStripMenuItem";
+            this.viewChatLogToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.viewChatLogToolStripMenuItem.Text = "View Chat Log";
+            this.viewChatLogToolStripMenuItem.Click += new System.EventHandler(this.viewChatLogToolStripMenuItem_Click);
+            // 
             // steamRepStatusToolStripMenuItem
             // 
             this.steamRepStatusToolStripMenuItem.Name = "steamRepStatusToolStripMenuItem";
@@ -178,12 +185,6 @@
             // status_update
             // 
             this.status_update.DoWork += new System.ComponentModel.DoWorkEventHandler(this.status_update_DoWork);
-            // 
-            // viewChatLogToolStripMenuItem
-            // 
-            this.viewChatLogToolStripMenuItem.Name = "viewChatLogToolStripMenuItem";
-            this.viewChatLogToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.viewChatLogToolStripMenuItem.Text = "View Chat Log";
             // 
             // ChatTab
             // 

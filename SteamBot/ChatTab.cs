@@ -768,5 +768,30 @@ namespace MistClient
                 System.Threading.Thread.Sleep(1000);
             }
         }
+
+        private void viewChatLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+            string logDir = Path.Combine(Application.StartupPath, "logs");
+            string file = Path.Combine(logDir, sid.ToString() + ".txt");
+            if (!File.Exists(file))
+            {
+                ChatLog chatLog = new ChatLog(selected, sid.ToString());
+                chatLog.Show();
+                chatLog.Activate();
+            }
+            else
+            {
+                string[] log = File.ReadAllLines(file);
+                StringBuilder sb = new StringBuilder();
+                foreach (string line in log)
+                {
+                    sb.Append(line + Environment.NewLine);
+                }
+                ChatLog chatLog = new ChatLog(selected, sid.ToString(), sb.ToString());
+                chatLog.Show();
+                chatLog.Activate();
+            }
+        }
     }
 }

@@ -762,7 +762,7 @@ namespace SteamBot
                 }
                 string itemName = GetItemName(schemaItem, inventoryItem, false);
                 ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: ", itemName);
-                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + itemName);
+                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + itemName + "\r\n");
                 ShowTrade.ResetTradeStatus();
             }));
         }

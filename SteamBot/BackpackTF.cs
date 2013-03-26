@@ -30,7 +30,7 @@ namespace MistClient
             }
             catch
             {
-
+                response = null;
             }
 
             DateTime SchemaLastRequested = response.LastModified;

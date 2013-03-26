@@ -71,6 +71,8 @@ namespace MistClient
             trayIcon.Visible = false;
 
             trayIcon.DoubleClick += new System.EventHandler(this.OnTrayIconDoubleClick);
+
+            
         }
 
         public bool IsInGame()
@@ -683,6 +685,8 @@ namespace MistClient
             if (friends_list.SelectedItem != null)
             {
                 ulong SteamID = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
+                string game = bot.SteamFriends.GetFriendGamePlayedName(SteamID);
+                Console.WriteLine(game);
             }
         }
 
