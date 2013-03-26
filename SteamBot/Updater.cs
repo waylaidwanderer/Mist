@@ -72,5 +72,21 @@ namespace MistClient
         {
             this.Close();
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/");
+        }
+
+        private void linkLabel1_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip linkTip = new ToolTip();
+            linkTip.ToolTipIcon = ToolTipIcon.Info;
+            linkTip.IsBalloon = true;
+            linkTip.ShowAlways = true;
+            linkTip.ToolTipTitle = "Manual Download";
+            string link = "http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/";
+            linkTip.SetToolTip(linkLabel1, link);
+        }
     }
 }
