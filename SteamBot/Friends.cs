@@ -686,7 +686,11 @@ namespace MistClient
             {
                 ulong SteamID = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
                 string game = bot.SteamFriends.GetFriendGamePlayedName(SteamID);
-                Console.WriteLine(game);
+                if (game != null)
+                {
+                    Console.WriteLine(game);
+                    
+                }
             }
         }
 

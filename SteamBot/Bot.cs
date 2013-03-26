@@ -13,6 +13,7 @@ using SteamKit2;
 using SteamTrade;
 using System.Media;
 using ToastNotifications;
+using SteamKit2.Internal;
 
 namespace SteamBot
 {
@@ -392,6 +393,9 @@ namespace SteamBot
 
                 IsLoggedIn = true;
                 displayName = SteamFriends.GetPersonaName();
+                ConnectToGC(13540830642081628378);
+                Thread.Sleep(1000);
+                DisconnectFromGC();
                 try
                 {
                     main.Invoke((Action)(main.Hide));
@@ -400,6 +404,7 @@ namespace SteamBot
                 {
                     Environment.Exit(1);
                 }
+                Thread.Sleep(1000);
                 CDNCache.Initialize();
             });
 
@@ -751,6 +756,33 @@ namespace SteamBot
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(sender);
             Console.ForegroundColor = old_color;
+        }
+
+        public void ConnectToGC(ulong appId)
+        {
+            var playMsg = new ClientMsgProtobuf<CMsgClientGamesPlayed>(
+                EMsg.ClientGamesPlayedWithDataBlob);
+            var game = new CMsgClientGamesPlayed.GamePlayed
+            {
+                game_id = new GameID(appId),
+                game_extra_info = "Mist - Portable Steam Client",
+            };
+
+            playMsg.Body.games_played.Add(game);
+            SteamClient.Send(playMsg);
+        }
+
+        public void DisconnectFromGC()
+        {
+            var deregMsg = new ClientMsgProtobuf<CMsgClientDeregisterWithServer>(
+                EMsg.ClientDeregisterWithServer);
+
+            deregMsg.Body.eservertype = 42;
+            deregMsg.Body.app_id = 0;
+
+            SteamClient.Send(deregMsg);
+
+            ConnectToGC(0);
         }
 
         void UserLogOn()
