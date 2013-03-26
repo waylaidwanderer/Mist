@@ -443,25 +443,29 @@ namespace MistClient
             try
             {
                 string url = "http://steamrep.com/api/beta/reputation/" + sid;
-                string response = Util.HTTPRequest(url);
-                if (response != "")
+                for (int count = 0; count < 2; count++)
                 {
-                    string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
-                    if (status == "")
+                    string response = Util.HTTPRequest(url);
+                    if (response != "")
                     {
-                        MessageBox.Show("User has no special reputation.",
-                        "SteamRep Status",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation,
-                        MessageBoxDefaultButton.Button1);
-                    }
-                    else
-                    {
-                        MessageBox.Show(status,
-                        "SteamRep Status",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation,
-                        MessageBoxDefaultButton.Button1);
+                        string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
+                        if (status == "")
+                        {
+                            MessageBox.Show("User has no special reputation.",
+                            "SteamRep Status",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation,
+                            MessageBoxDefaultButton.Button1);
+                        }
+                        else
+                        {
+                            MessageBox.Show(status,
+                            "SteamRep Status",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation,
+                            MessageBoxDefaultButton.Button1);
+                        }
+                        break;
                     }
                 }
             }

@@ -507,25 +507,29 @@ namespace MistClient
                 {
                     ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
                     string url = "http://api.steamrep.org/profiles/" + sid;
-                    string response = Util.HTTPRequest(url);
-                    if (response != "")
+                    for (int count = 0; count < 2; count++)
                     {
-                        string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
-                        if (status == "")
+                        string response = Util.HTTPRequest(url);
+                        if (response != "")
                         {
-                            MessageBox.Show("User has no special reputation.",
-                            "SteamRep Status",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation,
-                            MessageBoxDefaultButton.Button1);
-                        }
-                        else
-                        {
-                            MessageBox.Show(status,
-                            "SteamRep Status",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation,
-                            MessageBoxDefaultButton.Button1);
+                            string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
+                            if (status == "")
+                            {
+                                MessageBox.Show("User has no special reputation.",
+                                "SteamRep Status",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation,
+                                MessageBoxDefaultButton.Button1);
+                            }
+                            else
+                            {
+                                MessageBox.Show(status,
+                                "SteamRep Status",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation,
+                                MessageBoxDefaultButton.Button1);
+                            }
+                            break;
                         }
                     }
                 }
@@ -757,25 +761,29 @@ namespace MistClient
                 {
                     ulong sid = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
                     string url = "http://api.steamrep.org/profiles/" + sid;
-                    string response = Util.HTTPRequest(url);
-                    if (response != "")
+                    for (int count = 0; count < 2; count++)
                     {
-                        string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
-                        if (status == "")
+                        string response = Util.HTTPRequest(url);
+                        if (response != "")
                         {
-                            MessageBox.Show("User has no special reputation.",
-                            "SteamRep Status",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation,
-                            MessageBoxDefaultButton.Button1);
-                        }
-                        else
-                        {
-                            MessageBox.Show(status,
-                            "SteamRep Status",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation,
-                            MessageBoxDefaultButton.Button1);
+                            string status = Util.ParseBetween(response, "<reputation>", "</reputation>");
+                            if (status == "")
+                            {
+                                MessageBox.Show("User has no special reputation.",
+                                "SteamRep Status",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation,
+                                MessageBoxDefaultButton.Button1);
+                            }
+                            else
+                            {
+                                MessageBox.Show(status,
+                                "SteamRep Status",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation,
+                                MessageBoxDefaultButton.Button1);
+                            }
+                            break;
                         }
                     }
                 }
