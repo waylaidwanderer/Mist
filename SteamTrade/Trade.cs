@@ -192,7 +192,8 @@ namespace SteamTrade
             bool ok = CancelTradeWebCmd ();
 
             if (!ok)
-                throw new TradeException ("The Web command to cancel the trade failed");
+                Console.WriteLine("The Web command to cancel the trade failed");
+                //throw new TradeException ("The Web command to cancel the trade failed");
             
             if (OnClose != null)
                 OnClose ();
@@ -349,7 +350,8 @@ namespace SteamTrade
             bool ok = SendMessageWebCmd (msg);
 
             if (!ok)
-                throw new TradeException ("The web command to send the trade message failed.");
+                Console.WriteLine("The web command to send the trade message failed.");
+                //throw new TradeException ("The web command to send the trade message failed.");
 
             return true;
         }

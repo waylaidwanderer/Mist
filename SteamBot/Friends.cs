@@ -937,5 +937,15 @@ namespace MistClient
                 this.friends_list.SetObjects(ListFriends.Get());
             }
         }
+
+        private void friends_list_BeforeSearching_1(object sender, BeforeSearchingEventArgs e)
+        {
+            e.Canceled = true;
+        }
+
+        private void list_friendreq_BeforeSearching(object sender, BeforeSearchingEventArgs e)
+        {
+            e.Canceled = true;
+        }
     }
 }

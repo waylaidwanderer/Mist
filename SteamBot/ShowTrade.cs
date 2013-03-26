@@ -23,6 +23,8 @@ namespace MistClient
         public bool focused = false;
         public double OtherTotalValue = 0;
         double YourTotalValue = 0;
+        Thread acceptTrade;
+        bool tradeCompleted;
 
         public ShowTrade(Bot bot, string name)
         {
@@ -39,7 +41,7 @@ namespace MistClient
                 {
                     if (bot.CurrentTrade == null)
                     {
-                        bot.main.Invoke((Action)(this.Dispose));
+                        bot.main.Invoke((Action)(this.Close));
                         bot.log.Warn("Trade expired.");
                         if (Friends.chat_opened)
                         {
@@ -177,6 +179,11 @@ namespace MistClient
             button_accept.Enabled = false;
             button_accept.Text = "Accept Trade";
             accepted = false;
+            if (acceptTrade != null)
+            {
+                if (acceptTrade.IsAlive)
+                    acceptTrade.Abort();
+            }
         }
 
         public void AppendText(string message)
@@ -266,53 +273,48 @@ namespace MistClient
             button_accept.Enabled = false;
             button_accept.Text = "Waiting for other user...";
             Thread.Sleep(500);
-            while (!bot.otherAccepted)
+            acceptTrade = new Thread(() =>
             {
-
-            }
-            bool success = bot.CurrentTrade.AcceptTrade();             
-            if (Friends.chat_opened)
-            {
-                bot.main.Invoke((Action)(() =>
+                while (!bot.otherAccepted)
                 {
-                    foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
+
+                }
+                bool success = tradeCompleted = bot.CurrentTrade.AcceptTrade();
+                if (Friends.chat_opened)
+                {
+                    bot.main.Invoke((Action)(() =>
                     {
-                        if (tab.Text == bot.SteamFriends.GetFriendPersonaName(sid))
+                        foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                         {
-                            tab.Invoke((Action)(() =>
+                            if (tab.Text == bot.SteamFriends.GetFriendPersonaName(sid))
                             {
-                                foreach (var item in tab.Controls)
+                                tab.Invoke((Action)(() =>
                                 {
-                                    Friends.chat.chatTab = (ChatTab)item;
-                                }
-                                if (success)
-                                {
-                                    string result = String.Format("Trade completed with {0}.", bot.SteamFriends.GetFriendPersonaName(sid));
-                                    bot.log.Success(result);
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
-                                }
-                                else
-                                {
-                                    string result = "The trade may have failed.";
-                                    bot.log.Warn(result);
-                                    Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
-                                }
-                            }));
-                            break; ;
+                                    foreach (var item in tab.Controls)
+                                    {
+                                        Friends.chat.chatTab = (ChatTab)item;
+                                    }
+                                    if (success)
+                                    {
+                                        string result = String.Format("Trade completed with {0}.", bot.SteamFriends.GetFriendPersonaName(sid));
+                                        bot.log.Success(result);
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
+                                    }
+                                    else
+                                    {
+                                        string result = "The trade may have failed.";
+                                        bot.log.Warn(result);
+                                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
+                                    }
+                                }));
+                                break; ;
+                            }
                         }
-                    }
 
-                }));
-            }
-        }
-
-        private void ShowTrade_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (bot.CurrentTrade != null)
-            {
-                ClearAll();
-                bot.CurrentTrade.CancelTrade();
-            }
+                    }));
+                }
+            });
+            acceptTrade.Start();
         }
 
         private void list_inventory_ItemActivate(object sender, EventArgs e)
@@ -494,9 +496,43 @@ namespace MistClient
                     if (!item.IsNotTradeable)
                     {
                         var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex);
-                        var name = GetItemName(currentItem, item);
-                        string price = Util.GetPrice(item.Defindex, currentItem.ItemQuality, item);
-                        bot.log.Info("Adding " + name + ", " + item.Id);
+                        var itemName = GetItemName(currentItem, item);
+                        string itemValue = Util.GetPrice(item.Defindex, currentItem.ItemQuality, item);
+                        double value = 0;
+                        if (itemValue.Contains("ref"))
+                        {
+                            string newValue = ReplaceLastOccurrence(itemValue, "ref", "");
+                            value = Convert.ToDouble(newValue);
+                        }
+                        else if (itemValue.Contains("key"))
+                        {
+                            string newValue = ReplaceLastOccurrence(itemValue, "keys", "");
+                            Console.WriteLine("{0}, {1}", itemValue, newValue);
+                            value = Convert.ToDouble(newValue);
+                            value = value * BackpackTF.KeyPrice;
+                        }
+                        else if (itemValue.Contains("bud"))
+                        {
+                            string newValue = ReplaceLastOccurrence(itemValue, "buds", "");
+                            value = Convert.ToDouble(newValue);
+                            value = value * BackpackTF.BudPrice;
+                        }
+                        YourTotalValue += value;
+                        if (YourTotalValue >= BackpackTF.BudPrice * 1.33)
+                        {
+                            double formatPrice = YourTotalValue / BackpackTF.BudPrice;
+                            label_yourvalue.Text = "Total Value: " + formatPrice.ToString("0.00") + " buds";
+                        }
+                        else if (YourTotalValue >= BackpackTF.KeyPrice)
+                        {
+                            double formatPrice = YourTotalValue / BackpackTF.KeyPrice;
+                            label_yourvalue.Text = "Total Value: " + formatPrice.ToString("0.00") + " keys";
+                        }
+                        else
+                        {
+                            label_yourvalue.Text = "Total Value: " + YourTotalValue.ToString("0.00") + " ref";
+                        }
+                        bot.log.Info("Adding " + itemName + ", " + item.Id);
                         try
                         {
                             bot.CurrentTrade.AddItem(item.Id);
@@ -505,10 +541,62 @@ namespace MistClient
                             {
                                 check_userready.Enabled = true;
                             }
-                            AppendText("You added: ", name);
+                            Color prevColor = text_log.SelectionColor;
+                            text_log.AppendText("You added: ");
+                            if (itemName.Contains("Strange"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#CF6A32");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Vintage"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#476291");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Unusual"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#8650AC");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Geniune"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#4D7455");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Haunted"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#38F3AB");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Community") || itemName.Contains("Self-Made"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#70B04A");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Valve"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#A50F79");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else
+                            {
+                                //text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                text_log.SelectionColor = Color.DarkGoldenrod;
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            text_log.AppendText(" [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                            text_log.ScrollToCaret();
                             ResetTradeStatus();
-                            ListUserOfferings.Add(name, item.Id, price);
-                            ListInventory.Remove(name, item.Id);
+                            ListUserOfferings.Add(itemName, item.Id, itemValue);
+                            ListInventory.Remove(itemName, item.Id);
                             list_userofferings.SetObjects(ListUserOfferings.Get());
                             list_inventory.SetObjects(ListInventory.Get());
                         }
@@ -823,6 +911,15 @@ namespace MistClient
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning,
                                 MessageBoxDefaultButton.Button1);
+            }
+        }
+
+        private void ShowTrade_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ClearAll();
+            if (bot.CurrentTrade != null && !tradeCompleted)
+            {
+                bot.CurrentTrade.CancelTrade();
             }
         }
     }

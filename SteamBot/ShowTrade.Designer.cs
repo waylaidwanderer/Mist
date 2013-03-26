@@ -385,7 +385,7 @@
             this.Text = "ShowTrade";
             this.Activated += new System.EventHandler(this.ShowTrade_Activated);
             this.Deactivate += new System.EventHandler(this.ShowTrade_Deactivate);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShowTrade_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ShowTrade_FormClosed);
             this.Load += new System.EventHandler(this.ShowTrade_Load);
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);

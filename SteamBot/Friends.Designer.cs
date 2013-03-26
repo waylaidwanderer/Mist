@@ -395,6 +395,7 @@
             this.list_friendreq.UseCompatibleStateImageBehavior = false;
             this.list_friendreq.View = System.Windows.Forms.View.Details;
             this.list_friendreq.Visible = false;
+            this.list_friendreq.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.list_friendreq_BeforeSearching);
             // 
             // column_friendreq_name
             // 
@@ -488,6 +489,7 @@
             this.friends_list.TabIndex = 15;
             this.friends_list.UseCompatibleStateImageBehavior = false;
             this.friends_list.View = System.Windows.Forms.View.Details;
+            this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching_1);
             this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate_1);
             // 
             // column_friend
