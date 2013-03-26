@@ -146,6 +146,7 @@ namespace MistClient
                     e.Handled = true;                
                     bot.CurrentTrade.SendMessage(text_input.Text);
                     text_log.AppendText(Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                    text_log.ScrollToCaret();
                     ChatTab.AppendLog(sid, "[Trade Chat] " + Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                     clear();
                 }
@@ -169,6 +170,7 @@ namespace MistClient
         public void AppendText(string message)
         {
             text_log.AppendText(message + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+            text_log.ScrollToCaret();
         }
 
         public void AppendText(string message, string itemName)
@@ -224,6 +226,7 @@ namespace MistClient
                 text_log.SelectionColor = prevColor;
             }
             text_log.AppendText(" [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+            text_log.ScrollToCaret();
         }
 
         private void button_send_Click(object sender, EventArgs e)
@@ -232,6 +235,7 @@ namespace MistClient
             {
                 bot.CurrentTrade.SendMessage(text_input.Text);
                 text_log.AppendText(Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                text_log.ScrollToCaret();
                 ChatTab.AppendLog(sid, "[Trade Chat] " + Bot.displayName + ": " + text_input.Text + " [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                 clear();
             }
@@ -303,6 +307,7 @@ namespace MistClient
             try
             {
                 ulong itemID = Convert.ToUInt64(column_id.GetValue(list_inventory.SelectedItem.RowObject));
+                string itemValue = column_value.GetValue(list_inventory.SelectedItem.RowObject).ToString();
                 if (itemID != 0)
                 {
                     try
@@ -376,9 +381,10 @@ namespace MistClient
                                     text_log.SelectionColor = prevColor;
                                 }
                                 text_log.AppendText(" [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                                text_log.ScrollToCaret();
                                 ResetTradeStatus();
                                 list_inventory.SelectedItem.Remove();
-                                ListUserOfferings.Add(itemName, itemID);
+                                ListUserOfferings.Add(itemName, itemID, itemValue);
                                 ListInventory.Remove(itemName, itemID);
                                 list_userofferings.SetObjects(ListUserOfferings.Get());
                                 list_inventory.SetObjects(ListInventory.Get());
@@ -440,6 +446,7 @@ namespace MistClient
                     {
                         var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex);
                         var name = GetItemName(currentItem, item);
+                        string price = Util.GetPrice(item.Defindex, currentItem.ItemQuality, item);
                         bot.log.Info("Adding " + name + ", " + item.Id);
                         try
                         {
@@ -449,9 +456,9 @@ namespace MistClient
                             {
                                 check_userready.Enabled = true;
                             }
-                            AppendText("You added: " + name);
+                            AppendText("You added: ", name);
                             ResetTradeStatus();
-                            ListUserOfferings.Add(name, item.Id);
+                            ListUserOfferings.Add(name, item.Id, price);
                             ListInventory.Remove(name, item.Id);
                             list_userofferings.SetObjects(ListUserOfferings.Get());
                             list_inventory.SetObjects(ListInventory.Get());
@@ -549,7 +556,8 @@ namespace MistClient
 
         private void list_userofferings_ItemActivate(object sender, EventArgs e)
         {
-            ulong itemID = Convert.ToUInt64(column_id.GetValue(list_userofferings.SelectedItem.RowObject));
+            ulong itemID = Convert.ToUInt64(column_uo_id.GetValue(list_userofferings.SelectedItem.RowObject));
+            string itemValue = column_uo_value.GetValue(list_userofferings.SelectedItem.RowObject).ToString();
             if (itemID != 0)
             {
                 try
@@ -576,10 +584,61 @@ namespace MistClient
                             {
                                 check_userready.Enabled = true;
                             }
-                            AppendText("You removed: " + itemName);
+                            Color prevColor = text_log.SelectionColor;
+                            text_log.AppendText("You removed: ");
+                            if (itemName.Contains("Strange"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#CF6A32");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Vintage"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#476291");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Unusual"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#8650AC");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Geniune"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#4D7455");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Haunted"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#38F3AB");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Community") || itemName.Contains("Self-Made"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#70B04A");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else if (itemName.Contains("Valve"))
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#A50F79");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            else
+                            {
+                                text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
+                                text_log.AppendText(itemName);
+                                text_log.SelectionColor = prevColor;
+                            }
+                            text_log.AppendText(" [" + DateTime.Now.ToLongTimeString() + "]\r\n");
+                            text_log.ScrollToCaret();
                             ResetTradeStatus();
                             list_userofferings.SelectedItem.Remove();
-                            ListInventory.Add(itemName, itemID, img);
+                            ListInventory.Add(itemName, itemID, img, itemValue);
                             ListUserOfferings.Remove(itemName, itemID);
                             list_inventory.SetObjects(ListInventory.Get());
                             list_userofferings.SetObjects(ListUserOfferings.Get());
