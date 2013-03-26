@@ -21,7 +21,7 @@ namespace MistClient
     {
         public static bool chat_opened = false;
         public static Chat chat;
-        public static bool keepLog;
+        public static bool keepLog = true;
         SteamBot.Bot bot;
         static int TimerInterval = 30000;
         System.Timers.Timer refreshTimer = new System.Timers.Timer(TimerInterval);
@@ -71,8 +71,6 @@ namespace MistClient
             trayIcon.Visible = false;
 
             trayIcon.DoubleClick += new System.EventHandler(this.OnTrayIconDoubleClick);
-
-            
         }
 
         public bool IsInGame()

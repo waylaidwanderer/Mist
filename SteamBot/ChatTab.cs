@@ -364,7 +364,7 @@ namespace MistClient
                     text_log.AppendText(message);
                     text_log.ScrollToCaret();
                     text_log.SelectionColor = prevColor;
-                    if (!Friends.keepLog)
+                    if (Friends.keepLog)
                         AppendLog(sid, date + name + message);
                     clear();
                 }
