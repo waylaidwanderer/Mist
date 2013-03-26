@@ -955,5 +955,11 @@ namespace MistClient
             this.Dispose();
             Environment.Exit(0);
         }
+
+        private void Friends_Leave(object sender, EventArgs e)
+        {
+            text_search.Text = "";
+            this.friends_list.SetObjects(ListFriends.Get());
+        }
     }
 }

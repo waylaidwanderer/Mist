@@ -211,7 +211,7 @@
             this.checkForUpdatesToolStripMenuItem,
             this.exitMistToolStripMenuItem});
             this.menu_status.Name = "menu_status";
-            this.menu_status.Size = new System.Drawing.Size(197, 346);
+            this.menu_status.Size = new System.Drawing.Size(197, 324);
             // 
             // onlineToolStripMenuItem
             // 
@@ -568,6 +568,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Friends_FormClosed);
             this.Load += new System.EventHandler(this.Friends_Load);
             this.ResizeEnd += new System.EventHandler(this.Friends_ResizeEnd);
+            this.Leave += new System.EventHandler(this.Friends_Leave);
             this.menu_friend.ResumeLayout(false);
             this.menu_status.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();

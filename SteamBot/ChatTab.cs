@@ -415,13 +415,13 @@ namespace MistClient
             {
                 if (tab.Text == steam_name.Text)
                 {
-                    Console.WriteLine("Looking at " + tab.Text);
                     foreach (var item in tab.Controls)
                     {
                         Friends.chat.chatTab = (ChatTab)item;
                     }
                 }
             }
+            this.Font = new Font(this.Font, FontStyle.Regular);
         }
 
         private void ChatTab_Leave(object sender, EventArgs e)

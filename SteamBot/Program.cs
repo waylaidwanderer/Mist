@@ -91,8 +91,11 @@ namespace SteamBot
             }
             catch
             {
-                login.Show();
-                login.Activate(); 
+                if (login != null)
+                {
+                    login.Show();
+                    login.Activate();
+                }
             }
         }
 

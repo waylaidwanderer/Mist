@@ -112,7 +112,7 @@
             this.viewChatLogToolStripMenuItem,
             this.steamRepStatusToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 92);
             // 
             // viewProfileToolStripMenuItem
             // 
