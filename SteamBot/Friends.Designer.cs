@@ -211,7 +211,7 @@
             this.checkForUpdatesToolStripMenuItem,
             this.exitMistToolStripMenuItem});
             this.menu_status.Name = "menu_status";
-            this.menu_status.Size = new System.Drawing.Size(197, 324);
+            this.menu_status.Size = new System.Drawing.Size(197, 346);
             // 
             // onlineToolStripMenuItem
             // 
@@ -324,6 +324,7 @@
             this.exitMistToolStripMenuItem.Name = "exitMistToolStripMenuItem";
             this.exitMistToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.exitMistToolStripMenuItem.Text = "Exit Mist";
+            this.exitMistToolStripMenuItem.Click += new System.EventHandler(this.exitMistToolStripMenuItem_Click);
             // 
             // label1
             // 

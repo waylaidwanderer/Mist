@@ -947,5 +947,13 @@ namespace MistClient
         {
             e.Canceled = true;
         }
+
+        private void exitMistToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            minimizeToTray = false;
+            this.Close();
+            this.Dispose();
+            Environment.Exit(0);
+        }
     }
 }
