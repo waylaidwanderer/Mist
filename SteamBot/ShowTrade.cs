@@ -768,6 +768,8 @@ namespace MistClient
 
         private void ShowTrade_Load(object sender, EventArgs e)
         {
+            label_yourvalue.Visible = false;
+            label_othervalue.Visible = false;
             focused = false;
             ToolTip priceTip = new ToolTip();
             priceTip.ToolTipIcon = ToolTipIcon.Info;
@@ -792,6 +794,36 @@ namespace MistClient
             list_inventory.ShowGroups = !checkedState;
             list_userofferings.ShowGroups = !checkedState;
             list_otherofferings.ShowGroups = !checkedState;
+        }
+
+        private void disableItemGroupingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool checkedState = disableItemGroupingToolStripMenuItem.Checked;
+            list_inventory.ShowGroups = !checkedState;
+            list_userofferings.ShowGroups = !checkedState;
+            list_otherofferings.ShowGroups = !checkedState;
+        }
+
+        private void viewSuggestedItemPricesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool checkedState = viewSuggestedItemPricesToolStripMenuItem.Checked;
+            label_yourvalue.Visible = checkedState;
+            label_othervalue.Visible = checkedState;
+            column_value.IsVisible = checkedState;
+            column_uo_value.IsVisible = checkedState;
+            column_oo_value.IsVisible = checkedState;
+            list_inventory.RebuildColumns();
+            list_userofferings.RebuildColumns();
+            list_otherofferings.RebuildColumns();
+            if (checkedState)
+            {
+                MessageBox.Show("These prices are pulled from backpack.tf. They are submitted suggestions, and should only be taken as a rough guide."
+                                + "\nThe price checker DOES NOT take into account the value of paints or strange parts on items, and are especially not guaranteed to be accurate for Unusuals.",
+                                "Item Price Checker",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button1);
+            }
         }
     }
 }

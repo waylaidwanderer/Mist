@@ -36,6 +36,7 @@
             this.column_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addAllItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.list_userofferings = new BrightIdeasSoftware.ObjectListView();
             this.column_userofferings = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_uo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -53,11 +54,15 @@
             this.text_log = new System.Windows.Forms.RichTextBox();
             this.label_yourvalue = new System.Windows.Forms.Label();
             this.label_othervalue = new System.Windows.Forms.Label();
-            this.disableGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableItemGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewSuggestedItemPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.list_otherofferings)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // list_inventory
@@ -69,12 +74,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.list_inventory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_inventory,
-            this.column_value});
+            this.column_inventory});
             this.list_inventory.ContextMenuStrip = this.contextMenuStrip1;
-            this.list_inventory.Location = new System.Drawing.Point(14, 15);
+            this.list_inventory.Location = new System.Drawing.Point(14, 27);
             this.list_inventory.Name = "list_inventory";
-            this.list_inventory.Size = new System.Drawing.Size(364, 242);
+            this.list_inventory.Size = new System.Drawing.Size(364, 230);
             this.list_inventory.TabIndex = 0;
             this.list_inventory.UseCompatibleStateImageBehavior = false;
             this.list_inventory.View = System.Windows.Forms.View.Details;
@@ -94,6 +98,8 @@
             // 
             this.column_value.AspectName = "ItemPrice";
             this.column_value.CellPadding = null;
+            this.column_value.DisplayIndex = 1;
+            this.column_value.IsVisible = false;
             this.column_value.Text = "Value";
             this.column_value.Width = 90;
             // 
@@ -110,14 +116,22 @@
             this.addAllItemsToolStripMenuItem,
             this.disableGroupingToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(166, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(193, 48);
             // 
             // addAllItemsToolStripMenuItem
             // 
             this.addAllItemsToolStripMenuItem.Name = "addAllItemsToolStripMenuItem";
-            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.addAllItemsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.addAllItemsToolStripMenuItem.Text = "Add All Items";
             this.addAllItemsToolStripMenuItem.Click += new System.EventHandler(this.addAllItemsToolStripMenuItem_Click);
+            // 
+            // disableGroupingToolStripMenuItem
+            // 
+            this.disableGroupingToolStripMenuItem.CheckOnClick = true;
+            this.disableGroupingToolStripMenuItem.Name = "disableGroupingToolStripMenuItem";
+            this.disableGroupingToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.disableGroupingToolStripMenuItem.Text = "Disable Item Grouping";
+            this.disableGroupingToolStripMenuItem.Click += new System.EventHandler(this.disableGroupingToolStripMenuItem_Click);
             // 
             // list_userofferings
             // 
@@ -126,11 +140,10 @@
             this.list_userofferings.AllColumns.Add(this.column_uo_value);
             this.list_userofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_userofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_userofferings,
-            this.column_uo_value});
-            this.list_userofferings.Location = new System.Drawing.Point(384, 15);
+            this.column_userofferings});
+            this.list_userofferings.Location = new System.Drawing.Point(384, 27);
             this.list_userofferings.Name = "list_userofferings";
-            this.list_userofferings.Size = new System.Drawing.Size(248, 145);
+            this.list_userofferings.Size = new System.Drawing.Size(248, 139);
             this.list_userofferings.TabIndex = 1;
             this.list_userofferings.UseCompatibleStateImageBehavior = false;
             this.list_userofferings.View = System.Windows.Forms.View.Details;
@@ -156,6 +169,8 @@
             // 
             this.column_uo_value.AspectName = "ItemPrice";
             this.column_uo_value.CellPadding = null;
+            this.column_uo_value.DisplayIndex = 1;
+            this.column_uo_value.IsVisible = false;
             this.column_uo_value.Text = "Value";
             // 
             // text_input
@@ -217,11 +232,10 @@
             this.list_otherofferings.AllColumns.Add(this.column_oo_value);
             this.list_otherofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_otherofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_otherofferings,
-            this.column_oo_value});
-            this.list_otherofferings.Location = new System.Drawing.Point(384, 188);
+            this.column_otherofferings});
+            this.list_otherofferings.Location = new System.Drawing.Point(384, 195);
             this.list_otherofferings.Name = "list_otherofferings";
-            this.list_otherofferings.Size = new System.Drawing.Size(248, 145);
+            this.list_otherofferings.Size = new System.Drawing.Size(248, 139);
             this.list_otherofferings.TabIndex = 11;
             this.list_otherofferings.UseCompatibleStateImageBehavior = false;
             this.list_otherofferings.View = System.Windows.Forms.View.Details;
@@ -231,6 +245,7 @@
             this.column_otherofferings.AspectName = "ItemName";
             this.column_otherofferings.CellPadding = null;
             this.column_otherofferings.FillsFreeSpace = true;
+            this.column_otherofferings.IsVisible = false;
             this.column_otherofferings.Text = "Other\'s Offerings:";
             this.column_otherofferings.UseInitialLetterForGroup = true;
             this.column_otherofferings.Width = 120;
@@ -246,6 +261,8 @@
             // 
             this.column_oo_value.AspectName = "ItemPrice";
             this.column_oo_value.CellPadding = null;
+            this.column_oo_value.DisplayIndex = 1;
+            this.column_oo_value.IsVisible = false;
             this.column_oo_value.Text = "Value";
             // 
             // check_userready
@@ -253,7 +270,7 @@
             this.check_userready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.check_userready.AutoSize = true;
             this.check_userready.Enabled = false;
-            this.check_userready.Location = new System.Drawing.Point(384, 166);
+            this.check_userready.Location = new System.Drawing.Point(384, 172);
             this.check_userready.Name = "check_userready";
             this.check_userready.Size = new System.Drawing.Size(102, 17);
             this.check_userready.TabIndex = 12;
@@ -289,7 +306,7 @@
             this.label_yourvalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label_yourvalue.BackColor = System.Drawing.Color.Transparent;
-            this.label_yourvalue.Location = new System.Drawing.Point(492, 167);
+            this.label_yourvalue.Location = new System.Drawing.Point(492, 173);
             this.label_yourvalue.Name = "label_yourvalue";
             this.label_yourvalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label_yourvalue.Size = new System.Drawing.Size(140, 13);
@@ -308,19 +325,47 @@
             this.label_othervalue.TabIndex = 16;
             this.label_othervalue.Text = "Total Value: None";
             // 
-            // disableGroupingToolStripMenuItem
+            // menuStrip1
             // 
-            this.disableGroupingToolStripMenuItem.CheckOnClick = true;
-            this.disableGroupingToolStripMenuItem.Name = "disableGroupingToolStripMenuItem";
-            this.disableGroupingToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.disableGroupingToolStripMenuItem.Text = "Disable Grouping";
-            this.disableGroupingToolStripMenuItem.Click += new System.EventHandler(this.disableGroupingToolStripMenuItem_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(646, 24);
+            this.menuStrip1.TabIndex = 17;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.disableItemGroupingToolStripMenuItem,
+            this.viewSuggestedItemPricesToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // disableItemGroupingToolStripMenuItem
+            // 
+            this.disableItemGroupingToolStripMenuItem.CheckOnClick = true;
+            this.disableItemGroupingToolStripMenuItem.Name = "disableItemGroupingToolStripMenuItem";
+            this.disableItemGroupingToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.disableItemGroupingToolStripMenuItem.Text = "Disable Item Grouping";
+            this.disableItemGroupingToolStripMenuItem.Click += new System.EventHandler(this.disableItemGroupingToolStripMenuItem_Click);
+            // 
+            // viewSuggestedItemPricesToolStripMenuItem
+            // 
+            this.viewSuggestedItemPricesToolStripMenuItem.CheckOnClick = true;
+            this.viewSuggestedItemPricesToolStripMenuItem.Name = "viewSuggestedItemPricesToolStripMenuItem";
+            this.viewSuggestedItemPricesToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.viewSuggestedItemPricesToolStripMenuItem.Text = "View Suggested Item Prices";
+            this.viewSuggestedItemPricesToolStripMenuItem.Click += new System.EventHandler(this.viewSuggestedItemPricesToolStripMenuItem_Click);
             // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(646, 497);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label_cancel);
             this.Controls.Add(this.button_accept);
             this.Controls.Add(this.label_othervalue);
@@ -334,6 +379,7 @@
             this.Controls.Add(this.list_inventory);
             this.Controls.Add(this.label_yourvalue);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(587, 536);
             this.Name = "ShowTrade";
             this.Text = "ShowTrade";
@@ -345,6 +391,8 @@
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.list_otherofferings)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,5 +424,9 @@
         private System.Windows.Forms.Label label_yourvalue;
         private System.Windows.Forms.Label label_othervalue;
         private System.Windows.Forms.ToolStripMenuItem disableGroupingToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disableItemGroupingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewSuggestedItemPricesToolStripMenuItem;
     }
 }
