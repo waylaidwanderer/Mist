@@ -100,6 +100,7 @@ namespace MistClient
                     streamRemote.Close();
                 }
             }
+            Util.HTTPRequest("http://www.thectscommunity.com/dev/tracker.php");
             if (!File.Exists("Update.zip"))
             {
                 log.Error("[UPDATER] The file has failed to download.");

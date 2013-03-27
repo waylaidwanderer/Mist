@@ -11,5 +11,5 @@ using System.Reflection;
 
 // "{Major}.{Minor}.{Build}.*" will automatically update the revision.
 // SteamBot uses Semantic Versioning (http://semver.org/)
-[assembly: AssemblyVersion("2.13.9")]
+[assembly: AssemblyVersion("3.0.0")]
 
