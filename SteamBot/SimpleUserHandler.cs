@@ -571,6 +571,8 @@ namespace SteamBot
             {   
                 Console.WriteLine("Trade window opened.");
                 Console.WriteLine("Loading all inventory items.");
+                if (Bot.CurrentTrade == null)
+                    return;
                 Inventory.Item[] inventory = Trade.MyInventory.Items;
                 foreach (Inventory.Item item in inventory)
                 {

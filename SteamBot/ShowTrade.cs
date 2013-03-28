@@ -438,7 +438,7 @@ namespace MistClient
                                 ListUserOfferings.Add(itemName, itemID, itemValue);
                                 ListInventory.Remove(itemName, itemID);
                                 list_userofferings.SetObjects(ListUserOfferings.Get());
-                                list_inventory.SetObjects(ListInventory.Get());
+                                //list_inventory.SetObjects(ListInventory.Get());
                             }
                             catch (SteamTrade.Exceptions.TradeException ex)
                             {
@@ -812,7 +812,7 @@ namespace MistClient
                             list_userofferings.SelectedItem.Remove();
                             ListInventory.Add(itemName, itemID, img, itemValue);
                             ListUserOfferings.Remove(itemName, itemID);
-                            list_inventory.SetObjects(ListInventory.Get());
+                            //list_inventory.SetObjects(ListInventory.Get());
                             list_userofferings.SetObjects(ListUserOfferings.Get());
                         }
                         catch (SteamTrade.Exceptions.TradeException ex)
@@ -920,6 +920,43 @@ namespace MistClient
             if (bot.CurrentTrade != null && !tradeCompleted)
             {
                 bot.CurrentTrade.CancelTrade();
+            }
+        }
+
+        private void text_search_Enter(object sender, EventArgs e)
+        {
+            text_search.Clear();
+            text_search.ForeColor = SystemColors.WindowText;
+            text_search.Font = new Font(text_search.Font, FontStyle.Regular);
+        }
+
+        private void text_search_Leave(object sender, EventArgs e)
+        {
+            if (text_search.Text == null)
+            {
+                this.list_inventory.SetObjects(ListInventory.Get());
+                text_search.ForeColor = Color.Gray;
+                text_search.Font = new Font(text_search.Font, FontStyle.Italic);
+                text_search.Text = "Search for an item in your inventory...";
+            }
+            if (this.list_inventory.Columns == null)
+                this.list_inventory.SetObjects(ListInventory.Get());
+        }
+
+        private void text_search_TextChanged(object sender, EventArgs e)
+        {
+            if (text_search.Text == "")
+                this.list_inventory.SetObjects(ListInventory.Get());
+            else
+                this.list_inventory.SetObjects(ListInventory.Get(text_search.Text));
+        }
+
+        private void text_search_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 27)
+            {
+                text_search.Clear();
+                this.list_inventory.SetObjects(ListInventory.Get());
             }
         }
     }

@@ -324,39 +324,48 @@ namespace SteamBot
 
             msg.Handle<SteamUser.LoginKeyCallback> (callback =>
             {
+                log.Debug("Handling LoginKeyCallback...");
+
                 while (true)
                 {
-                    log.Info ("About to authenticate...");
-                    bool authd = false;
                     try
                     {
-                        authd = SteamWeb.Authenticate(callback, SteamClient, out sessionId, out token);
+                        log.Info("About to authenticate...");
+                        bool authd = false;
+                        try
+                        {
+                            authd = SteamWeb.Authenticate(callback, SteamClient, out sessionId, out token);
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error("Error on authentication:\n" + ex);
+                        }
+                        if (authd)
+                        {
+                            log.Success("User Authenticated!");
+                            main.Invoke((Action)(() =>
+                            {
+                                main.label_status.Text = "User authenticated!";
+                            }));
+                            tradeManager = new TradeManager(apiKey, sessionId, token);
+                            tradeManager.SetTradeTimeLimits(MaximumTradeTime, MaximiumActionGap, TradePollingInterval);
+                            tradeManager.OnTimeout += OnTradeTimeout;
+                            tradeManager.OnTradeEnded += OnTradeEnded;
+                            break;
+                        }
+                        else
+                        {
+                            log.Warn("Authentication failed, retrying in 2s...");
+                            main.Invoke((Action)(() =>
+                            {
+                                main.label_status.Text = "Authentication failed, retrying in 2s...";
+                            }));
+                            Thread.Sleep(2000);
+                        }
                     }
                     catch (Exception ex)
                     {
-                        log.Error("Error on authentication:\n" + ex);
-                    }
-                    if (authd)
-                    {
-                        log.Success ("User Authenticated!");
-                        main.Invoke((Action)(() =>
-                        {
-                            main.label_status.Text = "User authenticated!";
-                        }));
-                        tradeManager = new TradeManager(apiKey, sessionId, token);
-                        tradeManager.SetTradeTimeLimits(MaximumTradeTime, MaximiumActionGap, TradePollingInterval);
-                        tradeManager.OnTimeout += OnTradeTimeout;
-                        tradeManager.OnTradeEnded += OnTradeEnded;
-                        break;
-                    }
-                    else
-                    {
-                        log.Warn ("Authentication failed, retrying in 2s...");
-                        main.Invoke((Action)(() =>
-                        {
-                            main.label_status.Text = "Authentication failed, retrying in 2s...";
-                        }));
-                        Thread.Sleep (2000);
+                        log.Error(ex.ToString());
                     }
                 }
 

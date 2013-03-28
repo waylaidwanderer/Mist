@@ -68,5 +68,17 @@ namespace MistClient
         {
             return list;
         }
+
+        static internal List<ListInventory> Get(string name)
+        {
+            name = name.ToLower();
+            List<ListInventory> returnList = new List<ListInventory>();
+            foreach (ListInventory item in list)
+            {
+                if (item.itemName.ToLower().Contains(name))
+                    returnList.Add(item);
+            }
+            return returnList;
+        }
     }
 }

@@ -33,7 +33,6 @@
             this.text_password = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button_login = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -42,6 +41,7 @@
             this.text_api = new System.Windows.Forms.TextBox();
             this.check_remember = new System.Windows.Forms.CheckBox();
             this.updatechecker = new System.ComponentModel.BackgroundWorker();
+            this.button_login = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,16 +78,6 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Password";
             // 
-            // button_login
-            // 
-            this.button_login.Location = new System.Drawing.Point(95, 183);
-            this.button_login.Name = "button_login";
-            this.button_login.Size = new System.Drawing.Size(75, 23);
-            this.button_login.TabIndex = 3;
-            this.button_login.Text = "Login";
-            this.button_login.UseVisualStyleBackColor = true;
-            this.button_login.Click += new System.EventHandler(this.button_login_Click);
-            // 
             // button_cancel
             // 
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -101,6 +91,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::MistClient.Properties.Resources.mist;
             this.pictureBox1.Location = new System.Drawing.Point(95, 8);
             this.pictureBox1.Name = "pictureBox1";
@@ -159,6 +150,16 @@
             // 
             this.updatechecker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.updatechecker_DoWork);
             // 
+            // button_login
+            // 
+            this.button_login.Location = new System.Drawing.Point(95, 183);
+            this.button_login.Name = "button_login";
+            this.button_login.Size = new System.Drawing.Size(75, 23);
+            this.button_login.TabIndex = 3;
+            this.button_login.Text = "Login";
+            this.button_login.UseVisualStyleBackColor = true;
+            this.button_login.Click += new System.EventHandler(this.button_login_Click);
+            // 
             // Login
             // 
             this.AcceptButton = this.button_login;
@@ -178,11 +179,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.text_password);
             this.Controls.Add(this.text_username);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Login";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.Text = "Login";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Login_FormClosed);
             this.Load += new System.EventHandler(this.Login_Load);
@@ -196,7 +196,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button_login;
         private System.Windows.Forms.Button button_cancel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label3;
@@ -207,5 +206,6 @@
         public System.Windows.Forms.TextBox text_password;
         public System.Windows.Forms.TextBox text_api;
         private System.ComponentModel.BackgroundWorker updatechecker;
+        private System.Windows.Forms.Button button_login;
     }
 }

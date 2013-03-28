@@ -197,21 +197,26 @@ namespace SteamTrade
                 // aes encrypt the loginkey with our session key
                 byte[] cryptedLoginKey = CryptoHelper.SymmetricEncrypt (loginKey, sessionKey);
                 
-                KeyValue authResult;
-                
-                try
+                KeyValue authResult = null;
+
+                for (int count = 1; count <= 3; count++)
                 {
-                    authResult = userAuth.AuthenticateUser (
-                        steamid: client.SteamID.ConvertToUInt64 (),
-                        sessionkey: HttpUtility.UrlEncode (cryptedSessionKey),
-                        encrypted_loginkey: HttpUtility.UrlEncode (cryptedLoginKey),
-                        method: "POST"
-                        );
-                }
-                catch (Exception)
-                {
-                    token = null;
-                    return false;
+                    try
+                    {
+                        authResult = userAuth.AuthenticateUser(
+                            steamid: client.SteamID.ConvertToUInt64(),
+                            sessionkey: HttpUtility.UrlEncode(cryptedSessionKey),
+                            encrypted_loginkey: HttpUtility.UrlEncode(cryptedLoginKey),
+                            method: "POST"
+                            );
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        token = null;
+                        if (count == 3)
+                            return false;
+                    }
                 }
                 
                 token = authResult ["token"].AsString ();

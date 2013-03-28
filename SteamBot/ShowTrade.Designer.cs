@@ -58,6 +58,7 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableItemGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewSuggestedItemPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.text_search = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
@@ -78,7 +79,7 @@
             this.list_inventory.ContextMenuStrip = this.contextMenuStrip1;
             this.list_inventory.Location = new System.Drawing.Point(14, 27);
             this.list_inventory.Name = "list_inventory";
-            this.list_inventory.Size = new System.Drawing.Size(364, 230);
+            this.list_inventory.Size = new System.Drawing.Size(364, 216);
             this.list_inventory.TabIndex = 0;
             this.list_inventory.UseCompatibleStateImageBehavior = false;
             this.list_inventory.View = System.Windows.Forms.View.Details;
@@ -294,10 +295,10 @@
             // 
             this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_log.Location = new System.Drawing.Point(14, 263);
+            this.text_log.Location = new System.Drawing.Point(14, 275);
             this.text_log.Name = "text_log";
             this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(364, 156);
+            this.text_log.Size = new System.Drawing.Size(364, 144);
             this.text_log.TabIndex = 14;
             this.text_log.Text = "";
             // 
@@ -360,11 +361,28 @@
             this.viewSuggestedItemPricesToolStripMenuItem.Text = "View Suggested Item Prices";
             this.viewSuggestedItemPricesToolStripMenuItem.Click += new System.EventHandler(this.viewSuggestedItemPricesToolStripMenuItem_Click);
             // 
+            // text_search
+            // 
+            this.text_search.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.text_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.text_search.ForeColor = System.Drawing.Color.Gray;
+            this.text_search.Location = new System.Drawing.Point(14, 249);
+            this.text_search.Name = "text_search";
+            this.text_search.Size = new System.Drawing.Size(364, 20);
+            this.text_search.TabIndex = 18;
+            this.text_search.Text = "Search for an item in your inventory...";
+            this.text_search.TextChanged += new System.EventHandler(this.text_search_TextChanged);
+            this.text_search.Enter += new System.EventHandler(this.text_search_Enter);
+            this.text_search.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_search_KeyPress);
+            this.text_search.Leave += new System.EventHandler(this.text_search_Leave);
+            // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(646, 497);
+            this.Controls.Add(this.text_search);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label_cancel);
             this.Controls.Add(this.button_accept);
@@ -428,5 +446,6 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableItemGroupingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewSuggestedItemPricesToolStripMenuItem;
+        private System.Windows.Forms.TextBox text_search;
     }
 }

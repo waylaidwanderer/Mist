@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Configuration;
 using SteamBot;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
