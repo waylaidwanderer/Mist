@@ -30,24 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Chat));
-            this.ChatTabControl = new System.Windows.Forms.TabControl();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ChatTabControl = new MetroFramework.Controls.MetroTabControl();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ChatTabControl
-            // 
-            this.ChatTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChatTabControl.ContextMenuStrip = this.contextMenuStrip1;
-            this.ChatTabControl.Location = new System.Drawing.Point(12, 12);
-            this.ChatTabControl.Name = "ChatTabControl";
-            this.ChatTabControl.SelectedIndex = 0;
-            this.ChatTabControl.Size = new System.Drawing.Size(537, 435);
-            this.ChatTabControl.TabIndex = 2;
-            this.ChatTabControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ChatTabControl_MouseUp);
             // 
             // contextMenuStrip1
             // 
@@ -63,6 +51,34 @@
             this.closeChatToolStripMenuItem.Text = "Close Current Chat";
             this.closeChatToolStripMenuItem.Click += new System.EventHandler(this.closeChatToolStripMenuItem_Click);
             // 
+            // ChatTabControl
+            // 
+            this.ChatTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ChatTabControl.ContextMenuStrip = this.contextMenuStrip1;
+            this.ChatTabControl.CustomBackground = false;
+            this.ChatTabControl.FontSize = MetroFramework.MetroTabControlSize.Medium;
+            this.ChatTabControl.FontWeight = MetroFramework.MetroTabControlWeight.Light;
+            this.ChatTabControl.Location = new System.Drawing.Point(23, 63);
+            this.ChatTabControl.Name = "ChatTabControl";
+            this.ChatTabControl.Size = new System.Drawing.Size(513, 373);
+            this.ChatTabControl.Style = MetroFramework.MetroColorStyle.Blue;
+            this.ChatTabControl.StyleManager = this.metroStyleManager1;
+            this.ChatTabControl.TabIndex = 3;
+            this.ChatTabControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ChatTabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.ChatTabControl.UseStyleColors = false;
+            this.ChatTabControl.Click += new System.EventHandler(this.ChatTabControl_Click);
+            this.ChatTabControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ChatTabControl_MouseUp);
+            // 
+            // metroStyleManager1
+            // 
+            this.metroStyleManager1.OwnerForm = this;
+            this.metroStyleManager1.OwnerUserControl = null;
+            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
             // Chat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -70,10 +86,13 @@
             this.ClientSize = new System.Drawing.Size(559, 459);
             this.Controls.Add(this.ChatTabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, 0);
             this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "Chat";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.StyleManager = this.metroStyleManager1;
             this.Text = "Chat";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Activated += new System.EventHandler(this.Chat_Activated);
             this.Deactivate += new System.EventHandler(this.Chat_Deactivate);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Chat_FormClosed);
@@ -87,8 +106,9 @@
 
         #endregion
 
-        public System.Windows.Forms.TabControl ChatTabControl;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem closeChatToolStripMenuItem;
+        public MetroFramework.Controls.MetroTabControl ChatTabControl;
+        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
     }
 }

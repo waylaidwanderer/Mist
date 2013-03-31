@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class Chat : Form
+    public partial class Chat : MetroForm
     {
         public ChatTab chatTab;
         SteamBot.Bot bot;
@@ -21,11 +22,11 @@ namespace MistClient
             InitializeComponent();
             this.bot = bot;
             hasFocus = false;
+            Util.LoadTheme(metroStyleManager1);
         }
 
         private void Chat_Load(object sender, EventArgs e)
         {
-            hasFocus = false;
         }
 
         public void UpdateStatus(string status)
@@ -62,15 +63,15 @@ namespace MistClient
         {
             if (e.Button == MouseButtons.Middle)
             {
-                this.ChatTabControl.SelectedTab.Dispose();
+                ChatTabControl.TabPages.Remove(ChatTabControl.SelectedTab);
                 if (ChatTabControl.TabCount == 0)
                 {
-                    this.Dispose();
+                    this.Close();
                     Friends.chat_opened = false;
                 }
             }
             if (ChatTabControl.TabCount != 0)
-                this.Text = this.ChatTabControl.SelectedTab.Text + " - Chat";
+                Friends.chat.Text = ChatTabControl.SelectedTab.Text + " - Chat";
         }
 
         public void Flash()
@@ -98,20 +99,27 @@ namespace MistClient
 
         private void closeChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.ChatTabControl.SelectedTab.Dispose();
+            ChatTabControl.TabPages.Remove(ChatTabControl.SelectedTab);
             if (ChatTabControl.TabCount == 0)
             {
-                this.Dispose();
+                this.Close();
                 Friends.chat_opened = false;
             }
             if (ChatTabControl.TabCount != 0)
-                this.Text = this.ChatTabControl.SelectedTab.Text + " - Chat";
+                Friends.chat.Text = ChatTabControl.SelectedTab.Text +" - Chat";
         }
 
         private void Chat_Leave(object sender, EventArgs e)
         {
             FlashWindow.Stop(this);
             hasFocus = false;
+        }
+
+        private void ChatTabControl_Click(object sender, EventArgs e)
+        {
+            string name = ChatTabControl.SelectedTab.Text;
+            Friends.chat.Text = name + " - Chat";
+            this.Refresh();
         }
     }
 }

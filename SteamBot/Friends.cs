@@ -14,10 +14,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using SteamKit2;
 using System.Collections;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class Friends : Form
+    public partial class Friends : MetroForm
     {
         public static bool chat_opened = false;
         public static Chat chat;
@@ -33,16 +34,20 @@ namespace MistClient
         int form_friendreqHeight;
         bool minimizeToTray = true;
 
+        public static List<MetroFramework.Components.MetroStyleManager> globalThemeManager = new List<MetroFramework.Components.MetroStyleManager>();
+        public static MetroFramework.Components.MetroStyleManager globalStyleManager = new MetroFramework.Components.MetroStyleManager();
+
         public Friends(SteamBot.Bot bot, string username)
         {
             InitializeComponent();
+            Util.LoadTheme(metroStyleManager1);
             this.Text = "Friends - Mist v" + mist_ver;
             this.steam_name.Text = username;
             this.bot = bot;
             this.steam_name.ContextMenuStrip = menu_status;
             this.steam_status.ContextMenuStrip = menu_status;
             this.label1.ContextMenuStrip = menu_status;
-            this.minimizeToTrayOnCloseToolStripMenuItem.Checked = Properties.Settings.Default.MinimizeToTray;
+            this.minimizeToTrayToolStripMenuItem.Checked = Properties.Settings.Default.MinimizeToTray;
             logConversationsToolStripMenuItem.Checked = Properties.Settings.Default.KeepLog;
             keepLog = logConversationsToolStripMenuItem.Checked;
             ListFriends.friends = this;
@@ -236,6 +241,7 @@ namespace MistClient
                                 chat.ChatTabControl.SelectedTab = tab;
                                 chat.Activate();
                                 found = true;
+                                break;
                             }
                         }
                         if (!found)
@@ -262,7 +268,10 @@ namespace MistClient
 
         private void label1_MouseHover(object sender, EventArgs e)
         {
-            label1.ForeColor = SystemColors.ControlText;
+            if (globalStyleManager.Theme == MetroFramework.MetroThemeStyle.Dark)
+                label1.ForeColor = Color.WhiteSmoke;
+            else
+                label1.ForeColor = SystemColors.ControlText;
         }
 
         private void label1_MouseLeave(object sender, EventArgs e)
@@ -323,37 +332,7 @@ namespace MistClient
             changeProfile.ShowDialog();
         }
 
-        private void label_addfriend_MouseHover(object sender, EventArgs e)
-        {
-            label_addfriend.ForeColor = SystemColors.ControlText;
-            label_addfriend2.ForeColor = SystemColors.ControlText;
-        }
-
-        private void label_addfriend_MouseLeave(object sender, EventArgs e)
-        {
-            label_addfriend.ForeColor = SystemColors.ControlDarkDark;
-            label_addfriend2.ForeColor = SystemColors.ControlDarkDark;
-        }
-
-        private void label_addfriend2_MouseHover(object sender, EventArgs e)
-        {
-            label_addfriend.ForeColor = SystemColors.ControlText;
-            label_addfriend2.ForeColor = SystemColors.ControlText;
-        }
-
-        private void label_addfriend2_MouseLeave(object sender, EventArgs e)
-        {
-            label_addfriend.ForeColor = SystemColors.ControlDarkDark;
-            label_addfriend2.ForeColor = SystemColors.ControlDarkDark;
-        }
-
         private void label_addfriend_Click(object sender, EventArgs e)
-        {
-            AddFriend addFriend = new AddFriend(bot);
-            addFriend.ShowDialog();
-        }
-
-        private void label_addfriend2_Click(object sender, EventArgs e)
         {
             AddFriend addFriend = new AddFriend(bot);
             addFriend.ShowDialog();
@@ -550,11 +529,11 @@ namespace MistClient
         {
             if (minimizeToTray)
             {
+                e.Cancel = true;
                 Visible = false;
                 ShowInTaskbar = false;
                 trayIcon.Visible = true;
-                trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
-                e.Cancel = true;
+                trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);                
             }
             else
             {
@@ -703,7 +682,7 @@ namespace MistClient
                 string base_url = "http://steamcommunity.com/profiles/";
                 ulong SteamID = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
                 base_url += SteamID.ToString();
-                System.Diagnostics.Process.Start(base_url);
+                System.Diagnostics.Process.Start("explorer.exe", base_url);
             }
         }
 
@@ -737,7 +716,7 @@ namespace MistClient
                 ulong SteamID = Convert.ToUInt64(column_friendreq_sid.GetValue(list_friendreq.SelectedItem.RowObject));
                 string base_url = "http://steamcommunity.com/profiles/";
                 base_url += SteamID.ToString();
-                System.Diagnostics.Process.Start(base_url);
+                System.Diagnostics.Process.Start("explorer.exe", base_url);
             }
         }
 
@@ -808,44 +787,6 @@ namespace MistClient
             list_friendreq.SetObjects(ListFriendRequests.Get());
         }
 
-        private void friends_list_ItemActivate_1(object sender, EventArgs e)
-        {
-            bot.main.Invoke((Action)(() =>
-            {
-                if (friends_list.SelectedItem != null)
-                {
-                    ulong sid = Convert.ToUInt64(column_sid.GetValue(friends_list.SelectedItem.RowObject));
-                    string selected = bot.SteamFriends.GetFriendPersonaName(sid);
-                    if (!chat_opened)
-                    {
-                        chat = new Chat(bot);
-                        chat.AddChat(selected, sid);
-                        chat.Show();
-                        chat.Focus();
-                        chat_opened = true;
-                    }
-                    else
-                    {
-                        bool found = false;
-                        foreach (TabPage tab in chat.ChatTabControl.TabPages)
-                        {
-                            if (tab.Text == selected)
-                            {
-                                chat.ChatTabControl.SelectedTab = tab;
-                                chat.Focus();
-                                found = true;
-                            }
-                        }
-                        if (!found)
-                        {
-                            chat.AddChat(selected, sid);
-                            chat.Focus();
-                        }
-                    }
-                }
-            }));
-        }
-
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             list_friendreq.SetObjects(ListFriendRequests.Get());
@@ -859,7 +800,7 @@ namespace MistClient
 
         private void minimizeToTrayOnCloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            minimizeToTray = minimizeToTrayOnCloseToolStripMenuItem.Checked;
+            minimizeToTray = minimizeToTrayToolStripMenuItem.Checked;
             Properties.Settings.Default.MinimizeToTray = minimizeToTray;
             Properties.Settings.Default.Save();
         }
@@ -960,6 +901,63 @@ namespace MistClient
         {
             text_search.Text = "";
             this.friends_list.SetObjects(ListFriends.Get());
+            label1.Select();
+        }
+
+        private void minimizeToTrayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            minimizeToTray = minimizeToTrayToolStripMenuItem.Checked;
+            Properties.Settings.Default.MinimizeToTray = minimizeToTray;
+            Properties.Settings.Default.Save();
+        }
+
+        private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
+            try
+            {
+                Console.WriteLine(globalStyleManager.Theme);
+                Properties.Settings.Default.Theme = globalStyleManager.Theme.ToString();
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            RefreshTheme();
+            menu_status.Close();
+        }
+
+        private void darkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
+            Properties.Settings.Default.Theme = globalStyleManager.Theme.ToString();
+            Properties.Settings.Default.Save();
+            RefreshTheme();
+            menu_status.Close();
+        }
+
+        private void setColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StyleChooser styleChooser = new StyleChooser("Light");
+            styleChooser.ShowDialog();
+            styleChooser.Activate();
+        }
+
+        private void setColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            StyleChooser styleChooser = new StyleChooser("Dark");
+            styleChooser.ShowDialog();
+            styleChooser.Activate();
+        }
+
+        public static void RefreshTheme()
+        {
+            foreach (var item in globalThemeManager)
+            {
+                item.Theme = globalStyleManager.Theme;
+                item.Style = globalStyleManager.Style;
+            }
         }
     }
 }

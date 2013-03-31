@@ -14,7 +14,7 @@ using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class Login : Form
+    public partial class Login : MetroForm
     {
         static readonly string PasswordHash = "P@@Sw0rd";
         static readonly string SaltKey = "S@LT&KEY";
@@ -24,7 +24,7 @@ namespace MistClient
         public string APIKey;
         public static bool LoginClicked = false;
         public bool wrongAPI = false;
-        Log log;
+        Log log;        
 
         public Login(Log log)
         {
@@ -32,6 +32,22 @@ namespace MistClient
             this.Text = "Login - Mist v" + Friends.mist_ver;
             MakePortable(Properties.Settings.Default);
             this.log = log;
+            LoadTheme();
+            if (metroStyleManager1.Theme == MetroFramework.MetroThemeStyle.Light)
+            {
+                pictureBox1.Image = MistClient.Properties.Resources.mist;
+            }
+            updatechecker.RunWorkerAsync();
+            if (Properties.Settings.Default.Username != "")
+                text_username.Text = Properties.Settings.Default.Username;
+            if (Properties.Settings.Default.apiKey != "")
+                text_api.Text = Properties.Settings.Default.apiKey;
+            if (Properties.Settings.Default.Password != "")
+            {
+                text_password.Text = Decrypt(Properties.Settings.Default.Password);
+                Password = Decrypt(Properties.Settings.Default.Password);
+                check_remember.Checked = true;
+            }
         }
 
         private static void MakePortable(ApplicationSettingsBase settings)
@@ -50,43 +66,35 @@ namespace MistClient
             text_api.Text = text_api.Text.Trim();
             if (text_username.Text != "" && text_password.Text != "" && text_api.Text != "")
             {
-                Properties.Settings.Default.apiKey = text_api.Text;
-                Properties.Settings.Default.Username = text_username.Text;
-                if (check_remember.Checked)
-                    Properties.Settings.Default.Password = Encrypt(text_password.Text);
-                else
-                    Properties.Settings.Default.Password = "";
-                Properties.Settings.Default.Save();
-                Username = text_username.Text;
-                Password = text_password.Text;
-                APIKey = text_api.Text;
-                LoginClicked = true;
-                text_username.Enabled = false;
-                text_password.Enabled = false;
-                text_api.Enabled = false;
-                button_login.Enabled = false;
+                try
+                {
+                    Properties.Settings.Default.apiKey = text_api.Text;
+                    Properties.Settings.Default.Username = text_username.Text;
+                    if (check_remember.Checked)
+                        Properties.Settings.Default.Password = Encrypt(text_password.Text);
+                    else
+                        Properties.Settings.Default.Password = "";
+                    Properties.Settings.Default.Save();
+                    Username = text_username.Text;
+                    Password = text_password.Text;
+                    APIKey = text_api.Text;
+                    LoginClicked = true;
+                    text_username.Enabled = false;
+                    text_password.Enabled = false;
+                    text_api.Enabled = false;
+                    button_login.Enabled = false;
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.ToString());
+                    Environment.Exit(1);
+                }
             }
         }
 
         private void Login_Load(object sender, EventArgs e)
         {
-            updatechecker.RunWorkerAsync();
-            label4.ForeColor = Color.Blue;
-            label4.Font =
-            new Font
-            (
-            label4.Font,
-            FontStyle.Underline
-            );
-            if (Properties.Settings.Default.Username != "")
-                text_username.Text = Properties.Settings.Default.Username;
-            if (Properties.Settings.Default.apiKey != "")
-                text_api.Text = Properties.Settings.Default.apiKey;
-            if (Properties.Settings.Default.Password != "")
-            {
-                text_password.Text = Decrypt(Properties.Settings.Default.Password);
-                check_remember.Checked = true;
-            }
+            
         }
 
         public static string Encrypt(string plainText)
@@ -172,7 +180,7 @@ namespace MistClient
             switch (choice)
             {
                 case DialogResult.Yes:
-                    System.Diagnostics.Process.Start("http://steamcommunity.com/dev/apikey");
+                    System.Diagnostics.Process.Start("explorer.exe", "http://steamcommunity.com/dev/apikey");
                     break;
                 case DialogResult.No:
                     break;
@@ -207,6 +215,50 @@ namespace MistClient
 
                 }
             }
+        }
+
+        private void text_password_TextChanged(object sender, EventArgs e)
+        {
+            Password = text_password.Text;
+        }
+
+        private void LoadTheme()
+        {
+            string Theme = Properties.Settings.Default.Theme;
+            string Style = Properties.Settings.Default.Style;
+            if (Theme == "Light")
+                Friends.globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
+            else if (Theme == "Dark")
+                Friends.globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
+            if (Style == "Blue")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
+            else if (Style == "Black")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Black;
+            else if (Style == "Brown")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Brown;
+            else if (Style == "Green")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Green;
+            else if (Style == "Lime")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Lime;
+            else if (Style == "Magenta")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
+            else if (Style == "Orange")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Orange;
+            else if (Style == "Pink")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Pink;
+            else if (Style == "Purple")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Purple;
+            else if (Style == "Red")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Red;
+            else if (Style == "Silver")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Silver;
+            else if (Style == "Teal")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Teal;
+            else if (Style == "White")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.White;
+            else if (Style == "Yellow")
+                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Yellow;
+            Util.LoadTheme(metroStyleManager1);
         }
     }
 }

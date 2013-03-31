@@ -29,139 +29,206 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Updater));
-            this.label1 = new System.Windows.Forms.Label();
-            this.label_newver = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.text_changelog = new System.Windows.Forms.TextBox();
-            this.button_skip = new System.Windows.Forms.Button();
-            this.button_remind = new System.Windows.Forms.Button();
-            this.button_install = new System.Windows.Forms.Button();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.label_newver = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.metroLink1 = new MetroFramework.Controls.MetroLink();
+            this.label3 = new MetroFramework.Controls.MetroLabel();
+            this.text_changelog = new MetroFramework.Controls.MetroTextBox();
+            this.button_skip = new MetroFramework.Controls.MetroButton();
+            this.button_remind = new MetroFramework.Controls.MetroButton();
+            this.button_install = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
             // 
-            // label1
+            // metroLabel1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(262, 18);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "A new version of Mist is available!";
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.CustomBackground = false;
+            this.metroLabel1.CustomForeColor = false;
+            this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroLabel1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.metroLabel1.Location = new System.Drawing.Point(23, 60);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(279, 25);
+            this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel1.StyleManager = this.metroStyleManager1;
+            this.metroLabel1.TabIndex = 9;
+            this.metroLabel1.Text = "A new version of Mist is available!";
+            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel1.UseStyleColors = false;
+            // 
+            // metroStyleManager1
+            // 
+            this.metroStyleManager1.OwnerForm = this;
+            this.metroStyleManager1.OwnerUserControl = null;
+            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // label_newver
             // 
             this.label_newver.AutoSize = true;
-            this.label_newver.Location = new System.Drawing.Point(9, 35);
+            this.label_newver.CustomBackground = false;
+            this.label_newver.CustomForeColor = false;
+            this.label_newver.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.label_newver.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.label_newver.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.label_newver.Location = new System.Drawing.Point(23, 85);
             this.label_newver.Name = "label_newver";
-            this.label_newver.Size = new System.Drawing.Size(203, 26);
-            this.label_newver.TabIndex = 1;
+            this.label_newver.Size = new System.Drawing.Size(240, 38);
+            this.label_newver.Style = MetroFramework.MetroColorStyle.Blue;
+            this.label_newver.StyleManager = this.metroStyleManager1;
+            this.label_newver.TabIndex = 10;
             this.label_newver.Text = "Mist v9001 is available (you have v0.0.0).\r\nWould you like to download it now?";
+            this.label_newver.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.label_newver.UseStyleColors = false;
+            // 
+            // metroLabel2
+            // 
+            this.metroLabel2.AutoSize = true;
+            this.metroLabel2.CustomBackground = false;
+            this.metroLabel2.CustomForeColor = false;
+            this.metroLabel2.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.metroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.metroLabel2.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.metroLabel2.Location = new System.Drawing.Point(23, 123);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(238, 38);
+            this.metroLabel2.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel2.StyleManager = this.metroStyleManager1;
+            this.metroLabel2.TabIndex = 11;
+            this.metroLabel2.Text = "For major releases (X.0.0), you can also\r\ndownload it manually from";
+            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel2.UseStyleColors = false;
+            // 
+            // metroLink1
+            // 
+            this.metroLink1.CustomBackground = false;
+            this.metroLink1.CustomForeColor = false;
+            this.metroLink1.FontSize = MetroFramework.MetroLinkSize.Medium;
+            this.metroLink1.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.metroLink1.Location = new System.Drawing.Point(186, 141);
+            this.metroLink1.Name = "metroLink1";
+            this.metroLink1.Size = new System.Drawing.Size(79, 20);
+            this.metroLink1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLink1.StyleManager = this.metroStyleManager1;
+            this.metroLink1.TabIndex = 3;
+            this.metroLink1.Text = "here.";
+            this.metroLink1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.metroLink1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLink1.UseStyleColors = true;
+            this.metroLink1.Click += new System.EventHandler(this.linkLabel1_LinkClicked);
+            this.metroLink1.MouseHover += new System.EventHandler(this.linkLabel1_MouseHover);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(9, 79);
+            this.label3.CustomBackground = false;
+            this.label3.CustomForeColor = false;
+            this.label3.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.label3.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.label3.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.label3.Location = new System.Drawing.Point(24, 165);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 16);
-            this.label3.TabIndex = 2;
+            this.label3.Size = new System.Drawing.Size(85, 19);
+            this.label3.Style = MetroFramework.MetroColorStyle.Blue;
+            this.label3.StyleManager = this.metroStyleManager1;
+            this.label3.TabIndex = 13;
             this.label3.Text = "Changelog:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.label3.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.label3.UseStyleColors = false;
             // 
             // text_changelog
             // 
-            this.text_changelog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_changelog.BackColor = System.Drawing.SystemColors.Window;
-            this.text_changelog.Location = new System.Drawing.Point(12, 98);
+            this.text_changelog.CustomBackground = false;
+            this.text_changelog.CustomForeColor = false;
+            this.text_changelog.FontSize = MetroFramework.MetroTextBoxSize.Small;
+            this.text_changelog.FontWeight = MetroFramework.MetroTextBoxWeight.Regular;
+            this.text_changelog.Location = new System.Drawing.Point(24, 187);
+            this.text_changelog.MaxLength = 32767;
             this.text_changelog.Multiline = true;
             this.text_changelog.Name = "text_changelog";
-            this.text_changelog.ReadOnly = true;
             this.text_changelog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.text_changelog.Size = new System.Drawing.Size(341, 257);
-            this.text_changelog.TabIndex = 3;
-            this.text_changelog.Text = resources.GetString("text_changelog.Text");
+            this.text_changelog.SelectedText = "";
+            this.text_changelog.Size = new System.Drawing.Size(360, 255);
+            this.text_changelog.Style = MetroFramework.MetroColorStyle.Blue;
+            this.text_changelog.StyleManager = this.metroStyleManager1;
+            this.text_changelog.TabIndex = 14;
+            this.text_changelog.Text = "All work and no play makes Johnny a dull boy.";
+            this.text_changelog.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_changelog.UseStyleColors = false;
+            this.text_changelog.UseSystemPasswordChar = false;
             this.text_changelog.Enter += new System.EventHandler(this.text_changelog_Enter);
             // 
             // button_skip
             // 
-            this.button_skip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_skip.Location = new System.Drawing.Point(12, 361);
+            this.button_skip.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.button_skip.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.button_skip.Highlight = false;
+            this.button_skip.Location = new System.Drawing.Point(23, 448);
             this.button_skip.Name = "button_skip";
-            this.button_skip.Size = new System.Drawing.Size(95, 23);
-            this.button_skip.TabIndex = 4;
+            this.button_skip.Size = new System.Drawing.Size(114, 23);
+            this.button_skip.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_skip.StyleManager = this.metroStyleManager1;
+            this.button_skip.TabIndex = 0;
             this.button_skip.Text = "Skip this version";
-            this.button_skip.UseVisualStyleBackColor = true;
+            this.button_skip.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_skip.Click += new System.EventHandler(this.button_skip_Click);
             // 
             // button_remind
             // 
-            this.button_remind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_remind.Location = new System.Drawing.Point(150, 361);
+            this.button_remind.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.button_remind.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.button_remind.Highlight = false;
+            this.button_remind.Location = new System.Drawing.Point(166, 448);
             this.button_remind.Name = "button_remind";
-            this.button_remind.Size = new System.Drawing.Size(102, 23);
-            this.button_remind.TabIndex = 5;
+            this.button_remind.Size = new System.Drawing.Size(107, 23);
+            this.button_remind.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_remind.StyleManager = this.metroStyleManager1;
+            this.button_remind.TabIndex = 1;
             this.button_remind.Text = "Remind me later";
-            this.button_remind.UseVisualStyleBackColor = true;
+            this.button_remind.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_remind.Click += new System.EventHandler(this.button_remind_Click);
             // 
             // button_install
             // 
-            this.button_install.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_install.Location = new System.Drawing.Point(258, 361);
+            this.button_install.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.button_install.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.button_install.Highlight = false;
+            this.button_install.Location = new System.Drawing.Point(279, 448);
             this.button_install.Name = "button_install";
-            this.button_install.Size = new System.Drawing.Size(95, 23);
-            this.button_install.TabIndex = 6;
+            this.button_install.Size = new System.Drawing.Size(105, 23);
+            this.button_install.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_install.StyleManager = this.metroStyleManager1;
+            this.button_install.TabIndex = 2;
             this.button_install.Text = "Install update";
-            this.button_install.UseVisualStyleBackColor = true;
+            this.button_install.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_install.Click += new System.EventHandler(this.button_install_Click);
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.linkLabel1.Location = new System.Drawing.Point(145, 62);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(28, 13);
-            this.linkLabel1.TabIndex = 7;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "here";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            this.linkLabel1.MouseHover += new System.EventHandler(this.linkLabel1_MouseHover);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Location = new System.Drawing.Point(9, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(130, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Download it manually from";
             // 
             // Updater
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 393);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.linkLabel1);
+            this.ClientSize = new System.Drawing.Size(407, 494);
+            this.Controls.Add(this.metroLink1);
             this.Controls.Add(this.button_install);
             this.Controls.Add(this.button_remind);
             this.Controls.Add(this.button_skip);
             this.Controls.Add(this.text_changelog);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.label_newver);
-            this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Controls.Add(this.metroLabel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Updater";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.StyleManager = this.metroStyleManager1;
             this.Text = "New Update Available";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Updater_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -170,14 +237,15 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label_newver;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox text_changelog;
-        private System.Windows.Forms.Button button_skip;
-        private System.Windows.Forms.Button button_remind;
-        private System.Windows.Forms.Button button_install;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label label2;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Controls.MetroLabel label_newver;
+        private MetroFramework.Controls.MetroLabel metroLabel2;
+        private MetroFramework.Controls.MetroLink metroLink1;
+        private MetroFramework.Controls.MetroLabel label3;
+        private MetroFramework.Controls.MetroTextBox text_changelog;
+        private MetroFramework.Controls.MetroButton button_skip;
+        private MetroFramework.Controls.MetroButton button_remind;
+        private MetroFramework.Controls.MetroButton button_install;
+        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
     }
 }

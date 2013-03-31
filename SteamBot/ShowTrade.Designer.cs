@@ -42,23 +42,24 @@
             this.column_uo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_uo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_input = new System.Windows.Forms.TextBox();
-            this.button_send = new System.Windows.Forms.Button();
-            this.button_accept = new System.Windows.Forms.Button();
             this.label_cancel = new System.Windows.Forms.Label();
             this.list_otherofferings = new BrightIdeasSoftware.ObjectListView();
             this.column_otherofferings = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_oo_id = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_oo_value = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.check_userready = new System.Windows.Forms.CheckBox();
-            this.check_otherready = new System.Windows.Forms.CheckBox();
             this.text_log = new System.Windows.Forms.RichTextBox();
-            this.label_yourvalue = new System.Windows.Forms.Label();
-            this.label_othervalue = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableItemGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewSuggestedItemPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.text_search = new System.Windows.Forms.TextBox();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.button_accept = new MetroFramework.Controls.MetroButton();
+            this.button_send = new MetroFramework.Controls.MetroButton();
+            this.label_yourvalue = new MetroFramework.Controls.MetroLabel();
+            this.label_othervalue = new MetroFramework.Controls.MetroLabel();
+            this.check_userready = new MetroFramework.Controls.MetroCheckBox();
+            this.check_otherready = new MetroFramework.Controls.MetroCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
@@ -77,9 +78,9 @@
             this.list_inventory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_inventory});
             this.list_inventory.ContextMenuStrip = this.contextMenuStrip1;
-            this.list_inventory.Location = new System.Drawing.Point(14, 27);
+            this.list_inventory.Location = new System.Drawing.Point(23, 87);
             this.list_inventory.Name = "list_inventory";
-            this.list_inventory.Size = new System.Drawing.Size(364, 216);
+            this.list_inventory.Size = new System.Drawing.Size(387, 230);
             this.list_inventory.TabIndex = 0;
             this.list_inventory.UseCompatibleStateImageBehavior = false;
             this.list_inventory.View = System.Windows.Forms.View.Details;
@@ -142,10 +143,10 @@
             this.list_userofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_userofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_userofferings});
-            this.list_userofferings.Location = new System.Drawing.Point(384, 27);
+            this.list_userofferings.Location = new System.Drawing.Point(416, 87);
             this.list_userofferings.Name = "list_userofferings";
-            this.list_userofferings.Size = new System.Drawing.Size(248, 139);
-            this.list_userofferings.TabIndex = 1;
+            this.list_userofferings.Size = new System.Drawing.Size(287, 145);
+            this.list_userofferings.TabIndex = 7;
             this.list_userofferings.UseCompatibleStateImageBehavior = false;
             this.list_userofferings.View = System.Windows.Forms.View.Details;
             this.list_userofferings.ItemActivate += new System.EventHandler(this.list_userofferings_ItemActivate);
@@ -178,48 +179,23 @@
             // 
             this.text_input.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_input.Location = new System.Drawing.Point(14, 425);
+            this.text_input.Location = new System.Drawing.Point(23, 510);
             this.text_input.MaxLength = 2048;
             this.text_input.Multiline = true;
             this.text_input.Name = "text_input";
-            this.text_input.Size = new System.Drawing.Size(264, 57);
-            this.text_input.TabIndex = 4;
+            this.text_input.Size = new System.Drawing.Size(287, 57);
+            this.text_input.TabIndex = 0;
             this.text_input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_input_KeyPress);
-            // 
-            // button_send
-            // 
-            this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.Location = new System.Drawing.Point(284, 425);
-            this.button_send.Name = "button_send";
-            this.button_send.Size = new System.Drawing.Size(94, 57);
-            this.button_send.TabIndex = 5;
-            this.button_send.Text = "Send";
-            this.button_send.UseVisualStyleBackColor = true;
-            this.button_send.Click += new System.EventHandler(this.button_send_Click);
-            // 
-            // button_accept
-            // 
-            this.button_accept.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_accept.Enabled = false;
-            this.button_accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_accept.Location = new System.Drawing.Point(384, 362);
-            this.button_accept.Name = "button_accept";
-            this.button_accept.Size = new System.Drawing.Size(248, 89);
-            this.button_accept.TabIndex = 9;
-            this.button_accept.Text = "Accept Trade";
-            this.button_accept.UseVisualStyleBackColor = true;
-            this.button_accept.Click += new System.EventHandler(this.button_accept_Click);
             // 
             // label_cancel
             // 
             this.label_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label_cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_cancel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_cancel.Location = new System.Drawing.Point(384, 454);
+            this.label_cancel.Location = new System.Drawing.Point(416, 542);
             this.label_cancel.Name = "label_cancel";
-            this.label_cancel.Size = new System.Drawing.Size(248, 28);
-            this.label_cancel.TabIndex = 10;
+            this.label_cancel.Size = new System.Drawing.Size(287, 28);
+            this.label_cancel.TabIndex = 6;
             this.label_cancel.Text = "Cancel Trade";
             this.label_cancel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_cancel.Click += new System.EventHandler(this.label_cancel_Click);
@@ -234,10 +210,10 @@
             this.list_otherofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_otherofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_otherofferings});
-            this.list_otherofferings.Location = new System.Drawing.Point(384, 195);
+            this.list_otherofferings.Location = new System.Drawing.Point(416, 261);
             this.list_otherofferings.Name = "list_otherofferings";
-            this.list_otherofferings.Size = new System.Drawing.Size(248, 139);
-            this.list_otherofferings.TabIndex = 11;
+            this.list_otherofferings.Size = new System.Drawing.Size(287, 146);
+            this.list_otherofferings.TabIndex = 8;
             this.list_otherofferings.UseCompatibleStateImageBehavior = false;
             this.list_otherofferings.View = System.Windows.Forms.View.Details;
             // 
@@ -266,73 +242,25 @@
             this.column_oo_value.IsVisible = false;
             this.column_oo_value.Text = "Value";
             // 
-            // check_userready
-            // 
-            this.check_userready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.check_userready.AutoSize = true;
-            this.check_userready.Enabled = false;
-            this.check_userready.Location = new System.Drawing.Point(384, 172);
-            this.check_userready.Name = "check_userready";
-            this.check_userready.Size = new System.Drawing.Size(102, 17);
-            this.check_userready.TabIndex = 12;
-            this.check_userready.Text = "Ready to trade?";
-            this.check_userready.UseVisualStyleBackColor = true;
-            this.check_userready.CheckedChanged += new System.EventHandler(this.check_userready_CheckedChanged);
-            // 
-            // check_otherready
-            // 
-            this.check_otherready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.check_otherready.AutoSize = true;
-            this.check_otherready.Enabled = false;
-            this.check_otherready.Location = new System.Drawing.Point(384, 339);
-            this.check_otherready.Name = "check_otherready";
-            this.check_otherready.Size = new System.Drawing.Size(102, 17);
-            this.check_otherready.TabIndex = 13;
-            this.check_otherready.Text = "Ready to trade?";
-            this.check_otherready.UseVisualStyleBackColor = true;
-            // 
             // text_log
             // 
             this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_log.Location = new System.Drawing.Point(14, 275);
+            this.text_log.Location = new System.Drawing.Point(23, 349);
             this.text_log.Name = "text_log";
             this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(364, 144);
+            this.text_log.Size = new System.Drawing.Size(387, 155);
             this.text_log.TabIndex = 14;
             this.text_log.Text = "";
             // 
-            // label_yourvalue
-            // 
-            this.label_yourvalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_yourvalue.BackColor = System.Drawing.Color.Transparent;
-            this.label_yourvalue.Location = new System.Drawing.Point(492, 173);
-            this.label_yourvalue.Name = "label_yourvalue";
-            this.label_yourvalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label_yourvalue.Size = new System.Drawing.Size(140, 13);
-            this.label_yourvalue.TabIndex = 15;
-            this.label_yourvalue.Text = "Total Value: None";
-            // 
-            // label_othervalue
-            // 
-            this.label_othervalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label_othervalue.BackColor = System.Drawing.Color.Transparent;
-            this.label_othervalue.Location = new System.Drawing.Point(492, 340);
-            this.label_othervalue.Name = "label_othervalue";
-            this.label_othervalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label_othervalue.Size = new System.Drawing.Size(140, 13);
-            this.label_othervalue.TabIndex = 16;
-            this.label_othervalue.Text = "Total Value: None";
-            // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Location = new System.Drawing.Point(20, 60);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(646, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(686, 24);
             this.menuStrip1.TabIndex = 17;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -341,6 +269,7 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.disableItemGroupingToolStripMenuItem,
             this.viewSuggestedItemPricesToolStripMenuItem});
+            this.optionsToolStripMenuItem.ForeColor = System.Drawing.Color.Gray;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -367,9 +296,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.text_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.text_search.ForeColor = System.Drawing.Color.Gray;
-            this.text_search.Location = new System.Drawing.Point(14, 249);
+            this.text_search.Location = new System.Drawing.Point(23, 323);
             this.text_search.Name = "text_search";
-            this.text_search.Size = new System.Drawing.Size(364, 20);
+            this.text_search.Size = new System.Drawing.Size(387, 20);
             this.text_search.TabIndex = 18;
             this.text_search.Text = "Search for an item in your inventory...";
             this.text_search.TextChanged += new System.EventHandler(this.text_search_TextChanged);
@@ -377,30 +306,156 @@
             this.text_search.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_search_KeyPress);
             this.text_search.Leave += new System.EventHandler(this.text_search_Leave);
             // 
+            // metroStyleManager1
+            // 
+            this.metroStyleManager1.OwnerForm = this;
+            this.metroStyleManager1.OwnerUserControl = null;
+            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // button_accept
+            // 
+            this.button_accept.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_accept.Enabled = false;
+            this.button_accept.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.button_accept.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.button_accept.Highlight = false;
+            this.button_accept.Location = new System.Drawing.Point(416, 436);
+            this.button_accept.Name = "button_accept";
+            this.button_accept.Size = new System.Drawing.Size(287, 103);
+            this.button_accept.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_accept.StyleManager = this.metroStyleManager1;
+            this.button_accept.TabIndex = 5;
+            this.button_accept.Text = "Accept Trade";
+            this.button_accept.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_accept.Click += new System.EventHandler(this.button_accept_Click);
+            // 
+            // button_send
+            // 
+            this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_send.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.button_send.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.button_send.Highlight = false;
+            this.button_send.Location = new System.Drawing.Point(316, 510);
+            this.button_send.Name = "button_send";
+            this.button_send.Size = new System.Drawing.Size(94, 57);
+            this.button_send.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_send.StyleManager = this.metroStyleManager1;
+            this.button_send.TabIndex = 2;
+            this.button_send.Text = "Send";
+            this.button_send.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_send.Click += new System.EventHandler(this.button_send_Click);
+            // 
+            // label_yourvalue
+            // 
+            this.label_yourvalue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_yourvalue.BackColor = System.Drawing.Color.Transparent;
+            this.label_yourvalue.CustomBackground = false;
+            this.label_yourvalue.CustomForeColor = false;
+            this.label_yourvalue.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.label_yourvalue.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.label_yourvalue.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.label_yourvalue.Location = new System.Drawing.Point(472, 235);
+            this.label_yourvalue.Name = "label_yourvalue";
+            this.label_yourvalue.Size = new System.Drawing.Size(234, 73);
+            this.label_yourvalue.Style = MetroFramework.MetroColorStyle.Blue;
+            this.label_yourvalue.StyleManager = this.metroStyleManager1;
+            this.label_yourvalue.TabIndex = 21;
+            this.label_yourvalue.Text = "Total Value: 0.00";
+            this.label_yourvalue.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label_yourvalue.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.label_yourvalue.UseStyleColors = false;
+            // 
+            // label_othervalue
+            // 
+            this.label_othervalue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_othervalue.BackColor = System.Drawing.Color.Transparent;
+            this.label_othervalue.CustomBackground = false;
+            this.label_othervalue.CustomForeColor = false;
+            this.label_othervalue.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.label_othervalue.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.label_othervalue.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.label_othervalue.Location = new System.Drawing.Point(472, 410);
+            this.label_othervalue.Name = "label_othervalue";
+            this.label_othervalue.Size = new System.Drawing.Size(234, 73);
+            this.label_othervalue.Style = MetroFramework.MetroColorStyle.Blue;
+            this.label_othervalue.StyleManager = this.metroStyleManager1;
+            this.label_othervalue.TabIndex = 22;
+            this.label_othervalue.Text = "Total Value: 0.00";
+            this.label_othervalue.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label_othervalue.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.label_othervalue.UseStyleColors = false;
+            // 
+            // check_userready
+            // 
+            this.check_userready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.check_userready.AutoSize = true;
+            this.check_userready.CustomBackground = false;
+            this.check_userready.CustomForeColor = false;
+            this.check_userready.Enabled = false;
+            this.check_userready.FontSize = MetroFramework.MetroLinkSize.Small;
+            this.check_userready.FontWeight = MetroFramework.MetroLinkWeight.Regular;
+            this.check_userready.Location = new System.Drawing.Point(416, 238);
+            this.check_userready.Name = "check_userready";
+            this.check_userready.Size = new System.Drawing.Size(104, 15);
+            this.check_userready.Style = MetroFramework.MetroColorStyle.Blue;
+            this.check_userready.StyleManager = this.metroStyleManager1;
+            this.check_userready.TabIndex = 3;
+            this.check_userready.Text = "Ready to trade?";
+            this.check_userready.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.check_userready.UseStyleColors = false;
+            this.check_userready.UseVisualStyleBackColor = true;
+            this.check_userready.CheckedChanged += new System.EventHandler(this.check_userready_CheckedChanged);
+            // 
+            // check_otherready
+            // 
+            this.check_otherready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.check_otherready.AutoSize = true;
+            this.check_otherready.CustomBackground = false;
+            this.check_otherready.CustomForeColor = false;
+            this.check_otherready.Enabled = false;
+            this.check_otherready.FontSize = MetroFramework.MetroLinkSize.Small;
+            this.check_otherready.FontWeight = MetroFramework.MetroLinkWeight.Regular;
+            this.check_otherready.Location = new System.Drawing.Point(416, 413);
+            this.check_otherready.Name = "check_otherready";
+            this.check_otherready.Size = new System.Drawing.Size(104, 15);
+            this.check_otherready.Style = MetroFramework.MetroColorStyle.Blue;
+            this.check_otherready.StyleManager = this.metroStyleManager1;
+            this.check_otherready.TabIndex = 4;
+            this.check_otherready.Text = "Ready to trade?";
+            this.check_otherready.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.check_otherready.UseStyleColors = false;
+            this.check_otherready.UseVisualStyleBackColor = true;
+            // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(646, 497);
+            this.ClientSize = new System.Drawing.Size(726, 590);
+            this.Controls.Add(this.check_otherready);
+            this.Controls.Add(this.check_userready);
+            this.Controls.Add(this.button_send);
+            this.Controls.Add(this.button_accept);
             this.Controls.Add(this.text_search);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label_cancel);
-            this.Controls.Add(this.button_accept);
-            this.Controls.Add(this.label_othervalue);
             this.Controls.Add(this.text_log);
-            this.Controls.Add(this.check_otherready);
-            this.Controls.Add(this.check_userready);
             this.Controls.Add(this.list_otherofferings);
-            this.Controls.Add(this.button_send);
             this.Controls.Add(this.text_input);
             this.Controls.Add(this.list_userofferings);
             this.Controls.Add(this.list_inventory);
             this.Controls.Add(this.label_yourvalue);
+            this.Controls.Add(this.label_othervalue);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, 0);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(587, 536);
             this.Name = "ShowTrade";
-            this.Text = "ShowTrade";
+            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.StyleManager = this.metroStyleManager1;
+            this.Text = "Trade Session";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Activated += new System.EventHandler(this.ShowTrade_Activated);
             this.Deactivate += new System.EventHandler(this.ShowTrade_Deactivate);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ShowTrade_FormClosed);
@@ -419,33 +474,34 @@
         #endregion
 
         private System.Windows.Forms.TextBox text_input;
-        private System.Windows.Forms.Button button_send;
         private System.Windows.Forms.Label label_cancel;
         private BrightIdeasSoftware.OLVColumn column_userofferings;
         private BrightIdeasSoftware.OLVColumn column_otherofferings;
         public BrightIdeasSoftware.ObjectListView list_inventory;
         public BrightIdeasSoftware.ObjectListView list_userofferings;
         public BrightIdeasSoftware.ObjectListView list_otherofferings;
-        public System.Windows.Forms.CheckBox check_otherready;
         private BrightIdeasSoftware.OLVColumn column_uo_id;
         private BrightIdeasSoftware.OLVColumn column_oo_id;
         private BrightIdeasSoftware.OLVColumn column_id;
         private BrightIdeasSoftware.OLVColumn column_inventory;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem addAllItemsToolStripMenuItem;
-        public System.Windows.Forms.CheckBox check_userready;
-        public System.Windows.Forms.Button button_accept;
         private System.Windows.Forms.RichTextBox text_log;
         private BrightIdeasSoftware.OLVColumn column_value;
         private BrightIdeasSoftware.OLVColumn column_uo_value;
         private BrightIdeasSoftware.OLVColumn column_oo_value;
-        private System.Windows.Forms.Label label_yourvalue;
-        private System.Windows.Forms.Label label_othervalue;
         private System.Windows.Forms.ToolStripMenuItem disableGroupingToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableItemGroupingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewSuggestedItemPricesToolStripMenuItem;
         private System.Windows.Forms.TextBox text_search;
+        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
+        public MetroFramework.Controls.MetroButton button_accept;
+        private MetroFramework.Controls.MetroButton button_send;
+        private MetroFramework.Controls.MetroLabel label_yourvalue;
+        private MetroFramework.Controls.MetroLabel label_othervalue;
+        public MetroFramework.Controls.MetroCheckBox check_otherready;
+        public MetroFramework.Controls.MetroCheckBox check_userready;
     }
 }

@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using SteamBot;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class ShowTrade : Form
+    public partial class ShowTrade : MetroForm
     {
         Bot bot;
         ulong sid;
@@ -29,10 +30,13 @@ namespace MistClient
         public ShowTrade(Bot bot, string name)
         {
             InitializeComponent();
+            Util.LoadTheme(metroStyleManager1);
             this.Text = "Trading with " + name;
             this.bot = bot;
             this.sid = bot.CurrentTrade.OtherSID;
             this.username = name;
+            this.label_yourvalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label_othervalue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             column_otherofferings.Text = name + "'s Offerings:";
             ListInventory.ShowTrade = this;
             Thread checkExpired = new Thread(() =>
@@ -121,7 +125,14 @@ namespace MistClient
 
         private void label_cancel_MouseEnter(object sender, EventArgs e)
         {
-            label_cancel.ForeColor = SystemColors.ControlText;
+            if (metroStyleManager1.Theme == MetroFramework.MetroThemeStyle.Dark)
+            {
+                label_cancel.ForeColor = Color.WhiteSmoke;
+            }
+            else
+            {
+                label_cancel.ForeColor = SystemColors.ControlText;
+            }
         }
 
         private void label_cancel_MouseLeave(object sender, EventArgs e)
@@ -177,6 +188,7 @@ namespace MistClient
             this.check_otherready.Checked = false;
             this.button_accept.Enabled = false;
             button_accept.Enabled = false;
+            button_accept.Highlight = false;
             button_accept.Text = "Accept Trade";
             accepted = false;
             if (acceptTrade != null)
@@ -271,6 +283,7 @@ namespace MistClient
         {
             accepted = true;
             button_accept.Enabled = false;
+            button_accept.Highlight = false;
             button_accept.Text = "Waiting for other user...";
             Thread.Sleep(500);
             acceptTrade = new Thread(() =>
@@ -279,7 +292,15 @@ namespace MistClient
                 {
 
                 }
-                bool success = tradeCompleted = bot.CurrentTrade.AcceptTrade();
+                bool success = false;
+                for (int count = 0; count < 5; count++)
+                {
+                    success = tradeCompleted = bot.CurrentTrade.AcceptTrade();
+                    if (success)
+                        break;
+                    else
+                        Thread.Sleep(250);
+                }
                 if (Friends.chat_opened)
                 {
                     bot.main.Invoke((Action)(() =>
@@ -841,7 +862,10 @@ namespace MistClient
                 AppendText("You are not ready.");
             bot.CurrentTrade.SetReady(Checked);
             if (Checked && check_otherready.Checked)
+            {
                 button_accept.Enabled = true;
+                button_accept.Highlight = true;
+            }
         }
 
         private void ShowTrade_Activated(object sender, EventArgs e)

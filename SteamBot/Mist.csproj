@@ -110,8 +110,8 @@
       <DependentUpon>ChatLog.cs</DependentUpon>
     </Compile>
     <Compile Include="ChatTab.cs">
-      <SubType>UserControl</SubType>
       <CustomToolNamespace>ChatTab</CustomToolNamespace>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ChatTab.Designer.cs">
       <DependentUpon>ChatTab.cs</DependentUpon>
@@ -179,6 +179,12 @@
     <Compile Include="SteamGuard.Designer.cs">
       <DependentUpon>SteamGuard.cs</DependentUpon>
     </Compile>
+    <Compile Include="StyleChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StyleChooser.Designer.cs">
+      <DependentUpon>StyleChooser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Updater.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +240,9 @@
     <EmbeddedResource Include="SteamGuard.resx">
       <DependentUpon>SteamGuard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="StyleChooser.resx">
+      <DependentUpon>StyleChooser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Updater.resx">
       <DependentUpon>Updater.cs</DependentUpon>
     </EmbeddedResource>
@@ -265,6 +274,7 @@
     <None Include="Resources\mist-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\mist_white.png" />
     <Content Include="trade_message.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -29,50 +29,87 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileName));
-            this.label_profile = new System.Windows.Forms.Label();
-            this.text_newprofile = new System.Windows.Forms.TextBox();
-            this.button_ok = new System.Windows.Forms.Button();
-            this.button_cancel = new System.Windows.Forms.Button();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.label_profile = new MetroFramework.Controls.MetroLabel();
+            this.text_newprofile = new MetroFramework.Controls.MetroTextBox();
+            this.button_ok = new MetroFramework.Controls.MetroButton();
+            this.button_cancel = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
+            // 
+            // metroStyleManager1
+            // 
+            this.metroStyleManager1.OwnerForm = this;
+            this.metroStyleManager1.OwnerUserControl = null;
+            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // label_profile
             // 
             this.label_profile.AutoSize = true;
-            this.label_profile.Location = new System.Drawing.Point(12, 9);
+            this.label_profile.CustomBackground = false;
+            this.label_profile.CustomForeColor = false;
+            this.label_profile.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.label_profile.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.label_profile.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.label_profile.Location = new System.Drawing.Point(23, 60);
             this.label_profile.Name = "label_profile";
-            this.label_profile.Size = new System.Drawing.Size(68, 13);
-            this.label_profile.TabIndex = 0;
-            this.label_profile.Text = "Profile name:";
+            this.label_profile.Size = new System.Drawing.Size(142, 19);
+            this.label_profile.Style = MetroFramework.MetroColorStyle.Blue;
+            this.label_profile.StyleManager = this.metroStyleManager1;
+            this.label_profile.TabIndex = 3;
+            this.label_profile.Text = "Change Display Name:";
+            this.label_profile.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.label_profile.UseStyleColors = false;
             // 
             // text_newprofile
             // 
-            this.text_newprofile.Location = new System.Drawing.Point(15, 26);
+            this.text_newprofile.CustomBackground = false;
+            this.text_newprofile.CustomForeColor = false;
+            this.text_newprofile.FontSize = MetroFramework.MetroTextBoxSize.Small;
+            this.text_newprofile.FontWeight = MetroFramework.MetroTextBoxWeight.Regular;
+            this.text_newprofile.Location = new System.Drawing.Point(23, 82);
             this.text_newprofile.MaxLength = 32;
+            this.text_newprofile.Multiline = false;
             this.text_newprofile.Name = "text_newprofile";
-            this.text_newprofile.Size = new System.Drawing.Size(172, 20);
+            this.text_newprofile.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.text_newprofile.SelectedText = "";
+            this.text_newprofile.Size = new System.Drawing.Size(229, 23);
+            this.text_newprofile.Style = MetroFramework.MetroColorStyle.Blue;
+            this.text_newprofile.StyleManager = this.metroStyleManager1;
             this.text_newprofile.TabIndex = 0;
+            this.text_newprofile.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_newprofile.UseStyleColors = false;
+            this.text_newprofile.UseSystemPasswordChar = false;
             // 
             // button_ok
             // 
-            this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_ok.Location = new System.Drawing.Point(32, 58);
+            this.button_ok.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.button_ok.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.button_ok.Highlight = false;
+            this.button_ok.Location = new System.Drawing.Point(96, 111);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
+            this.button_ok.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_ok.StyleManager = this.metroStyleManager1;
             this.button_ok.TabIndex = 1;
             this.button_ok.Text = "OK";
-            this.button_ok.UseVisualStyleBackColor = true;
+            this.button_ok.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
             // button_cancel
             // 
-            this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.Location = new System.Drawing.Point(113, 58);
+            this.button_cancel.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.button_cancel.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.button_cancel.Highlight = false;
+            this.button_cancel.Location = new System.Drawing.Point(177, 111);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
+            this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
+            this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 2;
             this.button_cancel.Text = "Cancel";
-            this.button_cancel.UseVisualStyleBackColor = true;
+            this.button_cancel.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
             // 
             // ProfileName
@@ -81,19 +118,23 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button_cancel;
-            this.ClientSize = new System.Drawing.Size(200, 93);
+            this.ClientSize = new System.Drawing.Size(275, 157);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Controls.Add(this.text_newprofile);
             this.Controls.Add(this.label_profile);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProfileName";
+            this.Resizable = false;
+            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ProfileName";
+            this.StyleManager = this.metroStyleManager1;
+            this.Text = "Change Display Name";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -101,9 +142,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label_profile;
-        private System.Windows.Forms.TextBox text_newprofile;
-        private System.Windows.Forms.Button button_ok;
-        private System.Windows.Forms.Button button_cancel;
+        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
+        private MetroFramework.Controls.MetroLabel label_profile;
+        private MetroFramework.Controls.MetroTextBox text_newprofile;
+        private MetroFramework.Controls.MetroButton button_cancel;
+        private MetroFramework.Controls.MetroButton button_ok;
     }
 }

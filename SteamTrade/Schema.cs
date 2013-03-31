@@ -37,7 +37,7 @@ namespace SteamTrade
                 reader.Close();
             }
             response.Close();
-            
+
             SchemaResult schemaResult = JsonConvert.DeserializeObject<SchemaResult> (result);
             return schemaResult.result ?? null;
         }

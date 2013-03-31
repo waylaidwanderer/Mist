@@ -5,6 +5,9 @@ using MistClient;
 using SteamKit2;
 using System.IO;
 using SteamTrade;
+using System.Drawing;
+using System.Drawing.Text;
+using System.Linq;
 
 namespace SteamBot
 {
@@ -83,20 +86,7 @@ namespace SteamBot
                     }
                 }
             }).Start();
-            try
-            {
-                Application.Run(login);
-                login.Show();
-                login.Activate();   
-            }
-            catch
-            {
-                if (login != null)
-                {
-                    login.Show();
-                    login.Activate();
-                }
-            }
+            Application.Run(login);
         }
 
         static void CleanUp()

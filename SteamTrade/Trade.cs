@@ -383,7 +383,11 @@ namespace SteamTrade
             bool ok = AcceptTradeWebCmd ();
 
             if (!ok)
-                throw new TradeException ("The web command to accept the trade failed.");
+            {
+                //throw new TradeException("The web command to accept the trade failed.");
+                Console.WriteLine("The web command to accept the trade failed.");
+                return false;
+            }
 
             return true;
         }

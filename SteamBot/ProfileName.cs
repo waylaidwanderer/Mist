@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class ProfileName : Form
+    public partial class ProfileName : MetroForm
     {
         SteamBot.Bot bot;
 
@@ -17,6 +18,7 @@ namespace MistClient
         {
             InitializeComponent();
             this.bot = bot;
+            Util.LoadTheme(metroStyleManager1);
         }
 
         private void button_ok_Click(object sender, EventArgs e)

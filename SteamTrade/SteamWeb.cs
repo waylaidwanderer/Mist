@@ -26,7 +26,6 @@ namespace SteamTrade
             HttpWebRequest request = WebRequest.Create (url) as HttpWebRequest;
 
             request.Method = method;
-
             request.Accept = "text/javascript, text/html, application/xml, text/xml, */*";
             request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
             request.Host = "steamcommunity.com";
@@ -34,6 +33,7 @@ namespace SteamTrade
             request.Referer = "http://steamcommunity.com/trade/1";
             request.AllowAutoRedirect = true;
             request.MaximumAutomaticRedirections = request.MaximumAutomaticRedirections * 2;
+
             if (ajax)
             {
                 request.Headers.Add ("X-Requested-With", "XMLHttpRequest");
@@ -197,26 +197,21 @@ namespace SteamTrade
                 // aes encrypt the loginkey with our session key
                 byte[] cryptedLoginKey = CryptoHelper.SymmetricEncrypt (loginKey, sessionKey);
                 
-                KeyValue authResult = null;
-
-                for (int count = 1; count <= 3; count++)
+                KeyValue authResult;
+                
+                try
                 {
-                    try
-                    {
-                        authResult = userAuth.AuthenticateUser(
-                            steamid: client.SteamID.ConvertToUInt64(),
-                            sessionkey: HttpUtility.UrlEncode(cryptedSessionKey),
-                            encrypted_loginkey: HttpUtility.UrlEncode(cryptedLoginKey),
-                            method: "POST"
-                            );
-                        break;
-                    }
-                    catch (Exception)
-                    {
-                        token = null;
-                        if (count == 3)
-                            return false;
-                    }
+                    authResult = userAuth.AuthenticateUser (
+                        steamid: client.SteamID.ConvertToUInt64 (),
+                        sessionkey: HttpUtility.UrlEncode (cryptedSessionKey),
+                        encrypted_loginkey: HttpUtility.UrlEncode (cryptedLoginKey),
+                        method: "POST"
+                        );
+                }
+                catch (Exception)
+                {
+                    token = null;
+                    return false;
                 }
                 
                 token = authResult ["token"].AsString ();

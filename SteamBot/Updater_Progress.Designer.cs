@@ -28,47 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progress_download = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label_progress = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Updater_Progress));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.progress_download = new MetroFramework.Controls.MetroProgressBar();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
-            // 
-            // progress_download
-            // 
-            this.progress_download.Location = new System.Drawing.Point(12, 30);
-            this.progress_download.Name = "progress_download";
-            this.progress_download.Size = new System.Drawing.Size(342, 46);
-            this.progress_download.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(204, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Downloading the newest version of Mist...";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 83);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Progress:";
-            // 
-            // label_progress
-            // 
-            this.label_progress.AutoSize = true;
-            this.label_progress.Location = new System.Drawing.Point(61, 83);
-            this.label_progress.Name = "label_progress";
-            this.label_progress.Size = new System.Drawing.Size(21, 13);
-            this.label_progress.TabIndex = 3;
-            this.label_progress.Text = "0%";
             // 
             // backgroundWorker1
             // 
@@ -77,21 +42,64 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // progress_download
+            // 
+            this.progress_download.FontSize = MetroFramework.MetroProgressBarSize.Medium;
+            this.progress_download.FontWeight = MetroFramework.MetroProgressBarWeight.Light;
+            this.progress_download.HideProgressText = false;
+            this.progress_download.Location = new System.Drawing.Point(23, 82);
+            this.progress_download.Name = "progress_download";
+            this.progress_download.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progress_download.Size = new System.Drawing.Size(341, 45);
+            this.progress_download.Style = MetroFramework.MetroColorStyle.Blue;
+            this.progress_download.StyleManager = this.metroStyleManager1;
+            this.progress_download.TabIndex = 0;
+            this.progress_download.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.progress_download.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // metroStyleManager1
+            // 
+            this.metroStyleManager1.OwnerForm = this;
+            this.metroStyleManager1.OwnerUserControl = null;
+            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.CustomBackground = false;
+            this.metroLabel1.CustomForeColor = false;
+            this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.metroLabel1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.metroLabel1.Location = new System.Drawing.Point(23, 60);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(249, 19);
+            this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel1.StyleManager = this.metroStyleManager1;
+            this.metroLabel1.TabIndex = 5;
+            this.metroLabel1.Text = "Downloading the newest version of Mist...";
+            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel1.UseStyleColors = false;
+            // 
             // Updater_Progress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(366, 104);
-            this.Controls.Add(this.label_progress);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(389, 150);
+            this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.progress_download);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Updater_Progress";
+            this.Resizable = false;
+            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StyleManager = this.metroStyleManager1;
             this.Text = "Downloading Update";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Updater_Progress_FormClosed);
             this.Load += new System.EventHandler(this.Updater_Progress_Load);
             this.ResumeLayout(false);
@@ -101,10 +109,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progress_download;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label_progress;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private MetroFramework.Controls.MetroProgressBar progress_download;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
     }
 }

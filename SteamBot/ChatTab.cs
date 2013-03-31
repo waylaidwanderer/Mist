@@ -11,10 +11,12 @@ using System.IO;
 using MistClient;
 using SteamBot;
 using ToastNotifications;
+using MetroFramework.Forms;
+using MetroFramework.Controls;
 
 namespace MistClient
 {
-    public partial class ChatTab : UserControl
+    public partial class ChatTab : MetroUserControl
     {
         ulong sid;
         Bot bot;
@@ -34,28 +36,47 @@ namespace MistClient
             this.Chat = chat;
             this.sid = sid;
             this.bot = bot;
-            this.steam_name.Text = prevName = bot.SteamFriends.GetFriendPersonaName(sid);
-            this.steam_status.Text = prevStatus = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
+            Util.LoadTheme(metroStyleManager1);
+            this.Theme = Friends.globalStyleManager.Theme;
+            this.Style = Friends.globalStyleManager.Style;
+            try
+            {
+                this.steam_name.Text = prevName = bot.SteamFriends.GetFriendPersonaName(sid);
+                this.steam_status.Text = prevStatus = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
+            }
+            catch
+            {
+
+            }
             this.chat_status.Text = "";
             SteamKit2.SteamID SteamID = sid;
-            byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(SteamID);
-            bool validHash = avatarHash != null && !IsZeros(avatarHash);
+            try
+            {
+                byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(SteamID);
+                bool validHash = avatarHash != null && !IsZeros(avatarHash);
 
-            if ((AvatarHash == null && !validHash && avatarBox.Image != null) || (AvatarHash != null && AvatarHash.SequenceEqual(avatarHash)))
-            {
-                // avatar is already up to date, no operations necessary
+                if ((AvatarHash == null && !validHash && avatarBox.Image != null) || (AvatarHash != null && AvatarHash.SequenceEqual(avatarHash)))
+                {
+                    // avatar is already up to date, no operations necessary
+                }
+                else if (validHash)
+                {
+                    AvatarHash = avatarHash;
+                    CDNCache.DownloadAvatar(SteamID, avatarHash, AvatarDownloaded);
+                }
+                else
+                {
+                    AvatarHash = null;
+                    avatarBox.Image = ComposeAvatar(null);
+                }
             }
-            else if (validHash)
+            catch
             {
-                AvatarHash = avatarHash;
-                CDNCache.DownloadAvatar(SteamID, avatarHash, AvatarDownloaded);
-            }
-            else
-            {
-                AvatarHash = null;
-                avatarBox.Image = ComposeAvatar(null);
-            }
 
+            }
+            checkrep.RunWorkerAsync();
+            status_update.RunWorkerAsync();
+            text_input.Focus();
         }
 
         public bool IsInGame()
@@ -96,6 +117,7 @@ namespace MistClient
 
             return MistClient.Properties.Resources.IconOffline;
         }
+
         Bitmap GetAvatar(string path)
         {
             try
@@ -419,9 +441,11 @@ namespace MistClient
                     {
                         Friends.chat.chatTab = (ChatTab)item;
                     }
+                    Friends.chat.page = tab;
                 }
             }
             this.Font = new Font(this.Font, FontStyle.Regular);
+            Friends.chat.Text = steam_name.Text + " - Chat";
         }
 
         private void ChatTab_Leave(object sender, EventArgs e)
@@ -479,14 +503,11 @@ namespace MistClient
         {
             string base_url = "http://steamcommunity.com/profiles/";
             base_url += sid.ToString();
-            System.Diagnostics.Process.Start(base_url);
+            System.Diagnostics.Process.Start("explorer.exe", base_url);
         }
 
         private void ChatTab_Load(object sender, EventArgs e)
         {
-            checkrep.RunWorkerAsync();
-            status_update.RunWorkerAsync();
-            text_input.Focus();
         }
 
         private void steam_name_Click(object sender, EventArgs e)
@@ -527,7 +548,7 @@ namespace MistClient
                 //string toFind = "SteamID: 7691248515251; Rep: None; LC: Date.";
                 foreach (var line in File.ReadAllLines(file))
                 {
-                    if (line.Contains(sid.ToString()))
+                    if (line.Contains(this.sid.ToString()))
                     {
                         found = true;
                         string lastChecked = Util.ParseBetween(line, "Date:", ".");
@@ -538,7 +559,7 @@ namespace MistClient
                         {
                             // Data last pulled over a day ago, so let's update the SR cache
                             string url = "http://api.steamrep.org/profiles/" + sid;
-                            for (int count = 0; count < 2; count++)
+                            for (int count = 0; count < 5; count++)
                             {
                                 string response = Util.HTTPRequest(url);
                                 if (response != "")
@@ -758,37 +779,44 @@ namespace MistClient
         {
             while (true)
             {
-                this.steam_name.Text = bot.SteamFriends.GetFriendPersonaName(sid);
-                this.steam_status.Text = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
-                SteamKit2.SteamID SteamID = sid;
-                byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(SteamID);
-                bool validHash = avatarHash != null && !IsZeros(avatarHash);
+                try
+                {
+                    this.steam_name.Text = bot.SteamFriends.GetFriendPersonaName(sid);
+                    this.steam_status.Text = bot.SteamFriends.GetFriendPersonaState(sid).ToString();
+                    SteamKit2.SteamID SteamID = sid;
+                    byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(SteamID);
+                    bool validHash = avatarHash != null && !IsZeros(avatarHash);
 
-                if ((AvatarHash == null && !validHash && avatarBox.Image != null) || (AvatarHash != null && AvatarHash.SequenceEqual(avatarHash)))
-                {
-                    // avatar is already up to date, no operations necessary
+                    if ((AvatarHash == null && !validHash && avatarBox.Image != null) || (AvatarHash != null && AvatarHash.SequenceEqual(avatarHash)))
+                    {
+                        // avatar is already up to date, no operations necessary
+                    }
+                    else if (validHash)
+                    {
+                        AvatarHash = avatarHash;
+                        CDNCache.DownloadAvatar(SteamID, avatarHash, AvatarDownloaded);
+                    }
+                    else
+                    {
+                        AvatarHash = null;
+                        avatarBox.Image = ComposeAvatar(null);
+                    }
+                    if (this.steam_status.Text != prevStatus)
+                    {
+                        UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n", false);
+                        prevStatus = this.steam_status.Text;
+                    }
+                    if (this.steam_name.Text != prevName)
+                    {
+                        UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n", false);
+                        prevName = this.steam_name.Text;
+                    }
+                    System.Threading.Thread.Sleep(1000);
                 }
-                else if (validHash)
+                catch
                 {
-                    AvatarHash = avatarHash;
-                    CDNCache.DownloadAvatar(SteamID, avatarHash, AvatarDownloaded);
+
                 }
-                else
-                {
-                    AvatarHash = null;
-                    avatarBox.Image = ComposeAvatar(null);
-                }
-                if (this.steam_status.Text != prevStatus)
-                {
-                    UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n", false);
-                    prevStatus = this.steam_status.Text;
-                }
-                if (this.steam_name.Text != prevName)
-                {
-                    UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n", false);
-                    prevName = this.steam_name.Text;
-                }
-                System.Threading.Thread.Sleep(1000);
             }
         }
 

@@ -9,10 +9,11 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using SteamBot;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class Updater : Form
+    public partial class Updater : MetroForm
     {
         string newVer;
         bool updating = false;
@@ -26,6 +27,7 @@ namespace MistClient
             this.log = log;
             changelog = changelog.Replace("//", "\r\n");
             this.text_changelog.Text = changelog;
+            Util.LoadTheme(metroStyleManager1);
         }
 
         private void button_install_Click(object sender, EventArgs e)
@@ -73,11 +75,6 @@ namespace MistClient
             this.Close();
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/");
-        }
-
         private void linkLabel1_MouseHover(object sender, EventArgs e)
         {
             ToolTip linkTip = new ToolTip();
@@ -86,7 +83,12 @@ namespace MistClient
             linkTip.ShowAlways = true;
             linkTip.ToolTipTitle = "Manual Download";
             string link = "http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/";
-            linkTip.SetToolTip(linkLabel1, link);
+            linkTip.SetToolTip(metroLink1, link);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "http://steamcommunity.com/groups/MistClient/discussions/0/810919057023360607/");
         }
     }
 }

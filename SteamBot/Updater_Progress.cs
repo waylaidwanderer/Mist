@@ -11,10 +11,11 @@ using System.Net;
 using Ionic.Zip;
 using System.Threading;
 using SteamBot;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class Updater_Progress : Form
+    public partial class Updater_Progress : MetroForm
     {
         Updater updater;
         Log log;
@@ -25,6 +26,7 @@ namespace MistClient
             InitializeComponent();
             this.updater = updater;
             this.log = log;
+            Util.LoadTheme(metroStyleManager1);
         }
 
         private void Updater_Progress_Load(object sender, EventArgs e)
@@ -66,6 +68,10 @@ namespace MistClient
             Int64 iSize = response.ContentLength;
             double sizeMB = (double)iSize / 1048576;
             fileSize = sizeMB.ToString("0.00");
+            if (fileSize != null)
+            {
+                metroLabel1.Text += " (" + fileSize + " MB)";
+            }
             // keeps track of the total bytes downloaded so we can update the progress bar
             Int64 iRunningByteTotal = 0;
             // use the webclient object to download the file
@@ -147,12 +153,7 @@ namespace MistClient
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progress_download.Value = e.ProgressPercentage;
-            string percent = e.ProgressPercentage.ToString() + "%";
-            if (fileSize != null)
-            {
-                percent += " of " + fileSize + " MB";
-            }
-            label_progress.Text = percent;
+            
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

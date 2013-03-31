@@ -272,7 +272,8 @@ namespace SteamBot
                 {
                     main.Invoke((Action)(() =>
                     {
-                        main.label_status.Text = "Logging in to Steam..."; ;
+                        main.label_status.Text = "Logging in to Steam...";
+                        log.Info("Logging in to Steam...");
                     }));
                 }
 
@@ -389,7 +390,7 @@ namespace SteamBot
                                     MessageBoxIcon.Error,
                                     MessageBoxDefaultButton.Button1);
                         main.wrongAPI = true;
-                        main.Invoke((Action)(main.Close));
+                        main.Invoke((Action)(main.Dispose));
                         return;
                     }
                     log.Success ("Schema Downloaded!");
@@ -410,7 +411,7 @@ namespace SteamBot
 
                 IsLoggedIn = true;
                 displayName = SteamFriends.GetPersonaName();
-                ConnectToGC(13540830642081628378);
+                //ConnectToGC(13540830642081628378);
                 Thread.Sleep(1000);
                 DisconnectFromGC();
                 try
@@ -421,7 +422,7 @@ namespace SteamBot
                 {
                     Environment.Exit(1);
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 CDNCache.Initialize();
             });
 
@@ -746,6 +747,12 @@ namespace SteamBot
             foreach (var item in ListFriendRequests.Get())
             {
                 if (item.Name == "[unknown]")
+                {
+                    string name = SteamFriends.GetFriendPersonaName(item.SteamID);
+                    ListFriendRequests.Remove(item.SteamID);
+                    ListFriendRequests.Add(name, item.SteamID);
+                }
+                if (item.Name == "")
                 {
                     string name = SteamFriends.GetFriendPersonaName(item.SteamID);
                     ListFriendRequests.Remove(item.SteamID);

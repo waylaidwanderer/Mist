@@ -547,7 +547,7 @@ namespace SteamBot
                     }
                 }
             }
-            Friends.chat.Invoke((Action)(() =>
+            Bot.main.Invoke((Action)(() =>
             {
                 if (Friends.chat_opened)
                 {

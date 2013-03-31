@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Exceptions\TradeException.cs" />
+    <Compile Include="HandleRedirect.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Trade.cs" />
     <Compile Include="Schema.cs" />
     <Compile Include="Inventory.cs" />

@@ -13,10 +13,11 @@ using System.Threading;
 using System.Net;
 using System.IO;
 using System.Runtime.InteropServices;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
-    public partial class ShowBackpack : Form
+    public partial class ShowBackpack : MetroForm
     {
         Bot bot;
         SteamID SID;
@@ -28,6 +29,7 @@ namespace MistClient
             this.bot = bot;
             this.SID = SID;
             this.Text = bot.SteamFriends.GetFriendPersonaName(SID) + "'s Backpack";
+            Util.LoadTheme(metroStyleManager1);
         }
 
         void LoadBP()
@@ -52,10 +54,26 @@ namespace MistClient
             }));
             BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
             foreach (Inventory.Item item in inventory)
-            {
+            {                
                 bool isGift = false;
                 bool isUnusual = false;
                 var currentItem = Trade.CurrentSchema.GetItem(item.Defindex);
+                try
+                {
+                    for (int count = 0; count < item.Attributes.Length; count++)
+                    {
+                        if (item.Attributes[count].Defindex == 229)
+                        {
+                            Console.WriteLine("Item: " + currentItem.ItemName);
+                            Console.WriteLine(item.Attributes[count].FloatValue);
+                            Console.WriteLine(item.Attributes[count].Value);
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
                 string name = "";
                 string price = null;
                 var type = Convert.ToInt32(item.Quality.ToString());

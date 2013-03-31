@@ -5,11 +5,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.IO;
+using MetroFramework.Forms;
 
 namespace MistClient
 {
     class Util
     {
+        public static void LoadTheme(MetroFramework.Components.MetroStyleManager MetroStyleManager)
+        {
+            Friends.globalThemeManager.Add(MetroStyleManager);
+            MetroStyleManager.Theme = Friends.globalStyleManager.Theme;
+            MetroStyleManager.Style = Friends.globalStyleManager.Style;
+        }
+
         public static string HTTPRequest(string url)
         {
             var result = "";

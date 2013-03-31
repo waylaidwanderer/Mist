@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Friends));
-            this.steam_name = new System.Windows.Forms.Label();
-            this.steam_status = new System.Windows.Forms.Label();
             this.menu_friend = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inviteToTradeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,14 +53,18 @@
             this.showBackpackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeProfileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logConversationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.minimizeToTrayOnCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimizeToTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitMistToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
-            this.label_addfriend2 = new System.Windows.Forms.Label();
-            this.label_addfriend = new System.Windows.Forms.Label();
             this.avatarBox = new System.Windows.Forms.PictureBox();
             this.list_friendreq = new BrightIdeasSoftware.ObjectListView();
             this.column_friendreq_name = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -79,6 +81,12 @@
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_search = new System.Windows.Forms.TextBox();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.steam_name = new MetroFramework.Controls.MetroLabel();
+            this.steam_status = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.label_addfriend = new MetroFramework.Controls.MetroLink();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
@@ -86,24 +94,6 @@
             this.menu_friendreq.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
             this.SuspendLayout();
-            // 
-            // steam_name
-            // 
-            this.steam_name.AutoSize = true;
-            this.steam_name.Location = new System.Drawing.Point(58, 12);
-            this.steam_name.Name = "steam_name";
-            this.steam_name.Size = new System.Drawing.Size(67, 13);
-            this.steam_name.TabIndex = 1;
-            this.steam_name.Text = "steam_name";
-            // 
-            // steam_status
-            // 
-            this.steam_status.AutoSize = true;
-            this.steam_status.Location = new System.Drawing.Point(58, 25);
-            this.steam_status.Name = "steam_status";
-            this.steam_status.Size = new System.Drawing.Size(37, 13);
-            this.steam_status.TabIndex = 2;
-            this.steam_status.Text = "Online";
             // 
             // menu_friend
             // 
@@ -205,13 +195,12 @@
             this.showBackpackToolStripMenuItem1,
             this.changeProfileNameToolStripMenuItem,
             this.toolStripMenuItem3,
-            this.logConversationsToolStripMenuItem,
-            this.minimizeToTrayOnCloseToolStripMenuItem,
+            this.optionsToolStripMenuItem,
             this.aboutMistToolStripMenuItem,
             this.checkForUpdatesToolStripMenuItem,
             this.exitMistToolStripMenuItem});
             this.menu_status.Name = "menu_status";
-            this.menu_status.Size = new System.Drawing.Size(197, 324);
+            this.menu_status.Size = new System.Drawing.Size(197, 302);
             // 
             // onlineToolStripMenuItem
             // 
@@ -286,24 +275,73 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(193, 6);
             // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.logConversationsToolStripMenuItem,
+            this.minimizeToTrayToolStripMenuItem,
+            this.themeToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
             // logConversationsToolStripMenuItem
             // 
             this.logConversationsToolStripMenuItem.Checked = true;
             this.logConversationsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.logConversationsToolStripMenuItem.Name = "logConversationsToolStripMenuItem";
-            this.logConversationsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.logConversationsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.logConversationsToolStripMenuItem.Text = "Log Conversations";
-            this.logConversationsToolStripMenuItem.Click += new System.EventHandler(this.logConversationsToolStripMenuItem_Click);
             // 
-            // minimizeToTrayOnCloseToolStripMenuItem
+            // minimizeToTrayToolStripMenuItem
             // 
-            this.minimizeToTrayOnCloseToolStripMenuItem.Checked = true;
-            this.minimizeToTrayOnCloseToolStripMenuItem.CheckOnClick = true;
-            this.minimizeToTrayOnCloseToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.minimizeToTrayOnCloseToolStripMenuItem.Name = "minimizeToTrayOnCloseToolStripMenuItem";
-            this.minimizeToTrayOnCloseToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.minimizeToTrayOnCloseToolStripMenuItem.Text = "Minimize to Tray";
-            this.minimizeToTrayOnCloseToolStripMenuItem.Click += new System.EventHandler(this.minimizeToTrayOnCloseToolStripMenuItem_Click);
+            this.minimizeToTrayToolStripMenuItem.Checked = true;
+            this.minimizeToTrayToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.minimizeToTrayToolStripMenuItem.Name = "minimizeToTrayToolStripMenuItem";
+            this.minimizeToTrayToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.minimizeToTrayToolStripMenuItem.Text = "Minimize to Tray";
+            this.minimizeToTrayToolStripMenuItem.Click += new System.EventHandler(this.minimizeToTrayToolStripMenuItem_Click);
+            // 
+            // themeToolStripMenuItem
+            // 
+            this.themeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lightToolStripMenuItem,
+            this.darkToolStripMenuItem});
+            this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.themeToolStripMenuItem.Text = "Theme";
+            // 
+            // lightToolStripMenuItem
+            // 
+            this.lightToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setColorToolStripMenuItem});
+            this.lightToolStripMenuItem.Name = "lightToolStripMenuItem";
+            this.lightToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.lightToolStripMenuItem.Text = "Light";
+            this.lightToolStripMenuItem.Click += new System.EventHandler(this.lightToolStripMenuItem_Click);
+            // 
+            // setColorToolStripMenuItem
+            // 
+            this.setColorToolStripMenuItem.Name = "setColorToolStripMenuItem";
+            this.setColorToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.setColorToolStripMenuItem.Text = "Set Color";
+            this.setColorToolStripMenuItem.Click += new System.EventHandler(this.setColorToolStripMenuItem_Click);
+            // 
+            // darkToolStripMenuItem
+            // 
+            this.darkToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setColorToolStripMenuItem1});
+            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.darkToolStripMenuItem.Text = "Dark";
+            this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
+            // 
+            // setColorToolStripMenuItem1
+            // 
+            this.setColorToolStripMenuItem1.Name = "setColorToolStripMenuItem1";
+            this.setColorToolStripMenuItem1.Size = new System.Drawing.Size(122, 22);
+            this.setColorToolStripMenuItem1.Text = "Set Color";
+            this.setColorToolStripMenuItem1.Click += new System.EventHandler(this.setColorToolStripMenuItem1_Click);
             // 
             // aboutMistToolStripMenuItem
             // 
@@ -328,9 +366,9 @@
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Arial Black", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1.Location = new System.Drawing.Point(143, 13);
+            this.label1.Location = new System.Drawing.Point(161, 68);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label1.Size = new System.Drawing.Size(175, 12);
@@ -341,40 +379,10 @@
             this.label1.MouseLeave += new System.EventHandler(this.label1_MouseLeave);
             this.label1.MouseHover += new System.EventHandler(this.label1_MouseHover);
             // 
-            // label_addfriend2
-            // 
-            this.label_addfriend2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_addfriend2.AutoSize = true;
-            this.label_addfriend2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_addfriend2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_addfriend2.Location = new System.Drawing.Point(10, 399);
-            this.label_addfriend2.Name = "label_addfriend2";
-            this.label_addfriend2.Size = new System.Drawing.Size(24, 25);
-            this.label_addfriend2.TabIndex = 7;
-            this.label_addfriend2.Text = "+";
-            this.label_addfriend2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label_addfriend2.Click += new System.EventHandler(this.label_addfriend2_Click);
-            this.label_addfriend2.MouseLeave += new System.EventHandler(this.label_addfriend2_MouseLeave);
-            this.label_addfriend2.MouseHover += new System.EventHandler(this.label_addfriend2_MouseHover);
-            // 
-            // label_addfriend
-            // 
-            this.label_addfriend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_addfriend.AutoSize = true;
-            this.label_addfriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_addfriend.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label_addfriend.Location = new System.Drawing.Point(31, 404);
-            this.label_addfriend.Name = "label_addfriend";
-            this.label_addfriend.Size = new System.Drawing.Size(109, 16);
-            this.label_addfriend.TabIndex = 8;
-            this.label_addfriend.Text = "Add a Friend...";
-            this.label_addfriend.Click += new System.EventHandler(this.label_addfriend_Click);
-            this.label_addfriend.MouseLeave += new System.EventHandler(this.label_addfriend_MouseLeave);
-            this.label_addfriend.MouseHover += new System.EventHandler(this.label_addfriend_MouseHover);
-            // 
             // avatarBox
             // 
-            this.avatarBox.Location = new System.Drawing.Point(12, 9);
+            this.avatarBox.ContextMenuStrip = this.menu_status;
+            this.avatarBox.Location = new System.Drawing.Point(12, 63);
             this.avatarBox.Name = "avatarBox";
             this.avatarBox.Size = new System.Drawing.Size(40, 40);
             this.avatarBox.TabIndex = 11;
@@ -389,10 +397,10 @@
             this.list_friendreq.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_friendreq_name});
             this.list_friendreq.ContextMenuStrip = this.menu_friendreq;
-            this.list_friendreq.Location = new System.Drawing.Point(12, 81);
+            this.list_friendreq.Location = new System.Drawing.Point(12, 135);
             this.list_friendreq.Name = "list_friendreq";
             this.list_friendreq.Size = new System.Drawing.Size(262, 80);
-            this.list_friendreq.TabIndex = 16;
+            this.list_friendreq.TabIndex = 1;
             this.list_friendreq.UseCompatibleStateImageBehavior = false;
             this.list_friendreq.View = System.Windows.Forms.View.Details;
             this.list_friendreq.Visible = false;
@@ -482,16 +490,16 @@
             this.friends_list.ContextMenuStrip = this.menu_friend;
             this.friends_list.Cursor = System.Windows.Forms.Cursors.Default;
             this.friends_list.HeaderUsesThemes = false;
-            this.friends_list.Location = new System.Drawing.Point(12, 160);
+            this.friends_list.Location = new System.Drawing.Point(12, 214);
             this.friends_list.MultiSelect = false;
             this.friends_list.Name = "friends_list";
             this.friends_list.SelectAllOnControlA = false;
-            this.friends_list.Size = new System.Drawing.Size(262, 241);
-            this.friends_list.TabIndex = 15;
+            this.friends_list.Size = new System.Drawing.Size(262, 233);
+            this.friends_list.TabIndex = 2;
             this.friends_list.UseCompatibleStateImageBehavior = false;
             this.friends_list.View = System.Windows.Forms.View.Details;
             this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching_1);
-            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate_1);
+            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate);
             // 
             // column_friend
             // 
@@ -536,34 +544,135 @@
             this.text_search.BackColor = System.Drawing.SystemColors.Window;
             this.text_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.text_search.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.text_search.Location = new System.Drawing.Point(12, 55);
+            this.text_search.Location = new System.Drawing.Point(12, 109);
             this.text_search.Name = "text_search";
             this.text_search.Size = new System.Drawing.Size(262, 20);
-            this.text_search.TabIndex = 18;
+            this.text_search.TabIndex = 0;
             this.text_search.Text = "Search";
             this.text_search.TextChanged += new System.EventHandler(this.text_search_TextChanged);
             this.text_search.Enter += new System.EventHandler(this.text_search_Enter);
             this.text_search.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_search_KeyPress);
             this.text_search.Leave += new System.EventHandler(this.text_search_Leave);
             // 
+            // metroStyleManager1
+            // 
+            this.metroStyleManager1.OwnerForm = this;
+            this.metroStyleManager1.OwnerUserControl = null;
+            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            // 
+            // steam_name
+            // 
+            this.steam_name.AutoSize = true;
+            this.steam_name.CustomBackground = false;
+            this.steam_name.CustomForeColor = false;
+            this.steam_name.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.steam_name.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.steam_name.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.steam_name.Location = new System.Drawing.Point(58, 63);
+            this.steam_name.Name = "steam_name";
+            this.steam_name.Size = new System.Drawing.Size(83, 19);
+            this.steam_name.Style = MetroFramework.MetroColorStyle.Blue;
+            this.steam_name.StyleManager = this.metroStyleManager1;
+            this.steam_name.TabIndex = 19;
+            this.steam_name.Text = "steam_name";
+            this.steam_name.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.steam_name.UseStyleColors = false;
+            // 
+            // steam_status
+            // 
+            this.steam_status.AutoSize = true;
+            this.steam_status.CustomBackground = false;
+            this.steam_status.CustomForeColor = false;
+            this.steam_status.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.steam_status.FontWeight = MetroFramework.MetroLabelWeight.Light;
+            this.steam_status.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.steam_status.Location = new System.Drawing.Point(58, 82);
+            this.steam_status.Name = "steam_status";
+            this.steam_status.Size = new System.Drawing.Size(47, 19);
+            this.steam_status.Style = MetroFramework.MetroColorStyle.Blue;
+            this.steam_status.StyleManager = this.metroStyleManager1;
+            this.steam_status.TabIndex = 20;
+            this.steam_status.Text = "Online";
+            this.steam_status.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.steam_status.UseStyleColors = false;
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.CustomBackground = false;
+            this.metroLabel1.CustomForeColor = false;
+            this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.metroLabel1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.metroLabel1.Location = new System.Drawing.Point(146, 442);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(107, 19);
+            this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel1.StyleManager = this.metroStyleManager1;
+            this.metroLabel1.TabIndex = 21;
+            this.metroLabel1.Text = "Add a Friend...";
+            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel1.UseStyleColors = false;
+            this.metroLabel1.Click += new System.EventHandler(this.label_addfriend_Click);
+            // 
+            // metroLabel2
+            // 
+            this.metroLabel2.AutoSize = true;
+            this.metroLabel2.CustomBackground = false;
+            this.metroLabel2.CustomForeColor = false;
+            this.metroLabel2.FontSize = MetroFramework.MetroLabelSize.Medium;
+            this.metroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.metroLabel2.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
+            this.metroLabel2.Location = new System.Drawing.Point(122, 366);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(19, 19);
+            this.metroLabel2.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroLabel2.StyleManager = this.metroStyleManager1;
+            this.metroLabel2.TabIndex = 22;
+            this.metroLabel2.Text = "+";
+            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel2.UseStyleColors = false;
+            // 
+            // label_addfriend
+            // 
+            this.label_addfriend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label_addfriend.CustomBackground = false;
+            this.label_addfriend.CustomForeColor = false;
+            this.label_addfriend.FontSize = MetroFramework.MetroLinkSize.Medium;
+            this.label_addfriend.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.label_addfriend.Location = new System.Drawing.Point(12, 453);
+            this.label_addfriend.Name = "label_addfriend";
+            this.label_addfriend.Size = new System.Drawing.Size(129, 23);
+            this.label_addfriend.Style = MetroFramework.MetroColorStyle.Blue;
+            this.label_addfriend.StyleManager = this.metroStyleManager1;
+            this.label_addfriend.TabIndex = 3;
+            this.label_addfriend.Text = "+ Add a Friend...";
+            this.label_addfriend.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.label_addfriend.UseStyleColors = true;
+            this.label_addfriend.Click += new System.EventHandler(this.label_addfriend_Click);
+            // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 430);
+            this.ClientSize = new System.Drawing.Size(284, 499);
+            this.Controls.Add(this.label_addfriend);
+            this.Controls.Add(this.steam_status);
+            this.Controls.Add(this.steam_name);
             this.Controls.Add(this.text_search);
             this.Controls.Add(this.list_friendreq);
             this.Controls.Add(this.friends_list);
             this.Controls.Add(this.avatarBox);
-            this.Controls.Add(this.label_addfriend);
-            this.Controls.Add(this.label_addfriend2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.steam_status);
-            this.Controls.Add(this.steam_name);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, 0);
+            this.MinimumSize = new System.Drawing.Size(250, 400);
             this.Name = "Friends";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.StyleManager = this.metroStyleManager1;
             this.Text = "Friends";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Friends_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Friends_FormClosed);
             this.Load += new System.EventHandler(this.Friends_Load);
@@ -582,8 +691,6 @@
 
         #endregion
 
-        public System.Windows.Forms.Label steam_name;
-        public System.Windows.Forms.Label steam_status;
         private System.Windows.Forms.ContextMenuStrip menu_status;
         private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem awayToolStripMenuItem;
@@ -595,8 +702,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem changeProfileNameToolStripMenuItem;
-        private System.Windows.Forms.Label label_addfriend2;
-        private System.Windows.Forms.Label label_addfriend;
         private System.Windows.Forms.ContextMenuStrip menu_friend;
         private System.Windows.Forms.ToolStripMenuItem showBackpackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inviteToTradeToolStripMenuItem;
@@ -626,10 +731,22 @@
         private BrightIdeasSoftware.OLVColumn column_friendreq_sid;
         private BrightIdeasSoftware.OLVColumn column_sid;
         public BrightIdeasSoftware.ObjectListView list_friendreq;
-        private System.Windows.Forms.ToolStripMenuItem minimizeToTrayOnCloseToolStripMenuItem;
         private System.Windows.Forms.TextBox text_search;
         private System.Windows.Forms.ToolStripMenuItem viewChatLogToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logConversationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitMistToolStripMenuItem;
+        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
+        public MetroFramework.Controls.MetroLabel steam_status;
+        private MetroFramework.Controls.MetroLabel steam_name;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logConversationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minimizeToTrayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setColorToolStripMenuItem1;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Controls.MetroLabel metroLabel2;
+        private MetroFramework.Controls.MetroLink label_addfriend;
     }
 }
