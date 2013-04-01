@@ -48,7 +48,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>mist-icon.ico</ApplicationIcon>
+    <ApplicationIcon>mist.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -275,13 +275,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\mist_white.png" />
+    <Content Include="mist.ico" />
+    <None Include="Resources\mist_flat.png" />
+    <None Include="Resources\mist_icon.png" />
     <Content Include="trade_message.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="message.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="mist-icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
