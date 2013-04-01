@@ -521,6 +521,9 @@ namespace MistClient
 
         private void OnExit(object sender, EventArgs e)
         {
+            trayIcon.Visible = false;
+            trayIcon.Icon = null;
+            trayIcon.Dispose();
             Application.Exit();
             Environment.Exit(0);
         }
@@ -537,9 +540,6 @@ namespace MistClient
             }
             else
             {
-                trayIcon.Visible = false;
-                trayIcon.Icon = null;
-                trayIcon.Dispose();
                 OnExit(sender, e);
             }
         }
