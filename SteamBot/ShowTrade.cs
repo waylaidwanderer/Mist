@@ -295,7 +295,14 @@ namespace MistClient
                 bool success = false;
                 for (int count = 0; count < 5; count++)
                 {
-                    success = tradeCompleted = bot.CurrentTrade.AcceptTrade();
+                    try
+                    {
+                        success = tradeCompleted = bot.CurrentTrade.AcceptTrade();
+                    }
+                    catch
+                    {
+
+                    }
                     if (success)
                         break;
                     else
@@ -317,7 +324,7 @@ namespace MistClient
                                     }
                                     if (success)
                                     {
-                                        string result = String.Format("Trade completed with {0}.", bot.SteamFriends.GetFriendPersonaName(sid));
+                                        string result = String.Format("Trade completed successfully with {0}!", bot.SteamFriends.GetFriendPersonaName(sid));
                                         bot.log.Success(result);
                                         Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
                                     }
