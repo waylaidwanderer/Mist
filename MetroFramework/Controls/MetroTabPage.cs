@@ -25,10 +25,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Security;
 using System.Windows.Forms;
 
 using MetroFramework.Interfaces;
-using MetroFramework.Design;
 using MetroFramework.Drawing;
 using MetroFramework.Components;
 using MetroFramework.Native;
@@ -36,7 +36,7 @@ using MetroFramework.Native;
 namespace MetroFramework.Controls
 {
     [ToolboxItem(false)]
-    [Designer(typeof(MetroTabPageDesigner))]
+    [Designer("MetroFramework.Design.MetroTabPageDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public class MetroTabPage : TabPage, IMetroControl
     {
         #region Interface
@@ -84,8 +84,9 @@ namespace MetroFramework.Controls
         private MetroScrollBar verticalScrollbar = new MetroScrollBar(MetroScrollOrientation.Vertical);
         private MetroScrollBar horizontalScrollbar = new MetroScrollBar(MetroScrollOrientation.Horizontal);
 
-        [Category("Metro Appearance")]
         private bool showHorizontalScrollbar = false;
+        [DefaultValue(false)]
+        [Category("Metro Appearance")]
         public bool HorizontalScrollbar 
         {
             get { return showHorizontalScrollbar; }
@@ -113,8 +114,9 @@ namespace MetroFramework.Controls
             set { horizontalScrollbar.HighlightOnWheel = value; }
         }
 
-        [Category("Metro Appearance")]
         private bool showVerticalScrollbar = false;
+        [DefaultValue(false)]
+        [Category("Metro Appearance")]
         public bool VerticalScrollbar
         {
             get { return showVerticalScrollbar; }
@@ -162,6 +164,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomBackground = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomBackground
         {
@@ -264,6 +267,7 @@ namespace MetroFramework.Controls
             horizontalScrollbar.Value = HorizontalScroll.Value;
         }
 
+        [SecuritySafeCritical]
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);

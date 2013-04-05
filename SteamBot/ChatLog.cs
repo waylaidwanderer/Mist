@@ -29,24 +29,9 @@ namespace MistClient
             Util.LoadTheme(metroStyleManager1);
         }
 
-        private void textBox1_Enter(object sender, EventArgs e)
-        {
-            this.label1_Enter(sender, e);
-        }
-
         private void copyToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(textBox1.Text);
-        }
-
-        private void label1_Enter(object sender, EventArgs e)
-        {
-            label1.Focus();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            label1.Focus();
         }
 
         private void clearChatLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -58,6 +43,21 @@ namespace MistClient
                 File.WriteAllText(file, null);
                 textBox1.Text = "No chat log exists for this user.";
             }
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
+            this.label1_Enter(sender, e);
+        }
+
+        private void label1_Enter(object sender, EventArgs e)
+        {
+            label1.Focus();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            label1.Focus();
         }
     }
 }

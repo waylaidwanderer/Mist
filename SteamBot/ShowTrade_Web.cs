@@ -14,8 +14,6 @@ using System.Web;
 using System.Collections.Specialized;
 using System.Threading;
 using System.IO;
-using Awesomium.Core;
-using Awesomium.Windows.Forms;
 
 namespace MistClient
 {

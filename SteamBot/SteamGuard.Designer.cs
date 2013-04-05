@@ -28,22 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SteamGuard));
             this.label1 = new MetroFramework.Controls.MetroLabel();
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.text_auth = new MetroFramework.Controls.MetroTextBox();
             this.button_ok = new MetroFramework.Controls.MetroButton();
             this.button_cancel = new MetroFramework.Controls.MetroButton();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.CustomBackground = false;
-            this.label1.CustomForeColor = false;
-            this.label1.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.label1.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.label1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.label1.Location = new System.Drawing.Point(23, 60);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(328, 38);
@@ -54,25 +51,18 @@
     "the proper email:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.label1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.label1.UseStyleColors = false;
             // 
             // metroStyleManager1
             // 
-            this.metroStyleManager1.OwnerForm = this;
-            this.metroStyleManager1.OwnerUserControl = null;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // text_auth
             // 
-            this.text_auth.CustomBackground = false;
-            this.text_auth.CustomForeColor = false;
-            this.text_auth.FontSize = MetroFramework.MetroTextBoxSize.Small;
-            this.text_auth.FontWeight = MetroFramework.MetroTextBoxWeight.Regular;
             this.text_auth.Location = new System.Drawing.Point(64, 101);
             this.text_auth.MaxLength = 32767;
-            this.text_auth.Multiline = false;
             this.text_auth.Name = "text_auth";
+            this.text_auth.PasswordChar = '\0';
             this.text_auth.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.text_auth.SelectedText = "";
             this.text_auth.Size = new System.Drawing.Size(247, 23);
@@ -80,14 +70,9 @@
             this.text_auth.StyleManager = this.metroStyleManager1;
             this.text_auth.TabIndex = 0;
             this.text_auth.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.text_auth.UseStyleColors = false;
-            this.text_auth.UseSystemPasswordChar = false;
             // 
             // button_ok
             // 
-            this.button_ok.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_ok.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_ok.Highlight = false;
             this.button_ok.Location = new System.Drawing.Point(109, 130);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
@@ -101,9 +86,6 @@
             // button_cancel
             // 
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_cancel.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_cancel.Highlight = false;
             this.button_cancel.Location = new System.Drawing.Point(190, 130);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
@@ -119,6 +101,7 @@
             this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(375, 177);
             this.Controls.Add(this.button_cancel);
@@ -126,16 +109,16 @@
             this.Controls.Add(this.text_auth);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SteamGuard";
             this.Resizable = false;
-            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.StyleManager = this.metroStyleManager1;
             this.Text = "SteamGuard";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

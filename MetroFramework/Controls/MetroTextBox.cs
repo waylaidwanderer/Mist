@@ -26,13 +26,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using MetroFramework.Components;
-using MetroFramework.Design;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;
 
 namespace MetroFramework.Controls
 {
-    [Designer(typeof(MetroTextBoxDesigner))]
+    [Designer("MetroFramework.Design.MetroTextBoxDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public class MetroTextBox : Control, IMetroControl
     {
         #region Interface
@@ -77,9 +76,10 @@ namespace MetroFramework.Controls
 
         #region Fields
 
-        private TextBox baseTextBox;
-
+        private PromptedTextBox baseTextBox;
+        
         private bool useStyleColors = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool UseStyleColors
         {
@@ -88,6 +88,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroTextBoxSize metroTextBoxSize = MetroTextBoxSize.Small;
+        [DefaultValue(MetroTextBoxSize.Small)]
         [Category("Metro Appearance")]
         public MetroTextBoxSize FontSize
         {
@@ -96,6 +97,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroTextBoxWeight metroTextBoxWeight = MetroTextBoxWeight.Regular;
+        [DefaultValue(MetroTextBoxWeight.Regular)]
         [Category("Metro Appearance")]
         public MetroTextBoxWeight FontWeight
         {
@@ -104,6 +106,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomBackground = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomBackground
         {
@@ -112,6 +115,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomForeColor = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomForeColor
         {
@@ -119,20 +123,45 @@ namespace MetroFramework.Controls
             set { useCustomForeColor = value; }
         }
 
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [DefaultValue("")]
+        [Category("Metro Appearance")]
+        public string PromptText
+        {
+            get { return baseTextBox.PromptText; }
+            set { baseTextBox.PromptText = value; }
+        }
+
         #endregion
 
         #region Routing Fields
 
+        public override ContextMenu ContextMenu
+        {
+            get { return baseTextBox.ContextMenu; }
+            set 
+            {
+                ContextMenu = value;
+                baseTextBox.ContextMenu = value; 
+            }
+        }
+
+        public override ContextMenuStrip ContextMenuStrip
+        {
+            get { return baseTextBox.ContextMenuStrip; }
+            set
+            {
+                ContextMenuStrip = value;
+                baseTextBox.ContextMenuStrip = value;
+            }
+        }
+
+        [DefaultValue(false)]
         public bool Multiline
         {
             get { return baseTextBox.Multiline; }
             set { baseTextBox.Multiline = value; }
-        }
-
-        public ScrollBars ScrollBars
-        {
-            get { return baseTextBox.ScrollBars; }
-            set { baseTextBox.ScrollBars = value; }
         }
 
         public override string Text
@@ -148,22 +177,50 @@ namespace MetroFramework.Controls
             set { baseTextBox.Text = value; }
         }
 
+        [DefaultValue(false)]
+        public bool ReadOnly
+        {
+            get { return baseTextBox.ReadOnly; }
+            set { baseTextBox.ReadOnly = value; }
+        }
+
+        public char PasswordChar
+        {
+            get { return baseTextBox.PasswordChar; }
+            set { baseTextBox.PasswordChar = value; }
+        }
+
+        [DefaultValue(false)]
         public bool UseSystemPasswordChar
         {
             get { return baseTextBox.UseSystemPasswordChar; }
             set { baseTextBox.UseSystemPasswordChar = value; }
         }
 
-        public ContextMenuStrip ContextMenuStrip
+        [DefaultValue(HorizontalAlignment.Left)]
+        public HorizontalAlignment TextAlign
         {
-            get { return baseTextBox.ContextMenuStrip; }
-            set { baseTextBox.ContextMenuStrip = value; }
+            get { return baseTextBox.TextAlign; }
+            set { baseTextBox.TextAlign = value; }
+        }
+
+        [DefaultValue(true)]
+        public new bool TabStop
+        {
+            get { return baseTextBox.TabStop; }
+            set { baseTextBox.TabStop = value; }
         }
 
         public int MaxLength
         {
             get { return baseTextBox.MaxLength; }
             set { baseTextBox.MaxLength = value; }
+        }
+
+        public ScrollBars ScrollBars
+        {
+            get { return baseTextBox.ScrollBars; }
+            set { baseTextBox.ScrollBars = value; }
         }
 
         #endregion
@@ -173,6 +230,9 @@ namespace MetroFramework.Controls
         public MetroTextBox()
         {
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer, true);
+
+            base.TabStop = false;
+
             CreateBaseTextBox();
             UpdateBaseTextBox();
             AddEventHandler();       
@@ -219,11 +279,6 @@ namespace MetroFramework.Controls
             base.OnClick(e);
         }
 
-        private void BaseTextBoxMouseClick(object sender, MouseEventArgs e)
-        {
-            base.OnMouseClick(e);
-        }
-
         private void BaseTextBoxChangeUiCues(object sender, UICuesEventArgs e)
         {
             base.OnChangeUICues(e);
@@ -262,6 +317,11 @@ namespace MetroFramework.Controls
         public void SelectAll()
         {
             baseTextBox.SelectAll();
+        }
+
+        public void Clear()
+        {
+            baseTextBox.Clear();
         }
 
         public void AppendText(string text)
@@ -331,7 +391,7 @@ namespace MetroFramework.Controls
         {
             if (baseTextBox != null) return;
 
-            baseTextBox = new TextBox();
+            baseTextBox = new PromptedTextBox();
 
             baseTextBox.BorderStyle = BorderStyle.None;
             baseTextBox.Font = MetroFonts.TextBox(metroTextBoxSize, metroTextBoxWeight);
@@ -339,6 +399,8 @@ namespace MetroFramework.Controls
             baseTextBox.Size = new Size(Width - 6, Height - 6);
 
             Size = new Size(baseTextBox.Width + 6, baseTextBox.Height + 6);
+
+            baseTextBox.TabStop = true;
             //baseTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Right;
 
             Controls.Add(baseTextBox);
@@ -351,7 +413,6 @@ namespace MetroFramework.Controls
             baseTextBox.CausesValidationChanged += BaseTextBoxCausesValidationChanged;
             baseTextBox.ChangeUICues += BaseTextBoxChangeUiCues;
             baseTextBox.Click += BaseTextBoxClick;
-            baseTextBox.MouseClick += BaseTextBoxMouseClick;
             baseTextBox.ClientSizeChanged += BaseTextBoxClientSizeChanged;
             baseTextBox.ContextMenuChanged += BaseTextBoxContextMenuChanged;
             baseTextBox.ContextMenuStripChanged += BaseTextBoxContextMenuStripChanged;
@@ -373,6 +434,97 @@ namespace MetroFramework.Controls
             baseTextBox.Font = MetroFonts.TextBox(metroTextBoxSize, metroTextBoxWeight);
             baseTextBox.Location = new Point(3, 3);
             baseTextBox.Size = new Size(Width - 6, Height - 6);
+        }
+
+        #endregion
+
+        #region PromptedTextBox
+
+        private class PromptedTextBox : TextBox
+        {
+            private const int OCM_COMMAND = 0x2111;
+            private const int WM_PAINT = 15;
+
+            private bool drawPrompt;
+
+            private string promptText = "";
+            [Browsable(true)]
+            [EditorBrowsable(EditorBrowsableState.Always)]
+            [DefaultValue("")]
+            public string PromptText
+            {
+                get { return promptText; }
+                set
+                {
+                    promptText = value.Trim();
+                    Invalidate();
+                }
+            }
+
+            private void DrawTextPrompt()
+            {
+                using (Graphics graphics = CreateGraphics())
+                {
+                    DrawTextPrompt(graphics);
+                }
+            }
+
+            private void DrawTextPrompt(Graphics g)
+            {
+                TextFormatFlags flags = TextFormatFlags.NoPadding | TextFormatFlags.EndEllipsis;
+                Rectangle clientRectangle = ClientRectangle;
+
+                switch (TextAlign)
+                {
+                    case HorizontalAlignment.Left:
+                        clientRectangle.Offset(1, 1);
+                        break;
+
+                    case HorizontalAlignment.Right:
+                        flags |= TextFormatFlags.Right;
+                        clientRectangle.Offset(0, 1);
+                        break;
+
+                    case HorizontalAlignment.Center:
+                        flags |= TextFormatFlags.HorizontalCenter;
+                        clientRectangle.Offset(0, 1);
+                        break;
+                }
+
+                TextRenderer.DrawText(g, promptText, Font, clientRectangle, SystemColors.GrayText, BackColor, flags);
+            }
+
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                base.OnPaint(e);
+                if (drawPrompt)
+                {
+                    DrawTextPrompt(e.Graphics);
+                }
+            }
+
+            protected override void OnTextAlignChanged(EventArgs e)
+            {
+                base.OnTextAlignChanged(e);
+                Invalidate();
+            }
+
+            protected override void OnTextChanged(EventArgs e)
+            {
+                base.OnTextChanged(e);
+                drawPrompt = Text.Length == 0;
+            }
+
+            protected override void WndProc(ref Message m)
+            {
+                base.WndProc(ref m);
+                if (((m.Msg == WM_PAINT) || (m.Msg == OCM_COMMAND)) &&
+                    (drawPrompt && !GetStyle(ControlStyles.UserPaint)))
+                {
+                    DrawTextPrompt();
+                }
+            }
+
         }
 
         #endregion

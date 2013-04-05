@@ -98,6 +98,7 @@ namespace MetroFramework.Controls
         #region Fields
 
         private int trackerValue = 50;
+        [DefaultValue(50)]
         public int Value
         {
             get { return trackerValue; }
@@ -114,6 +115,7 @@ namespace MetroFramework.Controls
         }
 
         private int barMinimum = 0;
+        [DefaultValue(0)]
         public int Minimum
         {
             get { return barMinimum; }
@@ -135,6 +137,7 @@ namespace MetroFramework.Controls
 
 
         private int barMaximum = 100;
+        [DefaultValue(100)]
         public int Maximum
         {
             get { return barMaximum; }
@@ -154,21 +157,24 @@ namespace MetroFramework.Controls
             }
         }
 
-        private uint smallChange = 1;
-        public uint SmallChange
+        private int smallChange = 1;
+        [DefaultValue(1)]
+        public int SmallChange
         {
             get { return smallChange; }
             set { smallChange = value; }
         }
 
-        private uint largeChange = 5;
-        public uint LargeChange
+        private int largeChange = 5;
+        [DefaultValue(5)]
+        public int LargeChange
         {
             get { return largeChange; }
             set { largeChange = value; }
         }
 
         private int mouseWheelBarPartitions = 10;
+        [DefaultValue(10)]
         public int MouseWheelBarPartitions
         {
             get { return mouseWheelBarPartitions; }
@@ -181,6 +187,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomBackground = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomBackground
         {

@@ -28,29 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddFriend));
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.text_profile = new MetroFramework.Controls.MetroTextBox();
             this.button_ok = new MetroFramework.Controls.MetroButton();
             this.button_cancel = new MetroFramework.Controls.MetroButton();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // metroStyleManager1
             // 
-            this.metroStyleManager1.OwnerForm = this;
-            this.metroStyleManager1.OwnerUserControl = null;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.CustomBackground = false;
-            this.metroLabel1.CustomForeColor = false;
-            this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.metroLabel1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.metroLabel1.Location = new System.Drawing.Point(23, 60);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(300, 38);
@@ -59,18 +54,13 @@
             this.metroLabel1.TabIndex = 4;
             this.metroLabel1.Text = "Enter the SteamID64 of the friend you wish to add\r\n(e.g. 76561197960265728):";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel1.UseStyleColors = false;
             // 
             // text_profile
             // 
-            this.text_profile.CustomBackground = false;
-            this.text_profile.CustomForeColor = false;
-            this.text_profile.FontSize = MetroFramework.MetroTextBoxSize.Small;
-            this.text_profile.FontWeight = MetroFramework.MetroTextBoxWeight.Regular;
             this.text_profile.Location = new System.Drawing.Point(23, 107);
             this.text_profile.MaxLength = 32767;
-            this.text_profile.Multiline = false;
             this.text_profile.Name = "text_profile";
+            this.text_profile.PasswordChar = '\0';
             this.text_profile.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.text_profile.SelectedText = "";
             this.text_profile.Size = new System.Drawing.Size(300, 23);
@@ -78,17 +68,11 @@
             this.text_profile.StyleManager = this.metroStyleManager1;
             this.text_profile.TabIndex = 0;
             this.text_profile.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.text_profile.UseStyleColors = false;
-            this.text_profile.UseSystemPasswordChar = false;
             // 
             // button_ok
             // 
-            this.button_ok.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_ok.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_ok.Highlight = false;
             this.button_ok.Location = new System.Drawing.Point(167, 136);
             this.button_ok.Name = "button_ok";
-            this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_ok.StyleManager = this.metroStyleManager1;
             this.button_ok.TabIndex = 1;
@@ -99,12 +83,8 @@
             // button_cancel
             // 
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button_cancel.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_cancel.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_cancel.Highlight = false;
             this.button_cancel.Location = new System.Drawing.Point(248, 136);
             this.button_cancel.Name = "button_cancel";
-            this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 2;
@@ -130,11 +110,12 @@
             this.MinimizeBox = false;
             this.Name = "AddFriend";
             this.Resizable = false;
-            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.StyleManager = this.metroStyleManager1;
             this.Text = "Add a Friend";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

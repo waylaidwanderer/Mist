@@ -27,13 +27,12 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using MetroFramework.Components;
-using MetroFramework.Design;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;
 
 namespace MetroFramework.Controls
 {
-    [Designer(typeof(MetroLinkDesigner))]
+    [Designer("MetroFramework.Design.MetroLinkDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(LinkLabel))]
     [DefaultEvent("Click")]
     public class MetroLink : Button, IMetroControl
@@ -81,6 +80,7 @@ namespace MetroFramework.Controls
         #region Fields
 
         private bool useStyleColors = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool UseStyleColors
         {
@@ -89,6 +89,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroLinkSize metroLinkSize = MetroLinkSize.Small;
+        [DefaultValue(MetroLinkSize.Small)]
         [Category("Metro Appearance")]
         public MetroLinkSize FontSize
         {
@@ -97,6 +98,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroLinkWeight metroLinkWeight = MetroLinkWeight.Bold;
+        [DefaultValue(MetroLinkWeight.Bold)]
         [Category("Metro Appearance")]
         public MetroLinkWeight FontWeight
         {
@@ -118,6 +120,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomBackground = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomBackground
         {
@@ -126,6 +129,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomForeColor = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomForeColor
         {

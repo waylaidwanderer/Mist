@@ -27,13 +27,12 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using MetroFramework.Components;
-using MetroFramework.Design;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;
 
 namespace MetroFramework.Controls
 {
-    [Designer(typeof(MetroProgressBarDesigner))]
+    [Designer("MetroFramework.Design.MetroProgressBarDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(ProgressBar))]
     public class MetroProgressBar : ProgressBar, IMetroControl
     {
@@ -80,6 +79,7 @@ namespace MetroFramework.Controls
         #region Fields
 
         private MetroProgressBarSize metroLabelSize = MetroProgressBarSize.Medium;
+        [DefaultValue(MetroProgressBarSize.Medium)]
         [Category("Metro Appearance")]
         public MetroProgressBarSize FontSize
         {
@@ -88,6 +88,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroProgressBarWeight metroLabelWeight = MetroProgressBarWeight.Light;
+        [DefaultValue(MetroProgressBarWeight.Light)]
         [Category("Metro Appearance")]
         public MetroProgressBarWeight FontWeight
         {
@@ -96,6 +97,7 @@ namespace MetroFramework.Controls
         }
 
         private ContentAlignment textAlign = ContentAlignment.MiddleRight;
+        [DefaultValue(ContentAlignment.MiddleRight)]
         [Category("Metro Appearance")]
         public ContentAlignment TextAlign
         {
@@ -104,6 +106,7 @@ namespace MetroFramework.Controls
         }
 
         private bool hideProgressText = true;
+        [DefaultValue(true)]
         [Category("Metro Appearance")]
         public bool HideProgressText
         {
@@ -112,6 +115,7 @@ namespace MetroFramework.Controls
         }
 
         private ProgressBarStyle progressBarStyle = ProgressBarStyle.Continuous;
+        [DefaultValue(ProgressBarStyle.Continuous)]
         [Category("Metro Appearance")]
         public ProgressBarStyle ProgressBarStyle
         {

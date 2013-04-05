@@ -81,7 +81,7 @@
             this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_search = new System.Windows.Forms.TextBox();
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.steam_name = new MetroFramework.Controls.MetroLabel();
             this.steam_status = new MetroFramework.Controls.MetroLabel();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
@@ -93,6 +93,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.list_friendreq)).BeginInit();
             this.menu_friendreq.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // menu_friend
@@ -556,19 +557,12 @@
             // 
             // metroStyleManager1
             // 
-            this.metroStyleManager1.OwnerForm = this;
-            this.metroStyleManager1.OwnerUserControl = null;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // steam_name
             // 
             this.steam_name.AutoSize = true;
-            this.steam_name.CustomBackground = false;
-            this.steam_name.CustomForeColor = false;
-            this.steam_name.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.steam_name.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.steam_name.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.steam_name.Location = new System.Drawing.Point(58, 63);
             this.steam_name.Name = "steam_name";
             this.steam_name.Size = new System.Drawing.Size(83, 19);
@@ -577,16 +571,10 @@
             this.steam_name.TabIndex = 19;
             this.steam_name.Text = "steam_name";
             this.steam_name.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.steam_name.UseStyleColors = false;
             // 
             // steam_status
             // 
             this.steam_status.AutoSize = true;
-            this.steam_status.CustomBackground = false;
-            this.steam_status.CustomForeColor = false;
-            this.steam_status.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.steam_status.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.steam_status.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.steam_status.Location = new System.Drawing.Point(58, 82);
             this.steam_status.Name = "steam_status";
             this.steam_status.Size = new System.Drawing.Size(47, 19);
@@ -595,16 +583,11 @@
             this.steam_status.TabIndex = 20;
             this.steam_status.Text = "Online";
             this.steam_status.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.steam_status.UseStyleColors = false;
             // 
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.CustomBackground = false;
-            this.metroLabel1.CustomForeColor = false;
-            this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Medium;
             this.metroLabel1.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel1.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.metroLabel1.Location = new System.Drawing.Point(146, 442);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(107, 19);
@@ -613,17 +596,12 @@
             this.metroLabel1.TabIndex = 21;
             this.metroLabel1.Text = "Add a Friend...";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel1.UseStyleColors = false;
             this.metroLabel1.Click += new System.EventHandler(this.label_addfriend_Click);
             // 
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.CustomBackground = false;
-            this.metroLabel2.CustomForeColor = false;
-            this.metroLabel2.FontSize = MetroFramework.MetroLabelSize.Medium;
             this.metroLabel2.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel2.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.metroLabel2.Location = new System.Drawing.Point(122, 366);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(19, 19);
@@ -632,15 +610,11 @@
             this.metroLabel2.TabIndex = 22;
             this.metroLabel2.Text = "+";
             this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel2.UseStyleColors = false;
             // 
             // label_addfriend
             // 
             this.label_addfriend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_addfriend.CustomBackground = false;
-            this.label_addfriend.CustomForeColor = false;
             this.label_addfriend.FontSize = MetroFramework.MetroLinkSize.Medium;
-            this.label_addfriend.FontWeight = MetroFramework.MetroLinkWeight.Bold;
             this.label_addfriend.Location = new System.Drawing.Point(12, 453);
             this.label_addfriend.Name = "label_addfriend";
             this.label_addfriend.Size = new System.Drawing.Size(129, 23);
@@ -656,6 +630,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.ClientSize = new System.Drawing.Size(284, 499);
             this.Controls.Add(this.label_addfriend);
             this.Controls.Add(this.steam_status);
@@ -666,10 +641,9 @@
             this.Controls.Add(this.avatarBox);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MinimumSize = new System.Drawing.Size(250, 400);
             this.Name = "Friends";
-            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.StyleManager = this.metroStyleManager1;
             this.Text = "Friends";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -684,6 +658,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.list_friendreq)).EndInit();
             this.menu_friendreq.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.friends_list)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -735,7 +710,6 @@
         private System.Windows.Forms.ToolStripMenuItem viewChatLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitMistToolStripMenuItem;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
-        public MetroFramework.Controls.MetroLabel steam_status;
         private MetroFramework.Controls.MetroLabel steam_name;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logConversationsToolStripMenuItem;
@@ -748,5 +722,6 @@
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroLink label_addfriend;
+        private MetroFramework.Controls.MetroLabel steam_status;
     }
 }

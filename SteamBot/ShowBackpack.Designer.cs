@@ -36,9 +36,10 @@
             this.column_defindex = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_url = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.LargeImageList = new System.Windows.Forms.ImageList(this.components);
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.checkBox1 = new MetroFramework.Controls.MetroCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // list_inventory
@@ -103,19 +104,13 @@
             // 
             // metroStyleManager1
             // 
-            this.metroStyleManager1.OwnerForm = this;
-            this.metroStyleManager1.OwnerUserControl = null;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // checkBox1
             // 
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox1.AutoSize = true;
-            this.checkBox1.CustomBackground = false;
-            this.checkBox1.CustomForeColor = false;
-            this.checkBox1.FontSize = MetroFramework.MetroLinkSize.Small;
-            this.checkBox1.FontWeight = MetroFramework.MetroLinkWeight.Regular;
             this.checkBox1.Location = new System.Drawing.Point(225, 428);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(111, 15);
@@ -124,7 +119,6 @@
             this.checkBox1.TabIndex = 1;
             this.checkBox1.Text = "View item values";
             this.checkBox1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.checkBox1.UseStyleColors = false;
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -138,13 +132,14 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(0, 0);
             this.Name = "ShowBackpack";
-            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.StyleManager = this.metroStyleManager1;
             this.Text = "Backpack Viewer";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShowBackpack_FormClosing);
             this.Load += new System.EventHandler(this.ShowBackpack_Load);
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

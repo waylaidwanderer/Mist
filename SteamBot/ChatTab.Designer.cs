@@ -40,13 +40,14 @@
             this.text_log = new System.Windows.Forms.RichTextBox();
             this.status_update = new System.ComponentModel.BackgroundWorker();
             this.button_trade = new MetroFramework.Controls.MetroButton();
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.button_send = new MetroFramework.Controls.MetroButton();
             this.steam_name = new MetroFramework.Controls.MetroLabel();
             this.steam_status = new MetroFramework.Controls.MetroLabel();
             this.chat_status = new MetroFramework.Controls.MetroLabel();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // text_input
@@ -137,9 +138,6 @@
             // button_trade
             // 
             this.button_trade.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_trade.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_trade.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_trade.Highlight = false;
             this.button_trade.Location = new System.Drawing.Point(223, 3);
             this.button_trade.Name = "button_trade";
             this.button_trade.Size = new System.Drawing.Size(144, 45);
@@ -147,22 +145,17 @@
             this.button_trade.StyleManager = this.metroStyleManager1;
             this.button_trade.TabIndex = 2;
             this.button_trade.Text = "Invite to Trade";
-            this.button_trade.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.button_trade.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_trade.Click += new System.EventHandler(this.button_trade_Click);
             // 
             // metroStyleManager1
             // 
-            this.metroStyleManager1.OwnerForm = null;
-            this.metroStyleManager1.OwnerUserControl = this;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.metroStyleManager1.Owner = this;
+            this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // button_send
             // 
             this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_send.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_send.Highlight = false;
             this.button_send.Location = new System.Drawing.Point(224, 297);
             this.button_send.Name = "button_send";
             this.button_send.Size = new System.Drawing.Size(145, 62);
@@ -170,18 +163,13 @@
             this.button_send.StyleManager = this.metroStyleManager1;
             this.button_send.TabIndex = 1;
             this.button_send.Text = "Send";
-            this.button_send.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.button_send.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.button_send.Click += new System.EventHandler(this.button_send_Click);
             // 
             // steam_name
             // 
             this.steam_name.AutoSize = true;
             this.steam_name.ContextMenuStrip = this.contextMenuStrip1;
-            this.steam_name.CustomBackground = false;
-            this.steam_name.CustomForeColor = false;
-            this.steam_name.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.steam_name.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.steam_name.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.steam_name.Location = new System.Drawing.Point(47, 5);
             this.steam_name.Name = "steam_name";
             this.steam_name.Size = new System.Drawing.Size(83, 19);
@@ -189,19 +177,13 @@
             this.steam_name.StyleManager = this.metroStyleManager1;
             this.steam_name.TabIndex = 14;
             this.steam_name.Text = "steam_name";
-            this.steam_name.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.steam_name.UseStyleColors = false;
+            this.steam_name.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.steam_name.Click += new System.EventHandler(this.steam_name_Click);
             // 
             // steam_status
             // 
             this.steam_status.AutoSize = true;
             this.steam_status.ContextMenuStrip = this.contextMenuStrip1;
-            this.steam_status.CustomBackground = false;
-            this.steam_status.CustomForeColor = false;
-            this.steam_status.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.steam_status.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.steam_status.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.steam_status.Location = new System.Drawing.Point(47, 24);
             this.steam_status.Name = "steam_status";
             this.steam_status.Size = new System.Drawing.Size(82, 19);
@@ -209,18 +191,12 @@
             this.steam_status.StyleManager = this.metroStyleManager1;
             this.steam_status.TabIndex = 15;
             this.steam_status.Text = "steam_status";
-            this.steam_status.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.steam_status.UseStyleColors = false;
+            this.steam_status.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // chat_status
             // 
             this.chat_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chat_status.AutoSize = true;
-            this.chat_status.CustomBackground = false;
-            this.chat_status.CustomForeColor = false;
-            this.chat_status.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.chat_status.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.chat_status.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.chat_status.Location = new System.Drawing.Point(0, 363);
             this.chat_status.Name = "chat_status";
             this.chat_status.Size = new System.Drawing.Size(71, 19);
@@ -228,8 +204,7 @@
             this.chat_status.StyleManager = this.metroStyleManager1;
             this.chat_status.TabIndex = 16;
             this.chat_status.Text = "chat_status";
-            this.chat_status.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.chat_status.UseStyleColors = false;
+            this.chat_status.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // ChatTab
             // 
@@ -246,11 +221,14 @@
             this.MinimumSize = new System.Drawing.Size(286, 156);
             this.Name = "ChatTab";
             this.Size = new System.Drawing.Size(370, 387);
+            this.StyleManager = this.metroStyleManager1;
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.ChatTab_Load);
             this.Enter += new System.EventHandler(this.ChatTab_Enter);
             this.Leave += new System.EventHandler(this.ChatTab_Leave);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -271,9 +249,9 @@
         private MetroFramework.Controls.MetroButton button_trade;
         private MetroFramework.Controls.MetroButton button_send;
         private MetroFramework.Controls.MetroLabel steam_name;
-        public MetroFramework.Controls.MetroLabel steam_status;
-        public MetroFramework.Controls.MetroLabel chat_status;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
+        public MetroFramework.Controls.MetroLabel chat_status;
+        public MetroFramework.Controls.MetroLabel steam_status;
 
     }
 }

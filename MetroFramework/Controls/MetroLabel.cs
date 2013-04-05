@@ -24,10 +24,10 @@
 using System;
 using System.Drawing;
 using System.ComponentModel;
+using System.Security;
 using System.Windows.Forms;
 
 using MetroFramework.Components;
-using MetroFramework.Design;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;
 
@@ -39,7 +39,7 @@ namespace MetroFramework.Controls
         Selectable
     }
 
-    [Designer(typeof(MetroLabelDesigner))]
+    [Designer("MetroFramework.Design.MetroLabelDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(Label))]
     public class MetroLabel : Label, IMetroControl
     {
@@ -87,7 +87,8 @@ namespace MetroFramework.Controls
 
         private DoubleBufferedTextBox baseTextBox;
 
-        private bool useStyleColors;
+        private bool useStyleColors = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool UseStyleColors
         {
@@ -96,6 +97,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroLabelSize metroLabelSize = MetroLabelSize.Medium;
+        [DefaultValue(MetroLabelSize.Medium)]
         [Category("Metro Appearance")]
         public MetroLabelSize FontSize
         {
@@ -104,6 +106,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroLabelWeight metroLabelWeight = MetroLabelWeight.Light;
+        [DefaultValue(MetroLabelWeight.Light)]
         [Category("Metro Appearance")]
         public MetroLabelWeight FontWeight
         {
@@ -112,6 +115,7 @@ namespace MetroFramework.Controls
         }
 
         private MetroLabelMode labelMode = MetroLabelMode.Default;
+        [DefaultValue(MetroLabelMode.Default)]
         [Category("Metro Appearance")]
         public MetroLabelMode LabelMode
         {
@@ -120,6 +124,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomBackground = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomBackground
         {
@@ -128,6 +133,7 @@ namespace MetroFramework.Controls
         }
 
         private bool useCustomForeColor = false;
+        [DefaultValue(false)]
         [Category("Metro Appearance")]
         public bool CustomForeColor
         {
@@ -249,18 +255,6 @@ namespace MetroFramework.Controls
         #endregion
 
         #region Overridden Methods
-
-        public override RightToLeft RightToLeft
-        {
-            get
-            {
-                return base.RightToLeft;
-            }
-            set
-            {
-                base.RightToLeft = value;
-            }
-        }
 
         public override void Refresh()
         {
@@ -481,11 +475,13 @@ namespace MetroFramework.Controls
             baseTextBox.Visible = true;
         }
 
+        [SecuritySafeCritical]
         private void BaseTextBoxOnClick(object sender, EventArgs eventArgs)
         {
             Native.WinCaret.HideCaret(baseTextBox.Handle);
         }
 
+        [SecuritySafeCritical]
         private void BaseTextBoxOnDoubleClick(object sender, EventArgs eventArgs)
         {
             baseTextBox.SelectAll();

@@ -53,7 +53,7 @@
             this.disableItemGroupingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewSuggestedItemPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.text_search = new System.Windows.Forms.TextBox();
-            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager();
+            this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.button_accept = new MetroFramework.Controls.MetroButton();
             this.button_send = new MetroFramework.Controls.MetroButton();
             this.label_yourvalue = new MetroFramework.Controls.MetroLabel();
@@ -65,6 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.list_otherofferings)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // list_inventory
@@ -308,9 +309,7 @@
             // 
             // metroStyleManager1
             // 
-            this.metroStyleManager1.OwnerForm = this;
-            this.metroStyleManager1.OwnerUserControl = null;
-            this.metroStyleManager1.Style = MetroFramework.MetroColorStyle.Blue;
+            this.metroStyleManager1.Owner = this;
             this.metroStyleManager1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // button_accept
@@ -318,9 +317,6 @@
             this.button_accept.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button_accept.Enabled = false;
-            this.button_accept.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.button_accept.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.button_accept.Highlight = false;
             this.button_accept.Location = new System.Drawing.Point(416, 436);
             this.button_accept.Name = "button_accept";
             this.button_accept.Size = new System.Drawing.Size(287, 103);
@@ -334,9 +330,6 @@
             // button_send
             // 
             this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.button_send.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.button_send.Highlight = false;
             this.button_send.Location = new System.Drawing.Point(316, 510);
             this.button_send.Name = "button_send";
             this.button_send.Size = new System.Drawing.Size(94, 57);
@@ -351,11 +344,6 @@
             // 
             this.label_yourvalue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_yourvalue.BackColor = System.Drawing.Color.Transparent;
-            this.label_yourvalue.CustomBackground = false;
-            this.label_yourvalue.CustomForeColor = false;
-            this.label_yourvalue.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.label_yourvalue.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.label_yourvalue.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.label_yourvalue.Location = new System.Drawing.Point(472, 235);
             this.label_yourvalue.Name = "label_yourvalue";
             this.label_yourvalue.Size = new System.Drawing.Size(234, 73);
@@ -365,17 +353,11 @@
             this.label_yourvalue.Text = "Total Value: 0.00";
             this.label_yourvalue.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.label_yourvalue.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.label_yourvalue.UseStyleColors = false;
             // 
             // label_othervalue
             // 
             this.label_othervalue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_othervalue.BackColor = System.Drawing.Color.Transparent;
-            this.label_othervalue.CustomBackground = false;
-            this.label_othervalue.CustomForeColor = false;
-            this.label_othervalue.FontSize = MetroFramework.MetroLabelSize.Medium;
-            this.label_othervalue.FontWeight = MetroFramework.MetroLabelWeight.Light;
-            this.label_othervalue.LabelMode = MetroFramework.Controls.MetroLabelMode.Default;
             this.label_othervalue.Location = new System.Drawing.Point(472, 410);
             this.label_othervalue.Name = "label_othervalue";
             this.label_othervalue.Size = new System.Drawing.Size(234, 73);
@@ -385,17 +367,12 @@
             this.label_othervalue.Text = "Total Value: 0.00";
             this.label_othervalue.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.label_othervalue.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.label_othervalue.UseStyleColors = false;
             // 
             // check_userready
             // 
             this.check_userready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.check_userready.AutoSize = true;
-            this.check_userready.CustomBackground = false;
-            this.check_userready.CustomForeColor = false;
             this.check_userready.Enabled = false;
-            this.check_userready.FontSize = MetroFramework.MetroLinkSize.Small;
-            this.check_userready.FontWeight = MetroFramework.MetroLinkWeight.Regular;
             this.check_userready.Location = new System.Drawing.Point(416, 238);
             this.check_userready.Name = "check_userready";
             this.check_userready.Size = new System.Drawing.Size(104, 15);
@@ -404,7 +381,6 @@
             this.check_userready.TabIndex = 3;
             this.check_userready.Text = "Ready to trade?";
             this.check_userready.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.check_userready.UseStyleColors = false;
             this.check_userready.UseVisualStyleBackColor = true;
             this.check_userready.CheckedChanged += new System.EventHandler(this.check_userready_CheckedChanged);
             // 
@@ -412,11 +388,7 @@
             // 
             this.check_otherready.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.check_otherready.AutoSize = true;
-            this.check_otherready.CustomBackground = false;
-            this.check_otherready.CustomForeColor = false;
             this.check_otherready.Enabled = false;
-            this.check_otherready.FontSize = MetroFramework.MetroLinkSize.Small;
-            this.check_otherready.FontWeight = MetroFramework.MetroLinkWeight.Regular;
             this.check_otherready.Location = new System.Drawing.Point(416, 413);
             this.check_otherready.Name = "check_otherready";
             this.check_otherready.Size = new System.Drawing.Size(104, 15);
@@ -425,13 +397,13 @@
             this.check_otherready.TabIndex = 4;
             this.check_otherready.Text = "Ready to trade?";
             this.check_otherready.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.check_otherready.UseStyleColors = false;
             this.check_otherready.UseVisualStyleBackColor = true;
             // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.ClientSize = new System.Drawing.Size(726, 590);
             this.Controls.Add(this.check_otherready);
             this.Controls.Add(this.check_userready);
@@ -448,11 +420,10 @@
             this.Controls.Add(this.label_yourvalue);
             this.Controls.Add(this.label_othervalue);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(587, 536);
             this.Name = "ShowTrade";
-            this.ShadowType = MetroFramework.Forms.ShadowType.DropShadow;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.StyleManager = this.metroStyleManager1;
             this.Text = "Trade Session";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -466,6 +437,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.list_otherofferings)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -497,11 +469,11 @@
         private System.Windows.Forms.ToolStripMenuItem viewSuggestedItemPricesToolStripMenuItem;
         private System.Windows.Forms.TextBox text_search;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
-        public MetroFramework.Controls.MetroButton button_accept;
         private MetroFramework.Controls.MetroButton button_send;
         private MetroFramework.Controls.MetroLabel label_yourvalue;
         private MetroFramework.Controls.MetroLabel label_othervalue;
         public MetroFramework.Controls.MetroCheckBox check_otherready;
         public MetroFramework.Controls.MetroCheckBox check_userready;
+        public MetroFramework.Controls.MetroButton button_accept;
     }
 }

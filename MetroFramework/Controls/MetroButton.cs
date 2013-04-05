@@ -27,13 +27,12 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using MetroFramework.Components;
-using MetroFramework.Design;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;
 
 namespace MetroFramework.Controls
 {
-    [Designer(typeof(MetroButtonDesigner))]
+    [Designer("MetroFramework.Design.MetroButtonDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(Button))]
     [DefaultEvent("Click")]
     public class MetroButton : Button, IMetroControl
@@ -81,36 +80,11 @@ namespace MetroFramework.Controls
         #region Fields
 
         private bool highlight = false;
+        [DefaultValue(false)]
         public bool Highlight
         {
             get { return highlight; }
             set { highlight = value; }
-        }
-
-        private MetroLabelSize metroLabelSize = MetroLabelSize.Medium;
-        [Category("Metro Appearance")]
-        public MetroLabelSize FontSize
-        {
-            get { return metroLabelSize; }
-            set
-            {
-                metroLabelSize = value;
-                base.Font = MetroFonts.Label(metroLabelSize, metroLabelWeight);
-                Refresh(); 
-            }
-        }
-
-        private MetroLabelWeight metroLabelWeight = MetroLabelWeight.Light;
-        [Category("Metro Appearance")]
-        public MetroLabelWeight FontWeight
-        {
-            get { return metroLabelWeight; }
-            set
-            {
-                metroLabelWeight = value;
-                base.Font = MetroFonts.Label(metroLabelSize, metroLabelWeight);
-                Refresh();
-            }
         }
 
         private bool isHovered = false;
