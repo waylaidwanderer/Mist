@@ -11,7 +11,6 @@ namespace SteamTrade
 {
     public class Schema
     {
-
         public static Schema FetchSchema (string apiKey)
         {
             var url = "http://api.steampowered.com/IEconItems_440/GetSchema/v0001/?key=" + apiKey + "&language=en";
@@ -20,8 +19,16 @@ namespace SteamTrade
             string result = "";
 
             HttpWebResponse response = SteamWeb.Request(url, "GET");
-            
-            DateTime SchemaLastModified = DateTime.Parse(response.Headers["Last-Modified"]);
+            DateTime SchemaLastModified = DateTime.Now;
+
+            try
+            {
+                SchemaLastModified = DateTime.Parse(response.Headers["Last-Modified"]);
+            }
+            catch
+            {
+                SchemaLastModified = DateTime.Now;
+            }
 
             if (!System.IO.File.Exists(cachefile) || (SchemaLastModified > System.IO.File.GetCreationTime(cachefile)))
             {

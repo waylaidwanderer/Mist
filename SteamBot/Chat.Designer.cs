@@ -60,7 +60,7 @@
             this.ChatTabControl.ContextMenuStrip = this.contextMenuStrip1;
             this.ChatTabControl.Location = new System.Drawing.Point(23, 63);
             this.ChatTabControl.Name = "ChatTabControl";
-            this.ChatTabControl.Size = new System.Drawing.Size(513, 373);
+            this.ChatTabControl.Size = new System.Drawing.Size(513, 396);
             this.ChatTabControl.Style = MetroFramework.MetroColorStyle.Blue;
             this.ChatTabControl.StyleManager = this.metroStyleManager1;
             this.ChatTabControl.TabIndex = 3;
@@ -80,7 +80,6 @@
             this.ClientSize = new System.Drawing.Size(559, 459);
             this.Controls.Add(this.ChatTabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "Chat";
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;

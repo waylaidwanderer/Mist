@@ -535,8 +535,11 @@ namespace MistClient
                 e.Cancel = true;
                 Visible = false;
                 ShowInTaskbar = false;
-                trayIcon.Visible = true;
-                trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);                
+                if (trayIcon != null)
+                {
+                    trayIcon.Visible = true;
+                    trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
+                }
             }
             else
             {

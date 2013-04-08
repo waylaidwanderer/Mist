@@ -219,7 +219,6 @@
             this.AcceptButton = this.button_login;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(367, 326);
             this.Controls.Add(this.label_status);
@@ -238,7 +237,7 @@
             this.MaximizeBox = false;
             this.Name = "Login";
             this.Resizable = false;
-            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.SystemShadow;
             this.StyleManager = this.metroStyleManager1;
             this.Text = "Login";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;

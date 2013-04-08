@@ -18,6 +18,9 @@ namespace SteamBot
         [STAThread]
         public static void Main(string[] args)
         {
+            string path = Path.Combine(Environment.ExpandEnvironmentVariables("%systemroot%"), @"Microsoft.NET\Framework\v4.0.30319\System.Core.dll"); 
+            Console.WriteLine(".NET 4.0 installed? " + File.Exists(path));
+            
             CleanUp();
             string LogDirectory = Path.Combine(Application.StartupPath, "logs");
             if (!Directory.Exists(LogDirectory))

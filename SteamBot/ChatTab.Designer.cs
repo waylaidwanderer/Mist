@@ -54,11 +54,11 @@
             // 
             this.text_input.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.text_input.Location = new System.Drawing.Point(0, 297);
+            this.text_input.Location = new System.Drawing.Point(0, 309);
             this.text_input.MaxLength = 2048;
             this.text_input.Multiline = true;
             this.text_input.Name = "text_input";
-            this.text_input.Size = new System.Drawing.Size(218, 61);
+            this.text_input.Size = new System.Drawing.Size(218, 49);
             this.text_input.TabIndex = 0;
             this.text_input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_input_KeyPress);
             // 
@@ -125,7 +125,7 @@
             this.text_log.Name = "text_log";
             this.text_log.ReadOnly = true;
             this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(369, 240);
+            this.text_log.Size = new System.Drawing.Size(369, 252);
             this.text_log.TabIndex = 3;
             this.text_log.Text = "";
             this.text_log.Click += new System.EventHandler(this.text_log_Click);
@@ -138,9 +138,9 @@
             // button_trade
             // 
             this.button_trade.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_trade.Location = new System.Drawing.Point(223, 3);
+            this.button_trade.Location = new System.Drawing.Point(187, 3);
             this.button_trade.Name = "button_trade";
-            this.button_trade.Size = new System.Drawing.Size(144, 45);
+            this.button_trade.Size = new System.Drawing.Size(180, 45);
             this.button_trade.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_trade.StyleManager = this.metroStyleManager1;
             this.button_trade.TabIndex = 2;
@@ -156,9 +156,9 @@
             // button_send
             // 
             this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.Location = new System.Drawing.Point(224, 297);
+            this.button_send.Location = new System.Drawing.Point(224, 309);
             this.button_send.Name = "button_send";
-            this.button_send.Size = new System.Drawing.Size(145, 62);
+            this.button_send.Size = new System.Drawing.Size(145, 50);
             this.button_send.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_send.StyleManager = this.metroStyleManager1;
             this.button_send.TabIndex = 1;
