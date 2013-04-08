@@ -13,6 +13,7 @@ using SteamBot;
 using ToastNotifications;
 using MetroFramework.Forms;
 using MetroFramework.Controls;
+using System.Runtime.InteropServices;
 
 namespace MistClient
 {
@@ -77,6 +78,13 @@ namespace MistClient
             checkrep.RunWorkerAsync();
             status_update.RunWorkerAsync();
             text_input.Focus();
+        }
+
+        [DllImport("user32")]
+        private static extern bool HideCaret(IntPtr hWnd);
+        public void HideCaret(RichTextBox textBox)
+        {
+            HideCaret(textBox.Handle);
         }
 
         public bool IsInGame()
@@ -768,16 +776,6 @@ namespace MistClient
             File.WriteAllText(filePath, newFile.ToString());
         }
 
-        private void text_log_DoubleClick(object sender, EventArgs e)
-        {
-            text_log.Focus();
-        }
-
-        private void text_log_Click(object sender, EventArgs e)
-        {
-            this.steam_name_Click(sender, e);
-        }
-
         private void status_update_DoWork(object sender, DoWorkEventArgs e)
         {
             while (true)
@@ -847,6 +845,16 @@ namespace MistClient
                 chatLog.Show();
                 chatLog.Activate();
             }
+        }
+
+        private void text_log_Click(object sender, EventArgs e)
+        {
+            HideCaret(text_log);
+        }
+
+        private void text_log_DoubleClick(object sender, EventArgs e)
+        {
+            HideCaret(text_log);
         }
     }
 }
