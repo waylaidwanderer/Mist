@@ -84,6 +84,8 @@ namespace MistClient
             try
             {
                 string gameName = bot.SteamFriends.GetFriendGamePlayedName(sid);
+                if (!string.IsNullOrEmpty(gameName))
+                    steam_status.Text += " (In-Game: " + gameName + ")";
                 return !string.IsNullOrEmpty(gameName);
             }
             catch
