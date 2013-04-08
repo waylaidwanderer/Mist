@@ -71,6 +71,21 @@ namespace MistClient
             }
         }
 
+        public static void UpdateName(ulong sid, string name)
+        {
+            ListFriends item = null;
+            try
+            {
+                item = list.Find(x => x.SID == sid);
+                item.Name = name;
+                friends.SetObject(list);
+            }
+            catch
+            {
+                // Friends form hasn't been initialized yet, so let's not worry about it
+            }
+        }
+
         public static ulong GetSID (string name)
         {
             ListFriends item = null;

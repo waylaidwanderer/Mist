@@ -812,6 +812,7 @@ namespace MistClient
                     if (this.steam_name.Text != prevName)
                     {
                         UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n", false);
+                        ListFriends.UpdateName(sid, steam_name.Text);
                         prevName = this.steam_name.Text;
                     }
                     System.Threading.Thread.Sleep(2000);
