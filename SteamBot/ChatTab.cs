@@ -261,6 +261,7 @@ namespace MistClient
             message = message + "\r\n";
             text_log.AppendText(message);
             text_log.ScrollToCaret();
+            chat_status.Text = "Last message received: " + DateTime.Now;
             if (Friends.keepLog)
                 AppendLog(sid, date + name + message);
             Chat.Flash();

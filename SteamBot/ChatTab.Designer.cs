@@ -138,9 +138,9 @@
             // button_trade
             // 
             this.button_trade.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_trade.Location = new System.Drawing.Point(187, 3);
+            this.button_trade.Location = new System.Drawing.Point(224, 3);
             this.button_trade.Name = "button_trade";
-            this.button_trade.Size = new System.Drawing.Size(180, 45);
+            this.button_trade.Size = new System.Drawing.Size(143, 42);
             this.button_trade.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_trade.StyleManager = this.metroStyleManager1;
             this.button_trade.TabIndex = 2;
