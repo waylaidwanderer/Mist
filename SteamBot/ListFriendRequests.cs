@@ -63,7 +63,7 @@ namespace MistClient
             {
                 item = list.Find(x => x.SteamID == sid);
                 item.Status = status;
-                friends.RefreshObject(list);
+                friends.SetObject(list);
             }
             catch
             {
