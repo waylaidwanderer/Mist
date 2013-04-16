@@ -76,9 +76,6 @@
             this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showBackpackToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.friends_list = new BrightIdeasSoftware.ObjectListView();
-            this.column_friend = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.column_status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.text_search = new System.Windows.Forms.TextBox();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
@@ -87,13 +84,17 @@
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.label_addfriend = new MetroFramework.Controls.MetroLink();
+            this.friends_list = new BrightIdeasSoftware.FastObjectListView();
+            this.column_friend1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_status1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.column_sid1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.list_friendreq)).BeginInit();
             this.menu_friendreq.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).BeginInit();
             this.SuspendLayout();
             // 
             // menu_friend
@@ -477,58 +478,6 @@
             this.steamRepStatusToolStripMenuItem.Text = "SteamRep Status";
             this.steamRepStatusToolStripMenuItem.Click += new System.EventHandler(this.steamRepStatusToolStripMenuItem_Click);
             // 
-            // friends_list
-            // 
-            this.friends_list.AllColumns.Add(this.column_friend);
-            this.friends_list.AllColumns.Add(this.column_status);
-            this.friends_list.AllColumns.Add(this.column_sid);
-            this.friends_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.friends_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.column_friend,
-            this.column_status});
-            this.friends_list.ContextMenuStrip = this.menu_friend;
-            this.friends_list.Cursor = System.Windows.Forms.Cursors.Default;
-            this.friends_list.HeaderUsesThemes = false;
-            this.friends_list.Location = new System.Drawing.Point(12, 214);
-            this.friends_list.MultiSelect = false;
-            this.friends_list.Name = "friends_list";
-            this.friends_list.SelectAllOnControlA = false;
-            this.friends_list.Size = new System.Drawing.Size(262, 233);
-            this.friends_list.TabIndex = 2;
-            this.friends_list.UseCompatibleStateImageBehavior = false;
-            this.friends_list.View = System.Windows.Forms.View.Details;
-            this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching_1);
-            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate);
-            // 
-            // column_friend
-            // 
-            this.column_friend.AspectName = "Name";
-            this.column_friend.CellPadding = null;
-            this.column_friend.FillsFreeSpace = true;
-            this.column_friend.Groupable = false;
-            this.column_friend.Hideable = false;
-            this.column_friend.IsEditable = false;
-            this.column_friend.MinimumWidth = 100;
-            this.column_friend.Searchable = false;
-            this.column_friend.Text = "Friend";
-            this.column_friend.UseInitialLetterForGroup = true;
-            this.column_friend.Width = 150;
-            this.column_friend.WordWrap = true;
-            // 
-            // column_status
-            // 
-            this.column_status.AspectName = "Status";
-            this.column_status.CellPadding = null;
-            this.column_status.Hideable = false;
-            this.column_status.IsEditable = false;
-            this.column_status.MinimumWidth = 100;
-            this.column_status.Searchable = false;
-            this.column_status.Text = "Status";
-            this.column_status.Width = 100;
-            this.column_status.WordWrap = true;
-            // 
             // column_sid
             // 
             this.column_sid.AspectName = "SID";
@@ -626,18 +575,60 @@
             this.label_addfriend.UseStyleColors = true;
             this.label_addfriend.Click += new System.EventHandler(this.label_addfriend_Click);
             // 
+            // friends_list
+            // 
+            this.friends_list.AllColumns.Add(this.column_friend1);
+            this.friends_list.AllColumns.Add(this.column_status1);
+            this.friends_list.AllColumns.Add(this.column_sid1);
+            this.friends_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.friends_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.column_friend1,
+            this.column_status1});
+            this.friends_list.ContextMenuStrip = this.menu_friend;
+            this.friends_list.Location = new System.Drawing.Point(12, 214);
+            this.friends_list.Name = "friends_list";
+            this.friends_list.ShowGroups = false;
+            this.friends_list.Size = new System.Drawing.Size(262, 233);
+            this.friends_list.TabIndex = 21;
+            this.friends_list.UseCompatibleStateImageBehavior = false;
+            this.friends_list.View = System.Windows.Forms.View.Details;
+            this.friends_list.VirtualMode = true;
+            this.friends_list.BeforeSearching += new System.EventHandler<BrightIdeasSoftware.BeforeSearchingEventArgs>(this.friends_list_BeforeSearching_1);
+            this.friends_list.ItemActivate += new System.EventHandler(this.friends_list_ItemActivate);
+            // 
+            // column_friend1
+            // 
+            this.column_friend1.AspectName = "Name";
+            this.column_friend1.CellPadding = null;
+            this.column_friend1.Text = "Friend";
+            // 
+            // column_status1
+            // 
+            this.column_status1.AspectName = "Status";
+            this.column_status1.CellPadding = null;
+            this.column_status1.Text = "Status";
+            // 
+            // column_sid1
+            // 
+            this.column_sid1.AspectName = "SID";
+            this.column_sid1.CellPadding = null;
+            this.column_sid1.DisplayIndex = 2;
+            this.column_sid1.IsVisible = false;
+            this.column_sid1.Text = "SteamID";
+            // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.ClientSize = new System.Drawing.Size(284, 499);
+            this.Controls.Add(this.friends_list);
             this.Controls.Add(this.label_addfriend);
             this.Controls.Add(this.steam_status);
             this.Controls.Add(this.steam_name);
             this.Controls.Add(this.text_search);
             this.Controls.Add(this.list_friendreq);
-            this.Controls.Add(this.friends_list);
             this.Controls.Add(this.avatarBox);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -657,8 +648,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.list_friendreq)).EndInit();
             this.menu_friendreq.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.friends_list)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -691,9 +682,6 @@
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.PictureBox avatarBox;
         private System.Windows.Forms.ToolStripMenuItem viewGameInfoToolStripMenuItem;
-        public BrightIdeasSoftware.ObjectListView friends_list;
-        private BrightIdeasSoftware.OLVColumn column_friend;
-        private BrightIdeasSoftware.OLVColumn column_status;
         private System.Windows.Forms.ContextMenuStrip menu_friendreq;
         private System.Windows.Forms.ToolStripMenuItem acceptFriendRequestToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem denyFriendRequestToolStripMenuItem;
@@ -723,5 +711,9 @@
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroLink label_addfriend;
         private MetroFramework.Controls.MetroLabel steam_status;
+        private BrightIdeasSoftware.OLVColumn column_friend1;
+        private BrightIdeasSoftware.OLVColumn column_status1;
+        private BrightIdeasSoftware.OLVColumn column_sid1;
+        public BrightIdeasSoftware.FastObjectListView friends_list;
     }
 }

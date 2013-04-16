@@ -211,7 +211,7 @@ namespace MistClient
                 friends.Show();
                 friends.Activate();
             }
-            friends_list.SetObjects(ListFriends.Get());
+            friends_list.RefreshObjects(ListFriends.Get());
             Console.WriteLine("Friends list refreshed.");
         }
 
@@ -256,7 +256,17 @@ namespace MistClient
 
         public void SetObject(System.Collections.IEnumerable collection)
         {
-            friends_list.SetObjects(collection);
+            friends_list.SetObjects(collection, true);
+        }
+
+        public void RefreshObjects(IList modelObjects)
+        {
+            friends_list.RefreshObjects(modelObjects);
+        }
+
+        public void RefreshObject(object modelObject)
+        {
+            friends_list.RefreshObject(modelObject);
         }
 
         private void Friends_FormClosed(object sender, FormClosedEventArgs e)
