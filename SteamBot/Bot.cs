@@ -412,7 +412,7 @@ namespace SteamBot
                 IsLoggedIn = true;
                 displayName = SteamFriends.GetPersonaName();
                 ConnectToGC(13540830642081628378);
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 DisconnectFromGC();
                 try
                 {
@@ -422,7 +422,7 @@ namespace SteamBot
                 {
                     Environment.Exit(1);
                 }
-                Thread.Sleep(2000);
+                Thread.Sleep(2500);
                 CDNCache.Initialize();
             });
 
