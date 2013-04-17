@@ -213,6 +213,8 @@ namespace MistClient
                     button_trade.Enabled = true;
                     tradeMode = 3;
                     text_log.AppendText("[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you.\r\n");
+                    if (Friends.keepLog)
+                        AppendLog(sid, "[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you.\r\n");
                     text_log.ScrollToCaret();
                     if (!Chat.hasFocus)
                     {
@@ -428,6 +430,8 @@ namespace MistClient
                     tradeMode = 2;
                     button_trade.Text = "Cancel Trade Request";
                     UpdateChat("[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request.\r\n", false);
+                    if (Friends.keepLog)
+                        AppendLog(sid, "[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request.\r\n");
                     break;
                 case 2: // User sent trade request - "Cancel trade request"
                     bot.SteamTrade.CancelTrade(sid);
@@ -590,6 +594,8 @@ namespace MistClient
                                             string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
                                             text_log.AppendText(message);
                                             text_log.ScrollToCaret();
+                                            if (Friends.keepLog)
+                                                AppendLog(sid, date + message);
                                         }));
                                     }
                                     else
@@ -610,6 +616,8 @@ namespace MistClient
                                                 text_log.AppendText(message);
                                                 text_log.ScrollToCaret();
                                                 text_log.SelectionColor = prevColor;
+                                                if (Friends.keepLog)
+                                                    AppendLog(sid, date + message);
                                             }
                                             else
                                             {
@@ -623,6 +631,8 @@ namespace MistClient
                                                 text_log.AppendText(message);
                                                 text_log.ScrollToCaret();
                                                 text_log.SelectionColor = prevColor;
+                                                if (Friends.keepLog)
+                                                    AppendLog(sid, date + message);
                                             }
                                         }));
                                     }
@@ -645,6 +655,8 @@ namespace MistClient
                                     string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
                                     text_log.AppendText(message);
                                     text_log.ScrollToCaret();
+                                    if (Friends.keepLog)
+                                        AppendLog(sid, date + message);
                                 }));
                             }
                             else if (result.Contains("SCAMMER"))
@@ -661,6 +673,8 @@ namespace MistClient
                                     text_log.AppendText(message);
                                     text_log.ScrollToCaret();
                                     text_log.SelectionColor = prevColor;
+                                    if (Friends.keepLog)
+                                        AppendLog(sid, date + message);
                                 }));
                             }
                             else
@@ -677,6 +691,8 @@ namespace MistClient
                                     text_log.AppendText(message);
                                     text_log.ScrollToCaret();
                                     text_log.SelectionColor = prevColor;
+                                    if (Friends.keepLog)
+                                        AppendLog(sid, date + message);
                                 }));
                             }
                         }
@@ -709,6 +725,8 @@ namespace MistClient
                                     string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
                                     text_log.AppendText(message);
                                     text_log.ScrollToCaret();
+                                    if (Friends.keepLog)
+                                        AppendLog(sid, date + message);
                                 }));
                             }
                             else
@@ -730,6 +748,8 @@ namespace MistClient
                                         text_log.AppendText(message);
                                         text_log.ScrollToCaret();
                                         text_log.SelectionColor = prevColor;
+                                        if (Friends.keepLog)
+                                            AppendLog(sid, date + message);
                                     }));
                                 }
                                 else
@@ -746,6 +766,8 @@ namespace MistClient
                                         text_log.AppendText(message);
                                         text_log.ScrollToCaret();
                                         text_log.SelectionColor = prevColor;
+                                        if (Friends.keepLog)
+                                            AppendLog(sid, date + message);
                                     }));
                                 }
                             }
@@ -805,11 +827,15 @@ namespace MistClient
                     if (this.steam_status.Text != prevStatus)
                     {
                         UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n", false);
+                        if (Friends.keepLog)
+                            AppendLog(sid, "[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n");
                         prevStatus = this.steam_status.Text;
                     }
                     if (this.steam_name.Text != prevName)
                     {
                         UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n", false);
+                        if (Friends.keepLog)
+                            AppendLog(sid, "[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n");
                         ListFriends.UpdateName(sid, steam_name.Text);
                         prevName = this.steam_name.Text;
                     }

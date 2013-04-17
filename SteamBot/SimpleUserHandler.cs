@@ -147,9 +147,11 @@ namespace SteamBot
                         tab.Invoke((Action)(() =>
                         {
                             if (message == "had asked to trade with you, but has cancelled their request.")
+                            {                                
                                 Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n", true);
+                            }
                             if (message == "Lost connection to Steam. Reconnecting as soon as possible...")
-                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message, false);
+                                Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + message + "\r\n", false);
                             if (message == "has declined your trade request.")
                                 Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " " + message + "\r\n", true);
                             if (message == "An error has occurred in sending the trade request.")
