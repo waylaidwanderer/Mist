@@ -42,6 +42,7 @@
             this.showBackpackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.steamRepStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.avatarBox = new System.Windows.Forms.PictureBox();
             this.checkrep = new System.ComponentModel.BackgroundWorker();
             this.text_log = new System.Windows.Forms.RichTextBox();
@@ -52,7 +53,6 @@
             this.steam_name = new MetroFramework.Controls.MetroLabel();
             this.steam_status = new MetroFramework.Controls.MetroLabel();
             this.chat_status = new MetroFramework.Controls.MetroLabel();
-            this.removeFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
@@ -79,7 +79,7 @@
             this.steamRepStatusToolStripMenuItem,
             this.removeFriendToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 114);
             // 
             // viewProfileToolStripMenuItem
             // 
@@ -109,6 +109,13 @@
             this.steamRepStatusToolStripMenuItem.Text = "SteamRep Status";
             this.steamRepStatusToolStripMenuItem.Click += new System.EventHandler(this.steamRepStatusToolStripMenuItem_Click);
             // 
+            // removeFriendToolStripMenuItem
+            // 
+            this.removeFriendToolStripMenuItem.Name = "removeFriendToolStripMenuItem";
+            this.removeFriendToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.removeFriendToolStripMenuItem.Text = "Remove Friend";
+            this.removeFriendToolStripMenuItem.Click += new System.EventHandler(this.removeFriendToolStripMenuItem_Click);
+            // 
             // avatarBox
             // 
             this.avatarBox.BackColor = System.Drawing.Color.Transparent;
@@ -137,6 +144,7 @@
             this.text_log.Size = new System.Drawing.Size(369, 252);
             this.text_log.TabIndex = 3;
             this.text_log.Text = "";
+            this.text_log.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.text_log_LinkClicked);
             this.text_log.Click += new System.EventHandler(this.text_log_Click);
             this.text_log.DoubleClick += new System.EventHandler(this.text_log_DoubleClick);
             // 
@@ -214,13 +222,6 @@
             this.chat_status.TabIndex = 16;
             this.chat_status.Text = "chat_status";
             this.chat_status.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // removeFriendToolStripMenuItem
-            // 
-            this.removeFriendToolStripMenuItem.Name = "removeFriendToolStripMenuItem";
-            this.removeFriendToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.removeFriendToolStripMenuItem.Text = "Remove Friend";
-            this.removeFriendToolStripMenuItem.Click += new System.EventHandler(this.removeFriendToolStripMenuItem_Click);
             // 
             // ChatTab
             // 

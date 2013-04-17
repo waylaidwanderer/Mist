@@ -568,10 +568,13 @@ namespace MistClient
                 string latestVer = Util.ParseBetween(response, "<version>", "</version>");                                
                 if (latestVer != Friends.mist_ver)
                 {
-                    string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
-                    Updater updater = new Updater(latestVer, changelog, bot.log);
-                    updater.ShowDialog();
-                    updater.Activate();
+                    string[] changelog = Util.GetStringInBetween("<changelog>", "</changelog>", response, false, false);
+                    if (!string.IsNullOrEmpty(changelog[0]))
+                    {
+                        Updater updater = new Updater(latestVer, changelog[0], bot.log);
+                        updater.ShowDialog();
+                        updater.Activate();
+                    }
                 }
                 else
                 {

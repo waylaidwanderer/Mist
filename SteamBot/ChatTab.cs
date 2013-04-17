@@ -891,5 +891,10 @@ namespace MistClient
                 AppendLog(sid, "[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list.\r\n");
             ListFriends.Remove(sid);
         }
+
+        private void text_log_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", e.LinkText);
+        }
     }
 }

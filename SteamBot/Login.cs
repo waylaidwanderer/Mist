@@ -198,17 +198,23 @@ namespace MistClient
                 {
                     Properties.Settings.Default.SkipUpdate = false;
                     Properties.Settings.Default.Save();
-                    string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
-                    Updater updater = new Updater(latestVer, changelog, log);
-                    updater.ShowDialog();
-                    updater.Activate();
+                    string[] changelog = Util.GetStringInBetween("<changelog>", "</changelog>", response, false, false);
+                    if (!string.IsNullOrEmpty(changelog[0]))
+                    {
+                        Updater updater = new Updater(latestVer, changelog[0], log);
+                        updater.ShowDialog();
+                        updater.Activate();
+                    }
                 }
                 else if (!Properties.Settings.Default.SkipUpdate && latestVer.Trim() != Friends.mist_ver)
                 {
-                    string changelog = Util.ParseBetween(response, "<changelog>", "</changelog>");
-                    Updater updater = new Updater(latestVer, changelog, log);
-                    updater.ShowDialog();
-                    updater.Activate();
+                    string[] changelog = Util.GetStringInBetween("<changelog>", "</changelog>", response, false, false);
+                    if (!string.IsNullOrEmpty(changelog[0]))
+                    {
+                        Updater updater = new Updater(latestVer, changelog[0], log);
+                        updater.ShowDialog();
+                        updater.Activate();
+                    }
                 }
                 else
                 {
