@@ -52,6 +52,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.showBackpackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeProfileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.showOnlineFriendsOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logConversationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -196,86 +198,101 @@
             this.toolStripMenuItem1,
             this.showBackpackToolStripMenuItem1,
             this.changeProfileNameToolStripMenuItem,
+            this.toolStripMenuItem6,
+            this.showOnlineFriendsOnlyToolStripMenuItem,
             this.toolStripMenuItem3,
             this.optionsToolStripMenuItem,
             this.aboutMistToolStripMenuItem,
             this.checkForUpdatesToolStripMenuItem,
             this.exitMistToolStripMenuItem});
             this.menu_status.Name = "menu_status";
-            this.menu_status.Size = new System.Drawing.Size(197, 302);
+            this.menu_status.Size = new System.Drawing.Size(211, 330);
             // 
             // onlineToolStripMenuItem
             // 
             this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.onlineToolStripMenuItem.Text = "Online";
             this.onlineToolStripMenuItem.Click += new System.EventHandler(this.onlineToolStripMenuItem_Click);
             // 
             // awayToolStripMenuItem
             // 
             this.awayToolStripMenuItem.Name = "awayToolStripMenuItem";
-            this.awayToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.awayToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.awayToolStripMenuItem.Text = "Away";
             this.awayToolStripMenuItem.Click += new System.EventHandler(this.awayToolStripMenuItem_Click);
             // 
             // busyToolStripMenuItem
             // 
             this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
-            this.busyToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.busyToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.busyToolStripMenuItem.Text = "Busy";
             this.busyToolStripMenuItem.Click += new System.EventHandler(this.busyToolStripMenuItem_Click);
             // 
             // lookingToPlayToolStripMenuItem
             // 
             this.lookingToPlayToolStripMenuItem.Name = "lookingToPlayToolStripMenuItem";
-            this.lookingToPlayToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.lookingToPlayToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.lookingToPlayToolStripMenuItem.Text = "Looking to Play";
             this.lookingToPlayToolStripMenuItem.Click += new System.EventHandler(this.lookingToPlayToolStripMenuItem_Click);
             // 
             // lookingToTradeToolStripMenuItem
             // 
             this.lookingToTradeToolStripMenuItem.Name = "lookingToTradeToolStripMenuItem";
-            this.lookingToTradeToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.lookingToTradeToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.lookingToTradeToolStripMenuItem.Text = "Looking to Trade";
             this.lookingToTradeToolStripMenuItem.Click += new System.EventHandler(this.lookingToTradeToolStripMenuItem_Click);
             // 
             // snoozeToolStripMenuItem
             // 
             this.snoozeToolStripMenuItem.Name = "snoozeToolStripMenuItem";
-            this.snoozeToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.snoozeToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.snoozeToolStripMenuItem.Text = "Snooze";
             this.snoozeToolStripMenuItem.Click += new System.EventHandler(this.snoozeToolStripMenuItem_Click);
             // 
             // offlineToolStripMenuItem
             // 
             this.offlineToolStripMenuItem.Name = "offlineToolStripMenuItem";
-            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.offlineToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.offlineToolStripMenuItem.Text = "Offline";
             this.offlineToolStripMenuItem.Click += new System.EventHandler(this.offlineToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(193, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
             // 
             // showBackpackToolStripMenuItem1
             // 
             this.showBackpackToolStripMenuItem1.Name = "showBackpackToolStripMenuItem1";
-            this.showBackpackToolStripMenuItem1.Size = new System.Drawing.Size(196, 22);
+            this.showBackpackToolStripMenuItem1.Size = new System.Drawing.Size(210, 22);
             this.showBackpackToolStripMenuItem1.Text = "Show Backpack";
             this.showBackpackToolStripMenuItem1.Click += new System.EventHandler(this.showBackpackToolStripMenuItem1_Click);
             // 
             // changeProfileNameToolStripMenuItem
             // 
             this.changeProfileNameToolStripMenuItem.Name = "changeProfileNameToolStripMenuItem";
-            this.changeProfileNameToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.changeProfileNameToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.changeProfileNameToolStripMenuItem.Text = "Change Profile Name...";
             this.changeProfileNameToolStripMenuItem.Click += new System.EventHandler(this.changeProfileNameToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(207, 6);
+            // 
+            // showOnlineFriendsOnlyToolStripMenuItem
+            // 
+            this.showOnlineFriendsOnlyToolStripMenuItem.CheckOnClick = true;
+            this.showOnlineFriendsOnlyToolStripMenuItem.Name = "showOnlineFriendsOnlyToolStripMenuItem";
+            this.showOnlineFriendsOnlyToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.showOnlineFriendsOnlyToolStripMenuItem.Text = "Show Online Friends Only";
+            this.showOnlineFriendsOnlyToolStripMenuItem.Click += new System.EventHandler(this.showOnlineFriendsOnlyToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(193, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(207, 6);
             // 
             // optionsToolStripMenuItem
             // 
@@ -284,7 +301,7 @@
             this.minimizeToTrayToolStripMenuItem,
             this.themeToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
             // logConversationsToolStripMenuItem
@@ -348,21 +365,21 @@
             // aboutMistToolStripMenuItem
             // 
             this.aboutMistToolStripMenuItem.Name = "aboutMistToolStripMenuItem";
-            this.aboutMistToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.aboutMistToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.aboutMistToolStripMenuItem.Text = "About Mist";
             this.aboutMistToolStripMenuItem.Click += new System.EventHandler(this.aboutMistToolStripMenuItem_Click);
             // 
             // checkForUpdatesToolStripMenuItem
             // 
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
             // exitMistToolStripMenuItem
             // 
             this.exitMistToolStripMenuItem.Name = "exitMistToolStripMenuItem";
-            this.exitMistToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.exitMistToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.exitMistToolStripMenuItem.Text = "Exit Mist";
             this.exitMistToolStripMenuItem.Click += new System.EventHandler(this.exitMistToolStripMenuItem_Click);
             // 
@@ -603,12 +620,14 @@
             this.column_friend1.AspectName = "Name";
             this.column_friend1.CellPadding = null;
             this.column_friend1.Text = "Friend";
+            this.column_friend1.Width = 120;
             // 
             // column_status1
             // 
             this.column_status1.AspectName = "Status";
             this.column_status1.CellPadding = null;
             this.column_status1.Text = "Status";
+            this.column_status1.Width = 80;
             // 
             // column_sid1
             // 
@@ -715,5 +734,7 @@
         private BrightIdeasSoftware.OLVColumn column_status1;
         private BrightIdeasSoftware.OLVColumn column_sid1;
         public BrightIdeasSoftware.FastObjectListView friends_list;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem showOnlineFriendsOnlyToolStripMenuItem;
     }
 }

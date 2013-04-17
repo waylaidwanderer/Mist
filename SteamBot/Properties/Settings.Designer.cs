@@ -130,5 +130,17 @@ namespace MistClient.Properties {
                 this["Style"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OnlineOnly {
+            get {
+                return ((bool)(this["OnlineOnly"]));
+            }
+            set {
+                this["OnlineOnly"] = value;
+            }
+        }
     }
 }

@@ -702,7 +702,7 @@ namespace SteamBot
                 showFriends.Show();
                 showFriends.Activate();
                 LoadFriends();
-                showFriends.friends_list.SetObjects(ListFriends.Get());                
+                showFriends.friends_list.SetObjects(ListFriends.Get(MistClient.Properties.Settings.Default.OnlineOnly));                
             }));            
         }
 

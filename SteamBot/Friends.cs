@@ -43,14 +43,15 @@ namespace MistClient
             Util.LoadTheme(metroStyleManager1);
             this.Text = "Friends - Mist v" + mist_ver;
             this.steam_name.Text = username;
-            this.bot = bot;
+            this.bot = bot;            
             this.steam_name.ContextMenuStrip = menu_status;
             this.steam_status.ContextMenuStrip = menu_status;
             this.label1.ContextMenuStrip = menu_status;
             this.minimizeToTrayToolStripMenuItem.Checked = Properties.Settings.Default.MinimizeToTray;
+            this.showOnlineFriendsOnlyToolStripMenuItem.Checked = Properties.Settings.Default.OnlineOnly;
             logConversationsToolStripMenuItem.Checked = Properties.Settings.Default.KeepLog;
             keepLog = logConversationsToolStripMenuItem.Checked;
-            ListFriends.friends = this;
+            ListFriends.friends = this;            
             form_friendsHeight = friends_list.Height;
             form_friendreqHeight = list_friendreq.Height;
 
@@ -211,7 +212,7 @@ namespace MistClient
                 friends.Show();
                 friends.Activate();
             }
-            friends_list.SetObjects(ListFriends.Get());
+            friends_list.SetObjects(ListFriends.Get(showOnlineFriendsOnlyToolStripMenuItem.Checked));
             Console.WriteLine("Friends list refreshed.");
         }
 
@@ -825,14 +826,14 @@ namespace MistClient
                 text_search.Font = new Font(text_search.Font, FontStyle.Italic);
                 text_search.ForeColor = SystemColors.ControlDark;
                 text_search.Text = "Search";
-                this.friends_list.SetObjects(ListFriends.Get());
+                this.friends_list.SetObjects(ListFriends.Get(showOnlineFriendsOnlyToolStripMenuItem.Checked));
             }
         }
 
         private void text_search_TextChanged(object sender, EventArgs e)
         {
             if (text_search.Text == "")
-                this.friends_list.SetObjects(ListFriends.Get());
+                this.friends_list.SetObjects(ListFriends.Get(showOnlineFriendsOnlyToolStripMenuItem.Checked));
             else
                 this.friends_list.SetObjects(ListFriends.Get(text_search.Text));
         }
@@ -878,7 +879,7 @@ namespace MistClient
             if (e.KeyChar == 27)
             {
                 text_search.Clear();
-                this.friends_list.SetObjects(ListFriends.Get());
+                this.friends_list.SetObjects(ListFriends.Get(showOnlineFriendsOnlyToolStripMenuItem.Checked));
             }
         }
 
@@ -903,7 +904,7 @@ namespace MistClient
         private void Friends_Leave(object sender, EventArgs e)
         {
             text_search.Text = "";
-            this.friends_list.SetObjects(ListFriends.Get());
+            this.friends_list.SetObjects(ListFriends.Get(showOnlineFriendsOnlyToolStripMenuItem.Checked));
             label1.Select();
         }
 
@@ -961,6 +962,14 @@ namespace MistClient
                 item.Theme = globalStyleManager.Theme;
                 item.Style = globalStyleManager.Style;
             }
+        }
+
+        private void showOnlineFriendsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool checkState = showOnlineFriendsOnlyToolStripMenuItem.Checked;
+            Properties.Settings.Default.OnlineOnly = checkState;
+            Properties.Settings.Default.Save();
+            friends_list.SetObjects(ListFriends.Get(checkState));
         }
     }
 }

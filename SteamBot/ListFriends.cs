@@ -113,7 +113,7 @@ namespace MistClient
             return returnList;
         }
 
-        static internal List<ListFriends> Get()
+        static internal List<ListFriends> Get(bool onlineOnly = false)
         {
             List<ListFriends> returnList = new List<ListFriends>();
             foreach (ListFriends item in list)
@@ -124,12 +124,18 @@ namespace MistClient
             foreach (ListFriends item in list)
             {
                 if (item.status.ToString() == "LookingToTrade")
+                {
+                    item.Status = "Looking to Trade";
                     returnList.Add(item);
+                }
             }
             foreach (ListFriends item in list)
             {
                 if (item.status.ToString() == "LookingToPlay")
+                {
+                    item.Status = "Looking to Play";
                     returnList.Add(item);
+                }
             }
             foreach (ListFriends item in list)
             {
@@ -146,10 +152,13 @@ namespace MistClient
                 if (item.status.ToString() == "Snooze")
                     returnList.Add(item);
             }
-            foreach (ListFriends item in list)
+            if (!onlineOnly)
             {
-                if (item.status.ToString() == "Offline")
-                    returnList.Add(item);
+                foreach (ListFriends item in list)
+                {
+                    if (item.status.ToString() == "Offline")
+                        returnList.Add(item);
+                }
             }
             return returnList;
         }
