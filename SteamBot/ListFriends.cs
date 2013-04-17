@@ -47,8 +47,9 @@ namespace MistClient
 
         public static void Remove(ulong sid)
         {
-            ListFriends item = list.Find(x => x.sid == sid);
+            ListFriends item = list.Find(x => x.SID == sid);
             list.Remove(item);
+            friends.SetObject(Get(MistClient.Properties.Settings.Default.OnlineOnly));
         }
 
         public static void Clear()

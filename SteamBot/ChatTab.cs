@@ -856,5 +856,14 @@ namespace MistClient
         {
             HideCaret(text_log);
         }
+
+        private void removeFriendToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bot.SteamFriends.RemoveFriend(sid);
+            UpdateChat("[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list.\r\n", false);
+            if (Friends.keepLog)
+                AppendLog(sid, "[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list.\r\n");
+            ListFriends.Remove(sid);
+        }
     }
 }

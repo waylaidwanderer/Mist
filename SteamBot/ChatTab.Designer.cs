@@ -52,6 +52,7 @@
             this.steam_name = new MetroFramework.Controls.MetroLabel();
             this.steam_status = new MetroFramework.Controls.MetroLabel();
             this.chat_status = new MetroFramework.Controls.MetroLabel();
+            this.removeFriendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
@@ -75,9 +76,10 @@
             this.viewProfileToolStripMenuItem,
             this.showBackpackToolStripMenuItem,
             this.viewChatLogToolStripMenuItem,
-            this.steamRepStatusToolStripMenuItem});
+            this.steamRepStatusToolStripMenuItem,
+            this.removeFriendToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 136);
             // 
             // viewProfileToolStripMenuItem
             // 
@@ -213,6 +215,13 @@
             this.chat_status.Text = "chat_status";
             this.chat_status.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
+            // removeFriendToolStripMenuItem
+            // 
+            this.removeFriendToolStripMenuItem.Name = "removeFriendToolStripMenuItem";
+            this.removeFriendToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.removeFriendToolStripMenuItem.Text = "Remove Friend";
+            this.removeFriendToolStripMenuItem.Click += new System.EventHandler(this.removeFriendToolStripMenuItem_Click);
+            // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -259,6 +268,7 @@
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         public MetroFramework.Controls.MetroLabel chat_status;
         public MetroFramework.Controls.MetroLabel steam_status;
+        private System.Windows.Forms.ToolStripMenuItem removeFriendToolStripMenuItem;
 
     }
 }
