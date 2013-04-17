@@ -17,10 +17,35 @@ namespace SteamBot
 
         [STAThread]
         public static void Main(string[] args)
-        {
-            string path = Path.Combine(Environment.ExpandEnvironmentVariables("%systemroot%"), @"Microsoft.NET\Framework\v4.0.30319\System.Core.dll"); 
-            Console.WriteLine(".NET 4.0 installed? " + File.Exists(path));
-            
+        {   
+            Application.EnableVisualStyles();
+            string path = Path.Combine(Environment.ExpandEnvironmentVariables("%systemroot%"), @"Microsoft.NET\Framework\v4.0.30319\System.Core.dll");
+            if (!File.Exists(path))
+            {
+                DialogResult userChoice = MessageBox.Show("It seems that you don't have .NET 4.0 installed. Would you like to be directed to the download page? " 
+                                                            + "If you are sure you do have .NET 4.0 installed, click No to simply close this message box. "
+                                                            + "Click Cancel to close Mist.\n\n"
+                                                            + ".NET 4.0 can be found at http://www.microsoft.com/en-ca/download/details.aspx?id=17851",
+                                                            ".NET 4.0 Not Detected",
+                                                            MessageBoxButtons.YesNoCancel,
+                                                            MessageBoxIcon.Hand,
+                                                            MessageBoxDefaultButton.Button1);
+                if (userChoice == DialogResult.Yes)
+                {             
+                    System.Diagnostics.Process.Start("http://www.microsoft.com/en-ca/download/details.aspx?id=17851");
+                    Environment.Exit(0);
+                    return;
+                }
+                else if (userChoice == DialogResult.No)
+                {
+
+                }
+                else if (userChoice == DialogResult.Cancel)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+            }        
             CleanUp();
             string LogDirectory = Path.Combine(Application.StartupPath, "logs");
             if (!Directory.Exists(LogDirectory))
@@ -59,7 +84,7 @@ namespace SteamBot
             {
                 mainLog = new Log(@"logs/Mist.log", "Mist", Log.LogLevel.Debug);
             }
-            Application.EnableVisualStyles();
+            
             Login login = new Login(mainLog);
             mainLog.Info("Launching Mist...");
             Configuration config = new Configuration();
