@@ -13,7 +13,6 @@ namespace SteamBot
     public class SimpleUserHandler : UserHandler
     {
         ShowTrade ShowTrade;
-        public int islink;
         
         public SimpleUserHandler(Bot bot, SteamID sid) : base(bot, sid) { }
 
@@ -259,6 +258,7 @@ namespace SteamBot
                             }
                         }
                     }
+                    int islink;
                     islink = 0;
                     if (message.Contains("http://") || (message.Contains("https://")) || (message.Contains("www.")) || (message.Contains("ftp."))){
                         string[] stan = message.Split(' ');
