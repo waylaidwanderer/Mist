@@ -258,6 +258,25 @@ namespace SteamBot
                             }
                         }
                     }
+                    int islink;
+                    islink = 0;
+                    if (message.Contains("http://") || (message.Contains("https://")) || (message.Contains("www.")) || (message.Contains("ftp."))){
+                        string[] stan = message.Split(' ');
+                        foreach (string word in stan)
+                        {
+                            if (word.Contains("http://") || (word.Contains("https://")) || (word.Contains("www.")) || (word.Contains("ftp.")))
+                            {
+                                if (word.Contains("."))
+                                {
+                                    islink = 1;
+                                }
+                            }
+                        }
+                    }
+                    if (islink == 1)
+                    {
+                        Friends.chat.chatTab.UpdateChat("[INFO] ", "WARNING: ", "Do not click on links that you feel that maybe unsafe. Make sure the link is what it should be by looking at it.");
+                    }
                     Friends.chat.chatTab.UpdateChat(date, name, message);
                     new Thread(() =>
                     {
