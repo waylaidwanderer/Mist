@@ -7,12 +7,14 @@ using MistClient;
 using System.Windows.Forms;
 using System.IO;
 using ToastNotifications;
+using System.Text.RegularExpressions;
 
 namespace SteamBot
 {
     public class SimpleUserHandler : UserHandler
     {
         ShowTrade ShowTrade;
+        public int islink;
         
         public SimpleUserHandler(Bot bot, SteamID sid) : base(bot, sid) { }
 
@@ -257,6 +259,24 @@ namespace SteamBot
                                 Friends.chat.chatTab = (ChatTab)item;
                             }
                         }
+                    }
+                    islink = 0;
+                    if (message.Contains("http://") || (message.Contains("https://")) || (message.Contains("www.")) || (message.Contains("ftp."))){
+                        string[] stan = message.Split(' ');
+                        foreach (string word in stan)
+                        {
+                            if (word.StartsWith("http://") || (word.StartsWith("https://")) || (word.StartsWith("www.")) || (word.StartsWith("ftp.")))
+                            {
+                                if (word.Contains("."))
+                                {
+                                    islink = 1;
+                                }
+                            }
+                        }
+                    }
+                    if (islink == 1)
+                    {
+                        Friends.chat.chatTab.UpdateChat("[INFO] ", "WARNING: ", "Do not click on links that you feel that maybe unsafe. Make sure the link is what it should be by looking at it.");
                     }
                     Friends.chat.chatTab.UpdateChat(date, name, message);
                     new Thread(() =>
