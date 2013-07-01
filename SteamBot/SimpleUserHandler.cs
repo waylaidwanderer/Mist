@@ -7,7 +7,6 @@ using MistClient;
 using System.Windows.Forms;
 using System.IO;
 using ToastNotifications;
-using System.Text.RegularExpressions;
 
 namespace SteamBot
 {
@@ -265,7 +264,7 @@ namespace SteamBot
                         string[] stan = message.Split(' ');
                         foreach (string word in stan)
                         {
-                            if (word.StartsWith("http://") || (word.StartsWith("https://")) || (word.StartsWith("www.")) || (word.StartsWith("ftp.")))
+                            if (word.Contains("http://") || (word.Contains("https://")) || (word.Contains("www.")) || (word.Contains("ftp.")))
                             {
                                 if (word.Contains("."))
                                 {
