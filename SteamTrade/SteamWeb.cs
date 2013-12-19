@@ -6,7 +6,7 @@ using System.Text;
 using System.Web;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.ryptography.X509Certificates;
 using System.Net.Security;
 using SteamKit2;
 
