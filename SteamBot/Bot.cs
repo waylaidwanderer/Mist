@@ -79,6 +79,8 @@ namespace SteamBot
 
         TradeManager tradeManager;
 
+        public string MyLoginKey;
+
         bool hasrun = false;
         public bool otherAccepted = false;
         public static string displayName = "[unknown]";
@@ -270,6 +272,7 @@ namespace SteamBot
 
                 if (callback.Result == EResult.OK)
                 {
+                    MyLoginKey = callback.WebAPIUserNonce;
                     main.Invoke((Action)(() =>
                     {
                         main.label_status.Text = "Logging in to Steam...";
@@ -335,7 +338,7 @@ namespace SteamBot
                         bool authd = false;
                         try
                         {
-                            authd = SteamWeb.Authenticate(callback, SteamClient, out sessionId, out token);
+                            authd = SteamWeb.Authenticate(callback, SteamClient, out sessionId, out token, MyLoginKey);
                         }
                         catch (Exception ex)
                         {
