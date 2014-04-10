@@ -18,7 +18,8 @@ namespace MistClient
 
         public static BackpackTF FetchSchema()
         {
-            var url = "http://backpack.tf/api/IGetPrices/v2/?format=json&currency=metal";
+            var apiKey = Properties.Settings.Default.backpackTfApiKey;
+            var url = "http://backpack.tf/api/IGetPrices/v4/?key=" + apiKey + "&compress=1&raw=1";
 
             string cachefile = "tf_pricelist.cache";
             string result = "";
@@ -65,9 +66,9 @@ namespace MistClient
 
         static void UpdateBasePrices(BackpackTF schemaResult)
         {
-            KeyPrice = schemaResult.Response.Prices[5021][6][0].Value;
-            BillPrice = schemaResult.Response.Prices[126][6][0].Value;
-            BudPrice = schemaResult.Response.Prices[143][6][0].Value;
+            KeyPrice = schemaResult.Response.Items["Mann Co. Supply Crate Key"].Prices["6"]["Tradable"]["Craftable"]["0"].Value;
+            BillPrice = schemaResult.Response.Items["Bill's Hat"].Prices["6"]["Tradable"]["Craftable"]["0"].Value;
+            BudPrice = schemaResult.Response.Items["Earbuds"].Prices["6"]["Tradable"]["Craftable"]["0"].Value;
         }
 
         [JsonProperty("response")]
@@ -78,37 +79,57 @@ namespace MistClient
             [JsonProperty("success")]
             public int Success { get; set; }
 
+            [JsonProperty("message")]
+            public string Message { get; set; }
+
             [JsonProperty("current_time")]
             public long CurrentTime { get; set; }
 
-            [JsonProperty("refined_usd_value")]
-            public double RefinedValue { get; set; }
+            [JsonProperty("raw_usd_value")]
+            public double RawUsdValue { get; set; }
 
-            [JsonProperty("currency")]
-            public string Currency { get; set; }
+            [JsonProperty("usd_currency")]
+            public string UsdCurrencyName { get; set; }
 
-            // Even though the API gives us string keys, we're going to cast
-            // them to integers so accessing them is easier.  Also, we use
-            // a dictionary instead of an array because of the apparent
-            // non-continuity of the numbers.
-            [JsonProperty("prices")]
-            public Dictionary<int,
-                Dictionary<int,
-                    Dictionary<int, BackpackTFItem>>> Prices { get; set; }
+            [JsonProperty("usd_currency_index")]
+            public string UsdCurrencyDefindex { get; set; }
 
+            [JsonProperty("items")]
+            public Dictionary<string, BackpackTFItem> Items { get; set; }
         }
 
         public class BackpackTFItem
         {
             // This always seems to be there.
+            [JsonProperty("defindex")]
+            public dynamic Defindex { get; set; }
+
+            [JsonProperty("prices")]
+            public Dictionary<string,
+                Dictionary<string,
+                    Dictionary<string, 
+                        Dictionary<string, BackpackTFItemPrices>>>> Prices { get; set; }
+        }
+
+        public class BackpackTFItemPrices
+        {
+            [JsonProperty("currency")]
+            public string Currency { get; set; }
+
             [JsonProperty("value")]
             public double Value { get; set; }
 
-            [JsonProperty("last_change")]
-            public double LastChange { get; set; }
+            [JsonProperty("value_high")]
+            public double ValueHigh { get; set; }
+
+            [JsonProperty("value_raw")]
+            public double ValueRaw { get; set; }
 
             [JsonProperty("last_update")]
-            public long LastUpdate { get; set; }
+            public int LastUpdate { get; set; }
+
+            [JsonProperty("difference")]
+            public double Difference { get; set; }
         }
     }
 }

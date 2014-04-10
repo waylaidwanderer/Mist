@@ -90,6 +90,7 @@
             this.column_friend1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_status1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.column_sid1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.setBackpacktfAPIKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_friend.SuspendLayout();
             this.menu_status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
@@ -299,6 +300,7 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.logConversationsToolStripMenuItem,
             this.minimizeToTrayToolStripMenuItem,
+            this.setBackpacktfAPIKeyToolStripMenuItem,
             this.themeToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
@@ -309,7 +311,7 @@
             this.logConversationsToolStripMenuItem.Checked = true;
             this.logConversationsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.logConversationsToolStripMenuItem.Name = "logConversationsToolStripMenuItem";
-            this.logConversationsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.logConversationsToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.logConversationsToolStripMenuItem.Text = "Log Conversations";
             // 
             // minimizeToTrayToolStripMenuItem
@@ -317,7 +319,7 @@
             this.minimizeToTrayToolStripMenuItem.Checked = true;
             this.minimizeToTrayToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.minimizeToTrayToolStripMenuItem.Name = "minimizeToTrayToolStripMenuItem";
-            this.minimizeToTrayToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.minimizeToTrayToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.minimizeToTrayToolStripMenuItem.Text = "Minimize to Tray";
             this.minimizeToTrayToolStripMenuItem.Click += new System.EventHandler(this.minimizeToTrayToolStripMenuItem_Click);
             // 
@@ -327,7 +329,7 @@
             this.lightToolStripMenuItem,
             this.darkToolStripMenuItem});
             this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            this.themeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.themeToolStripMenuItem.Text = "Theme";
             // 
             // lightToolStripMenuItem
@@ -335,7 +337,7 @@
             this.lightToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setColorToolStripMenuItem});
             this.lightToolStripMenuItem.Name = "lightToolStripMenuItem";
-            this.lightToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.lightToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.lightToolStripMenuItem.Text = "Light";
             this.lightToolStripMenuItem.Click += new System.EventHandler(this.lightToolStripMenuItem_Click);
             // 
@@ -351,7 +353,7 @@
             this.darkToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.setColorToolStripMenuItem1});
             this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            this.darkToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.darkToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.darkToolStripMenuItem.Text = "Dark";
             this.darkToolStripMenuItem.Click += new System.EventHandler(this.darkToolStripMenuItem_Click);
             // 
@@ -637,6 +639,13 @@
             this.column_sid1.IsVisible = false;
             this.column_sid1.Text = "SteamID";
             // 
+            // setBackpacktfAPIKeyToolStripMenuItem
+            // 
+            this.setBackpacktfAPIKeyToolStripMenuItem.Name = "setBackpacktfAPIKeyToolStripMenuItem";
+            this.setBackpacktfAPIKeyToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.setBackpacktfAPIKeyToolStripMenuItem.Text = "Set backpack.tf API Key";
+            this.setBackpacktfAPIKeyToolStripMenuItem.Click += new System.EventHandler(this.setBackpacktfAPIKeyToolStripMenuItem_Click);
+            // 
             // Friends
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -736,5 +745,6 @@
         public BrightIdeasSoftware.FastObjectListView friends_list;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem showOnlineFriendsOnlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setBackpacktfAPIKeyToolStripMenuItem;
     }
 }

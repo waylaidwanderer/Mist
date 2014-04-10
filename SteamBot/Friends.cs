@@ -77,6 +77,16 @@ namespace MistClient
             trayIcon.Visible = false;
 
             trayIcon.DoubleClick += new System.EventHandler(this.OnTrayIconDoubleClick);
+
+            if (string.IsNullOrEmpty(Properties.Settings.Default.backpackTfApiKey))
+            {
+                DialogResult dr = MessageBox.Show("backpack.tf API Key is not set. You won't be able to see any item prices. Set it now?", "backpack.tf API Key", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dr == System.Windows.Forms.DialogResult.Yes)
+                {
+                    SetBackpackTfApiKey setBTfApiKey = new SetBackpackTfApiKey();
+                    setBTfApiKey.ShowDialog();
+                }
+            }
         }
 
         public bool IsInGame()
@@ -973,6 +983,12 @@ namespace MistClient
             Properties.Settings.Default.OnlineOnly = checkState;
             Properties.Settings.Default.Save();
             friends_list.SetObjects(ListFriends.Get(checkState));
+        }
+
+        private void setBackpacktfAPIKeyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetBackpackTfApiKey setBackpackTfApiKey = new SetBackpackTfApiKey();
+            setBackpackTfApiKey.ShowDialog();
         }
     }
 }

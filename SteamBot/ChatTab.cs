@@ -561,7 +561,8 @@ namespace MistClient
             {
                 bool found = false;
                 //string toFind = "SteamID: 7691248515251; Rep: None; LC: Date.";
-                foreach (var line in File.ReadAllLines(file))
+                var readFile = File.ReadAllLines(file);
+                foreach (var line in readFile)
                 {
                     if (line.Contains(this.sid.ToString()))
                     {

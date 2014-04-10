@@ -73,6 +73,7 @@
             // 
             this.button_ok.Location = new System.Drawing.Point(167, 136);
             this.button_ok.Name = "button_ok";
+            this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_ok.StyleManager = this.metroStyleManager1;
             this.button_ok.TabIndex = 1;
@@ -85,6 +86,7 @@
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button_cancel.Location = new System.Drawing.Point(248, 136);
             this.button_cancel.Name = "button_cancel";
+            this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 2;
@@ -105,7 +107,6 @@
             this.Controls.Add(this.metroLabel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddFriend";

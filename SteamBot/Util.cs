@@ -104,12 +104,13 @@ namespace MistClient
         {
             try
             {
-                double value = BackpackTF.CurrentSchema.Response.Prices[defindex][quality][attribute].Value;
-                double keyValue = BackpackTF.CurrentSchema.Response.Prices[5021][6][0].Value;
-                double billsValue = BackpackTF.CurrentSchema.Response.Prices[126][6][0].Value;
-                double budValue = BackpackTF.CurrentSchema.Response.Prices[143][6][0].Value;
-
                 var item = SteamTrade.Trade.CurrentSchema.GetItem(defindex);
+                string craftable = inventoryItem.IsNotCraftable ? "Non-Craftable" : "Craftable";
+                double value = BackpackTF.CurrentSchema.Response.Items[item.ItemName].Prices[quality.ToString()]["Tradable"][craftable]["0"].Value;
+                double keyValue = BackpackTF.KeyPrice;
+                double billsValue = BackpackTF.BillPrice * keyValue;
+                double budValue = BackpackTF.BudPrice * keyValue;
+
                 string result = "";
 
                 if (inventoryItem.IsNotCraftable)
@@ -187,7 +188,7 @@ namespace MistClient
                     value = value / budValue;
                     result = value.ToString("0.00") + " buds";
                 }
-                else if (value >= keyValue && !item.ItemName.EndsWith("Key"))
+                else if (value >= keyValue && !item.ItemName.Contains("Crate Key"))
                 {
                     value = value / keyValue;
                     result = value.ToString("0.00") + " keys";

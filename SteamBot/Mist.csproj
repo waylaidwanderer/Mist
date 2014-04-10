@@ -6,7 +6,7 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E81DED36-EDF5-41A5-8666-A3A0C581762F}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>MistClient</RootNamespace>
     <AssemblyName>Mist</AssemblyName>
     <PublishUrl>publish\</PublishUrl>
@@ -59,12 +59,14 @@
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Lib\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\Debug\lib\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SteamKit2">
+      <HintPath>..\packages\SteamKit2.1.5.1\lib\net40\SteamKit2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -151,6 +153,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SetBackpackTfApiKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetBackpackTfApiKey.Designer.cs">
+      <DependentUpon>SetBackpackTfApiKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShowBackpack.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +231,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetBackpackTfApiKey.resx">
+      <DependentUpon>SetBackpackTfApiKey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ShowBackpack.resx">
       <DependentUpon>ShowBackpack.cs</DependentUpon>
@@ -305,10 +316,6 @@
       <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
       <Name>ObjectListView2010</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Lib\SteamKit2\SteamKit2\SteamKit2.csproj">
-      <Project>{beb5bf07-bb56-402a-97a3-a41c6444c6a5}</Project>
-      <Name>SteamKit2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lib\ToastNotifications\ToastNotifications.csproj">
       <Project>{380d8d88-386c-4c50-9a54-800f79fdf7d2}</Project>
       <Name>ToastNotifications</Name>
@@ -331,8 +338,8 @@
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>cd $(OutDir)
-del *.dll</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>xcopy /y $(SolutionDir)Lib\Ionic.Zip.Reduced.dll $(SolutionDir)Bin\$(ConfigurationName)\lib\</PreBuildEvent>
