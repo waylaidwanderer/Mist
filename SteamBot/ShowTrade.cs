@@ -656,7 +656,10 @@ namespace MistClient
             {
                 for (int count = 0; count < inventoryItem.Attributes.Length; count++)
                 {
-                    name += " #" + (inventoryItem.Attributes[count].FloatValue);
+                    if (inventoryItem.Attributes[count].Defindex == 187)
+                    {
+                        name += " #" + (inventoryItem.Attributes[count].FloatValue);
+                    }  
                 }
             }
             name += " (Level " + inventoryItem.Level + ")";

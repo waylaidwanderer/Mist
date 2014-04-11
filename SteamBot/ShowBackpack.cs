@@ -102,7 +102,10 @@ namespace MistClient
                 {
                     for (int count = 0; count < item.Attributes.Length; count++)
                     {
-                        name += " #" + (item.Attributes[count].FloatValue);
+                        if (item.Attributes[count].Defindex == 187)
+                        {
+                            name += " #" + (item.Attributes[count].FloatValue);
+                        }                        
                     }
                 }
                 name += " (Level " + item.Level + ")";
