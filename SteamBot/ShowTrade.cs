@@ -67,7 +67,7 @@ namespace MistClient
                                             Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + result + "\r\n", false);
                                             ChatTab.AppendLog(sid, "===========[TRADE ENDED]===========\r\n");
                                         }));
-                                        break; ;
+                                        break;
                                     }
                                 }
 
@@ -75,6 +75,7 @@ namespace MistClient
                         }
                         break;
                     }
+                    Thread.Sleep(1000);
                 }
             });
             checkExpired.Start();

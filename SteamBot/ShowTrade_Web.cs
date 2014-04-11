@@ -19,7 +19,7 @@ namespace MistClient
 {
     public partial class ShowTrade_Web : Form
     {
-        string trade_url = SteamTrade.Trade.baseTradeURL;
+        string trade_url = ""; //SteamTrade.Trade.baseTradeURL;
 
         public ShowTrade_Web()
         {
@@ -36,7 +36,7 @@ namespace MistClient
 
         private void WriteNewDocument()
         {
-            string cookies = Trade.cookies.GetCookieHeader(new Uri(trade_url));
+            string cookies = ""; // Trade.cookies.GetCookieHeader(new Uri(trade_url));
             cookies += "; steamMachineAuth76561198065838051=" + SteamBot.Bot.MachineAuthData
                 + "; strInventoryLastContext=440_2; "
             + "bCompletedTradeTutorial=true; strTradeLastInventoryContext=440_2";

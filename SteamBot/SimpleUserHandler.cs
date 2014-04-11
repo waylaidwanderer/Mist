@@ -24,6 +24,21 @@ namespace SteamBot
             }
         }
 
+        public override bool OnGroupAdd()
+        {
+            return false;
+        }
+
+        public override void OnLoginCompleted()
+        {
+            
+        }
+
+        public override void OnTradeSuccess()
+        {
+            
+        }
+
         public override void SetChatStatus(string message)
         {
             if (Friends.chat_opened)
@@ -420,7 +435,6 @@ namespace SteamBot
                     bool found = false;
                     try
                     {
-                        Console.WriteLine("Trying");
                         foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                         {
                             Console.WriteLine("Looking at " + tab.Text);
@@ -594,6 +608,14 @@ namespace SteamBot
                 Console.WriteLine("Loading all inventory items.");
                 if (Bot.CurrentTrade == null)
                     return;
+                for (int i = 0; i < 5; i++)
+                {
+                    if (Trade.MyInventory == null)
+                    {
+                        Thread.Sleep(1000);
+                    }
+                    else { break; }
+                }
                 Inventory.Item[] inventory = Trade.MyInventory.Items;
                 foreach (Inventory.Item item in inventory)
                 {
@@ -679,7 +701,16 @@ namespace SteamBot
                 try
                 {
                     ShowTrade.loading = false;
-                    Bot.main.Invoke((Action)(() => ShowTrade.list_inventory.SetObjects(ListInventory.Get())));
+                    Bot.main.Invoke((Action)(() => {
+                        try
+                        {
+                            ShowTrade.list_inventory.SetObjects(ListInventory.Get());
+                        }
+                        catch
+                        {
+
+                        }
+                    }));
                 }
                 catch
                 {

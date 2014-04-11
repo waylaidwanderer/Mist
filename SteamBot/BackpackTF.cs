@@ -24,40 +24,51 @@ namespace MistClient
             string cachefile = "tf_pricelist.cache";
             string result = "";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
-            HttpWebResponse response = null;
-
-            try
-            {
-                response = (HttpWebResponse)request.GetResponse();
-            }
-            catch
-            {
-                response = null;
-            }
-
-            DateTime SchemaLastRequested = response.LastModified;
             TimeSpan difference = DateTime.Now - System.IO.File.GetCreationTime(cachefile);
 
-            if (!System.IO.File.Exists(cachefile) || ((difference.TotalMinutes > 5) && response != null))
-            {
-                using (StreamReader sr = new StreamReader(response.GetResponseStream()))
-                {
-                    result = sr.ReadToEnd();
-                    //Close and clean up the StreamReader
-                    sr.Close();
-                }
-                File.WriteAllText(cachefile, result);
-                System.IO.File.SetCreationTime(cachefile, SchemaLastRequested);
-            }
-            else
+            if (System.IO.File.Exists(cachefile) && difference.TotalMinutes < 10)
             {
                 TextReader reader = new StreamReader(cachefile);
                 result = reader.ReadToEnd();
                 reader.Close();
             }
-            response.Close();
+            else
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+                HttpWebResponse response = null;
+
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+                }
+                catch
+                {
+                    response = null;
+                }
+
+                DateTime SchemaLastRequested = response.LastModified;
+
+
+                if (response != null)
+                {
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                    {
+                        result = sr.ReadToEnd();
+                        //Close and clean up the StreamReader
+                        sr.Close();
+                    }
+                    File.WriteAllText(cachefile, result);
+                    System.IO.File.SetCreationTime(cachefile, SchemaLastRequested);
+                }
+                else
+                {
+                    TextReader reader = new StreamReader(cachefile);
+                    result = reader.ReadToEnd();
+                    reader.Close();
+                }
+                response.Close();
+            }
 
             BackpackTF schemaResult = JsonConvert.DeserializeObject<BackpackTF>(result);
             UpdateBasePrices(schemaResult);
