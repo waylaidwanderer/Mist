@@ -991,5 +991,10 @@ namespace MistClient
                 this.list_inventory.SetObjects(ListInventory.Get());
             }
         }
+
+        private void removeAllItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

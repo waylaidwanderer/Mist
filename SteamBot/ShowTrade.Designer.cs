@@ -60,12 +60,15 @@
             this.label_othervalue = new MetroFramework.Controls.MetroLabel();
             this.check_userready = new MetroFramework.Controls.MetroCheckBox();
             this.check_otherready = new MetroFramework.Controls.MetroCheckBox();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeAllItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.list_inventory)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.list_userofferings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.list_otherofferings)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // list_inventory
@@ -144,6 +147,7 @@
             this.list_userofferings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.list_userofferings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.column_userofferings});
+            this.list_userofferings.ContextMenuStrip = this.contextMenuStrip2;
             this.list_userofferings.Location = new System.Drawing.Point(416, 87);
             this.list_userofferings.Name = "list_userofferings";
             this.list_userofferings.Size = new System.Drawing.Size(287, 145);
@@ -399,11 +403,24 @@
             this.check_otherready.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.check_otherready.UseVisualStyleBackColor = true;
             // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeAllItemsToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(167, 48);
+            // 
+            // removeAllItemsToolStripMenuItem
+            // 
+            this.removeAllItemsToolStripMenuItem.Name = "removeAllItemsToolStripMenuItem";
+            this.removeAllItemsToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.removeAllItemsToolStripMenuItem.Text = "Remove All Items";
+            this.removeAllItemsToolStripMenuItem.Click += new System.EventHandler(this.removeAllItemsToolStripMenuItem_Click);
+            // 
             // ShowTrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.ClientSize = new System.Drawing.Size(726, 590);
             this.Controls.Add(this.check_otherready);
             this.Controls.Add(this.check_userready);
@@ -438,6 +455,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,5 +493,7 @@
         public MetroFramework.Controls.MetroCheckBox check_otherready;
         public MetroFramework.Controls.MetroCheckBox check_userready;
         public MetroFramework.Controls.MetroButton button_accept;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem removeAllItemsToolStripMenuItem;
     }
 }

@@ -24,8 +24,7 @@ namespace SteamTrade
         // current bot's sid
         private readonly SteamID mySteamId;
 
-        private readonly Dictionary<int, ulong> myOfferedItems;
-        private readonly List<ulong> steamMyOfferedItems;
+        private readonly Dictionary<int, ulong> steamMyOfferedItems;
         private readonly TradeSession session;
         private readonly Task<Inventory> myInventoryTask;
         private readonly Task<Inventory> otherInventoryTask;
@@ -43,8 +42,8 @@ namespace SteamTrade
             this.eventList = new List<TradeEvent>();
 
             OtherOfferedItems = new List<ulong>();
-            myOfferedItems = new Dictionary<int, ulong>();
-            steamMyOfferedItems = new List<ulong>();
+            MyOfferedItems = new List<ulong>();
+            steamMyOfferedItems = new Dictionary<int, ulong>();
 
             this.otherInventoryTask = otherInventoryTask;
             this.myInventoryTask = myInventoryTask;
@@ -105,6 +104,8 @@ namespace SteamTrade
         /// The other offered items.
         /// </value>
         public List<ulong> OtherOfferedItems { get; private set; }
+
+        public List<ulong> MyOfferedItems { get; private set; }
 
         /// <summary>
         /// Gets a value indicating if the other user is ready to trade.
@@ -248,7 +249,7 @@ namespace SteamTrade
             bool success = RetryWebRequest(() => session.AddItemWebCmd(item.assetid, slot, item.appid, item.contextid));
 
             if(success)
-                myOfferedItems[slot] = item.assetid;
+                steamMyOfferedItems[slot] = item.assetid;
             
             return success;
         }
@@ -265,7 +266,7 @@ namespace SteamTrade
             List<Inventory.Item> items = MyInventory.GetItemsByDefindex (defindex);
             foreach (Inventory.Item item in items)
             {
-                if (item != null && !myOfferedItems.ContainsValue(item.Id) && !item.IsNotTradeable)
+                if (item != null && !steamMyOfferedItems.ContainsValue(item.Id) && !item.IsNotTradeable)
                 {
                     return AddItem (item.Id);
                 }
@@ -288,7 +289,7 @@ namespace SteamTrade
 
             foreach (Inventory.Item item in items)
             {
-                if (item != null && !myOfferedItems.ContainsValue(item.Id) && !item.IsNotTradeable)
+                if (item != null && !steamMyOfferedItems.ContainsValue(item.Id) && !item.IsNotTradeable)
                 {
                     bool success = AddItem (item.Id);
 
@@ -322,7 +323,7 @@ namespace SteamTrade
             bool success = RetryWebRequest(() => session.RemoveItemWebCmd(itemid, slot.Value, appid, contextid));
 
             if(success)
-                myOfferedItems.Remove (slot.Value);
+                steamMyOfferedItems.Remove (slot.Value);
 
             return success;
         }
@@ -335,7 +336,7 @@ namespace SteamTrade
         /// </returns>
         public bool RemoveItemByDefindex (int defindex)
         {
-            foreach (ulong id in myOfferedItems.Values)
+            foreach (ulong id in steamMyOfferedItems.Values)
             {
                 Inventory.Item item = MyInventory.GetItem (id);
                 if (item != null && item.Defindex == defindex)
@@ -360,7 +361,7 @@ namespace SteamTrade
 
             foreach (Inventory.Item item in items)
             {
-                if (item != null && myOfferedItems.ContainsValue (item.Id))
+                if (item != null && steamMyOfferedItems.ContainsValue (item.Id))
                 {
                     bool success = RemoveItem (item.Id);
 
@@ -383,7 +384,7 @@ namespace SteamTrade
         {
             uint numRemoved = 0;
 
-            foreach(var id in myOfferedItems.Values.ToList())
+            foreach(var id in steamMyOfferedItems.Values.ToList())
             {
                 Inventory.Item item = MyInventory.GetItem(id);
 
@@ -598,8 +599,7 @@ namespace SteamTrade
         private void HandleTradeVersionChange(TradeStatus status)
         {
             CopyNewAssets(OtherOfferedItems, status.them.GetAssets());
-
-            CopyNewAssets(steamMyOfferedItems, status.me.GetAssets());
+            CopyNewAssets(MyOfferedItems, status.me.GetAssets());
         }
 
         private void CopyNewAssets(List<ulong> dest, IEnumerable<TradeUserAssets> assetList)
@@ -748,7 +748,7 @@ namespace SteamTrade
         private int NextTradeSlot()
         {
             int slot = 0;
-            while (myOfferedItems.ContainsKey (slot))
+            while (steamMyOfferedItems.ContainsKey (slot))
             {
                 slot++;
             }
@@ -757,9 +757,9 @@ namespace SteamTrade
 
         private int? GetItemSlot(ulong itemid)
         {
-            foreach (int slot in myOfferedItems.Keys)
+            foreach (int slot in steamMyOfferedItems.Keys)
             {
-                if (myOfferedItems [slot] == itemid)
+                if (steamMyOfferedItems [slot] == itemid)
                 {
                     return slot;
                 }
@@ -769,12 +769,12 @@ namespace SteamTrade
 
         private void ValidateLocalTradeItems ()
         {
-            if (myOfferedItems.Count != steamMyOfferedItems.Count)
+            if (steamMyOfferedItems.Count != MyOfferedItems.Count)
             {
                 throw new TradeException ("Error validating local copy of items in the trade: Count mismatch");
             }
 
-            if (myOfferedItems.Values.Any(id => !steamMyOfferedItems.Contains(id)))
+            if (steamMyOfferedItems.Values.Any(id => !MyOfferedItems.Contains(id)))
             {
                 throw new TradeException ("Error validating local copy of items in the trade: Item was not in the Steam Copy.");
             }

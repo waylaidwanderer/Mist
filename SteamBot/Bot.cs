@@ -77,6 +77,7 @@ namespace SteamBot
 
         TradeManager tradeManager;
         private Task<Inventory> myInventoryTask;
+        private Dictionary<SteamID, Task<Inventory>> otherInventoryTask = new Dictionary<SteamID,Task<Inventory>>();
 
         public Inventory MyInventory
         {
@@ -87,14 +88,18 @@ namespace SteamBot
             }
         }
 
+        public Inventory OtherInventory(SteamID OtherSID)
+        {
+            otherInventoryTask[OtherSID].Wait();
+            return otherInventoryTask[OtherSID].Result;
+        }
+
         public string MyLoginKey;
 
         bool hasrun = false;
         public bool otherAccepted = false;
         public static string displayName = "[unknown]";
         public Login main;
-
-        public Inventory OtherInventory;
 
         Friends showFriends;
 
@@ -406,6 +411,21 @@ namespace SteamBot
                     main.Invoke((Action)(() =>
                     {
                         main.label_status.Text = "Schema downloaded!";
+                    }));
+                }
+
+                if (BackpackTF.CurrentSchema == null)
+                {
+                    log.Info("Fetching backpack.tf pricelist...");
+                    main.Invoke((Action)(() =>
+                    {
+                        main.label_status.Text = "Fetching backpack.tf pricelist...";
+                    }));
+                    BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
+                    log.Success("Pricelist loaded!");
+                    main.Invoke((Action)(() =>
+                    {
+                        main.label_status.Text = "Pricelist loaded!";
                     }));
                 }
 
@@ -913,7 +933,7 @@ namespace SteamBot
         /// <example> This sample shows how to find items in the other user's inventory from a user handler.
         /// <code>
         /// Bot.GetOtherInventory(OtherSID); // Get the inventory first
-        /// foreach (var item in Bot.OtherInventory.Items)
+        /// foreach (var item in Bot.OtherInventory(OtherSID).Items)
         /// {
         ///     if (item.Defindex == 5021)
         ///     {
@@ -924,7 +944,7 @@ namespace SteamBot
         /// </example>
         public void GetOtherInventory(SteamID OtherSID)
         {
-            OtherInventory = Inventory.FetchInventory(OtherSID, apiKey);
+            otherInventoryTask[OtherSID] = Task.Factory.StartNew(() => Inventory.FetchInventory(OtherSID, apiKey));
         }
 
         /// <summary>
