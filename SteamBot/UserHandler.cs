@@ -12,11 +12,18 @@ namespace SteamBot
     {
         protected Bot Bot;
         protected SteamID OtherSID;
+        protected Inventory OtherInventory;
 
         public UserHandler(Bot bot, SteamID sid)
         {
             Bot = bot;
             OtherSID = sid;
+            OtherInventory = GetInventory(sid);
+        }
+
+        public Inventory GetInventory(SteamID sid)
+        {
+            return Inventory.FetchInventory(sid.ConvertToUInt64(), Bot.apiKey);
         }
 
         /// <summary>

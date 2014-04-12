@@ -96,8 +96,17 @@ namespace SteamTrade
         [JsonProperty("items")]
         public Item[] Items { get; set; }
 
+        [JsonProperty("qualities")]
+        public Dictionary<string, int> Qualities { get; set; }
+
+        [JsonProperty("qualityNames")]
+        public Dictionary<string, string> QualityNames { get; set; }
+
         [JsonProperty("originNames")]
         public ItemOrigin[] OriginNames { get; set; }
+
+        [JsonProperty("attribute_controlled_attached_particles")]
+        public AttachedParticle[] AttachedParticles { get; set; }
 
         /// <summary>
         /// Find an SchemaItem by it's defindex.
@@ -170,6 +179,15 @@ namespace SteamTrade
 
             [JsonProperty("image_url")]
             public string ImageURL { get; set; }
+        }
+
+        public class AttachedParticle
+        {
+            [JsonProperty("id")]
+            public int Defindex { get; set; }
+
+            [JsonProperty("name")]
+            public string Name { get; set; }
         }
 
         protected class SchemaResult

@@ -59,7 +59,7 @@ namespace SteamBot
         private readonly List<SteamID> groups = new List<SteamID>();
 
         // The Steam Web API key.
-        string apiKey;
+        public string apiKey;
 
         // The prefix put in the front of the bot's display name.
         //string DisplayNamePrefix;
@@ -577,8 +577,7 @@ namespace SteamBot
                     GetUserHandler(callback.Sender).SetChatStatus("");
                 }
 
-                if (callback.EntryType == EChatEntryType.ChatMsg ||
-                    callback.EntryType == EChatEntryType.Emote)
+                if (callback.EntryType == EChatEntryType.ChatMsg)
                 {
                     //log.Info (String.Format ("Chat Message from {0}: {1}",
                     //                     SteamFriends.GetFriendPersonaName (callback.Sender),

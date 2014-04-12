@@ -525,7 +525,7 @@ namespace MistClient
                     if (!item.IsNotTradeable)
                     {
                         var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(item.Defindex);
-                        var itemName = GetItemName(currentItem, item);
+                        var itemName = Util.GetItemName(currentItem, item);
                         string itemValue = Util.GetPrice(item.Defindex, currentItem.ItemQuality, item);
                         double value = 0;
                         if (itemValue.Contains("ref"))
@@ -616,7 +616,6 @@ namespace MistClient
                             }
                             else
                             {
-                                //text_log.SelectionColor = ColorTranslator.FromHtml("#FFD700");
                                 text_log.SelectionColor = Color.DarkGoldenrod;
                                 text_log.AppendText(itemName);
                                 text_log.SelectionColor = prevColor;
@@ -641,86 +640,6 @@ namespace MistClient
             {
                 return;
             }
-        }
-
-        string GetItemName(SteamTrade.Schema.Item schemaItem, SteamTrade.Inventory.Item inventoryItem, bool id = false)
-        {
-            var currentItem = SteamTrade.Trade.CurrentSchema.GetItem(schemaItem.Defindex);
-            string name = "";
-            var type = Convert.ToInt32(inventoryItem.Quality.ToString());
-            if (QualityToName(type) != "Unique")
-                name += QualityToName(type) + " ";
-            name += currentItem.ItemName;
-
-            if (currentItem.CraftMaterialType == "supply_crate")
-            {
-                for (int count = 0; count < inventoryItem.Attributes.Length; count++)
-                {
-                    if (inventoryItem.Attributes[count].Defindex == 187)
-                    {
-                        name += " #" + (inventoryItem.Attributes[count].FloatValue);
-                    }  
-                }
-            }
-            name += " (Level " + inventoryItem.Level + ")";
-            try
-            {
-                int size = inventoryItem.Attributes.Length;
-                for (int count = 0; count < size; count++)
-                {
-                    if (inventoryItem.Attributes[count].Defindex == 186)
-                    {
-                        name += " (Gifted)";
-                    }
-                }
-            }
-            catch
-            {
-                // Item has no attributes... or something.
-            }
-            if (inventoryItem.IsNotCraftable)
-                name += " (Uncraftable)";
-            if (currentItem.Name == "Wrapped Gift")
-            {
-                // Untested!
-                try
-                {
-                    int size = inventoryItem.Attributes.Length;
-                    for (int count = 0; count < size; count++)
-                    {
-                        var containedItem = SteamTrade.Trade.CurrentSchema.GetItem(inventoryItem.ContainedItem.Defindex);
-                        name += " (Contains: " + containedItem.ItemName + ")";
-                    }
-                }
-                catch
-                {
-                    // Item has no attributes... or something.
-                }
-            }
-            if (id)
-                name += " :" + inventoryItem.Id;
-            return name;
-        }
-
-        string QualityToName(int quality)
-        {
-            if (quality == 1)
-                return "Genuine";
-            if (quality == 3)
-                return "Vintage";
-            if (quality == 5)
-                return "Unusual";
-            if (quality == 6)
-                return "Unique";
-            if (quality == 7)
-                return "Community";
-            if (quality == 9)
-                return "Self-Made";
-            if (quality == 11)
-                return "Strange";
-            if (quality == 13)
-                return "Haunted";
-            return "";
         }
 
         private void list_userofferings_ItemActivate(object sender, EventArgs e)
