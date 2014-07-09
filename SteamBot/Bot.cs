@@ -10,12 +10,13 @@ using System.Security.Cryptography;
 using System.ComponentModel;
 using System.Windows.Forms;
 using MistClient;
-using BrightIdeasSoftware;
+
 using SteamKit2;
 using SteamTrade;
 using System.Media;
 using ToastNotifications;
 using SteamKit2.Internal;
+using SteamBot.SteamGroups;
 
 namespace SteamBot
 {
@@ -26,10 +27,6 @@ namespace SteamBot
         // when it is.
         public bool IsLoggedIn = false;
 
-        // The bot's display name.  Changing this does not mean that
-        // the bot's name will change.
-        public string DisplayName { get; private set; }
-
         // The response to all chat messages sent to it.
         public string ChatResponse;
 
@@ -39,7 +36,8 @@ namespace SteamBot
         public SteamClient SteamClient;
         public SteamTrading SteamTrade;
         public SteamUser SteamUser;
-
+        public SteamGameCoordinator SteamGameCoordinator;
+        public ClientPlayerNicknameListHandler SteamNicknames;
         // The current trade; if the bot is not in a trade, this is
         // null.
         public Trade CurrentTrade;
@@ -70,40 +68,26 @@ namespace SteamBot
         // The number, in milliseconds, between polls for the trade.
         int TradePollingInterval;
 
-        string sessionId;
-        string token;
+        public string sessionId;
+        public string token;
 
         SteamUser.LogOnDetails logOnDetails;
 
         TradeManager tradeManager;
-        private Task<Inventory> myInventoryTask;
-        private Dictionary<SteamID, Task<Inventory>> otherInventoryTask = new Dictionary<SteamID,Task<Inventory>>();
-
-        public Inventory MyInventory
-        {
-            get
-            {
-                myInventoryTask.Wait();
-                return myInventoryTask.Result;
-            }
-        }
-
-        public Inventory OtherInventory(SteamID OtherSID)
-        {
-            otherInventoryTask[OtherSID].Wait();
-            return otherInventoryTask[OtherSID].Result;
-        }
+        public CookieContainer botCookies;
 
         public string MyLoginKey;
 
         bool hasrun = false;
         public bool otherAccepted = false;
-        public static string displayName = "[unknown]";
+        public static string DisplayName = "[unknown]";
         public Login main;
 
         Friends showFriends;
 
         public static string MachineAuthData;
+
+        Dictionary<ulong, string> PlayerNicknames = new Dictionary<ulong, string>();
 
         public Bot(Configuration.BotInfo config, Log log, string apiKey, UserHandlerCreator handlerCreator, Login _login, bool debug = false)
         {
@@ -114,9 +98,9 @@ namespace SteamBot
                 Password = _login.Password
             };
             ChatResponse = "";
-            TradePollingInterval = 50;
+            TradePollingInterval = 500;
             Admins = new ulong[1];
-            Admins[0] = 123456789;
+            Admins[0] = 0;
             this.apiKey = apiKey;
             try
             {
@@ -140,9 +124,12 @@ namespace SteamBot
                 main.label_status.Text = "Initializing Steam account...";
             }));
             SteamClient = new SteamClient();
+            SteamClient.AddHandler(new ClientPlayerNicknameListHandler());
             SteamTrade = SteamClient.GetHandler<SteamTrading>();
             SteamUser = SteamClient.GetHandler<SteamUser>();
             SteamFriends = SteamClient.GetHandler<SteamFriends>();
+            SteamGameCoordinator = SteamClient.GetHandler<SteamGameCoordinator>();
+            SteamNicknames = SteamClient.GetHandler<ClientPlayerNicknameListHandler>();     
             log.Info ("Connecting...");
             main.Invoke((Action)(() =>
             {
@@ -154,9 +141,9 @@ namespace SteamBot
             {
                 while (true)
                 {
-                    CallbackMsg msg = SteamClient.WaitForCallback (true);
+                    CallbackMsg msg = SteamClient.WaitForCallback(true);
 
-                    HandleSteamMessage (msg);
+                    HandleSteamMessage(msg);
                 }
             }); 
             
@@ -226,27 +213,8 @@ namespace SteamBot
                 tradeManager.StartTradeThread(CurrentTrade);
                 return true;
             }
-            catch (SteamTrade.Exceptions.InventoryFetchException ie)
+            catch (SteamTrade.Exceptions.InventoryFetchException)
             {
-                // we shouldn't get here because the inv checks are also
-                // done in the TradeProposedCallback handler.
-                string response = String.Empty;
-                
-                if (ie.FailingSteamId.ConvertToUInt64() == other.ConvertToUInt64())
-                {
-                    response = "Trade failed. Could not correctly fetch your backpack. Either the inventory is inaccessible or your backpack is private.";
-                }
-                else 
-                {
-                    response = "Trade failed. Could not correctly fetch my backpack.";
-                }
-                
-                SteamFriends.SendChatMessage(other, 
-                                             EChatEntryType.ChatMsg,
-                                             response);
-
-                log.Info ("Bot sent other: " + response);
-                
                 CurrentTrade = null;
                 return false;
             }
@@ -255,6 +223,20 @@ namespace SteamBot
         void HandleSteamMessage (CallbackMsg msg)
         {
             log.Debug(msg.ToString());
+            msg.Handle<SteamGameCoordinator.MessageCallback>(callback =>
+            {
+                Console.WriteLine("Got to here!");
+                Console.WriteLine(callback.EMsg);
+            });
+
+            msg.Handle<ClientPlayerNicknameListHandler.ClientPlayerNicknameListCallback>(callback =>
+            {
+                foreach (var player in callback.Nicknames)
+                {
+                    PlayerNicknames.Add(player.steamid, player.nickname);
+                    //Console.WriteLine("{0}={1}", player.steamid, player.nickname);
+                }
+            });
 
             #region Login
             msg.Handle<SteamClient.ConnectedCallback> (callback =>
@@ -302,7 +284,7 @@ namespace SteamBot
                 
                 if (callback.Result == EResult.InvalidPassword)
                 {
-                    MessageBox.Show("Your password is incorrect. Please try again.",
+                    MetroFramework.MetroMessageBox.Show(main, "Your password is incorrect. Please try again.",
                                     "Invalid Password",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error,
@@ -339,13 +321,16 @@ namespace SteamBot
 
             msg.Handle<SteamUser.LoginKeyCallback> (callback =>
             {
-                log.Debug("Handling LoginKeyCallback...");
-
+                log.Debug("Handling LoginKeyCallback...");                
                 while (true)
                 {
                     try
                     {
                         log.Info("About to authenticate...");
+                        main.Invoke((Action)(() =>
+                        {
+                            main.label_status.Text = "Authenticating...";
+                        }));
                         bool authd = false;
                         try
                         {
@@ -357,7 +342,7 @@ namespace SteamBot
                         }
                         if (authd)
                         {
-                            log.Success("User Authenticated!");
+                            log.Success("User authenticated!");
                             main.Invoke((Action)(() =>
                             {
                                 main.label_status.Text = "User authenticated!";
@@ -365,7 +350,6 @@ namespace SteamBot
                             tradeManager = new TradeManager(apiKey, sessionId, token);
                             tradeManager.SetTradeTimeLimits(0, 0, TradePollingInterval);
                             tradeManager.OnTimeout += OnTradeTimeout;
-                            //tradeManager.OnTradeEnded += OnTradeEnded;
                             break;
                         }
                         else
@@ -382,67 +366,21 @@ namespace SteamBot
                     {
                         log.Error(ex.ToString());
                     }
-                }
-
-                if (Trade.CurrentSchema == null)
-                {
-                    log.Info ("Downloading Schema...");
-                    main.Invoke((Action)(() =>
-                    {
-                        main.label_status.Text = "Downloading schema...";
-                    }));
-                    try
-                    {
-                        Trade.CurrentSchema = Schema.FetchSchema(apiKey);
-                    }
-                    catch (Exception ex)
-                    {
-                        log.Error(ex.ToString());
-                        MessageBox.Show("I can't fetch the schema! Your API key may be invalid or there may be a problem connecting to Steam. Please make sure you have obtained a proper API key at http://steamcommunity.com/dev/apikey",
-                                    "Schema Error",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error,
-                                    MessageBoxDefaultButton.Button1);
-                        main.wrongAPI = true;
-                        main.Invoke((Action)(main.Dispose));
-                        return;
-                    }
-                    log.Success ("Schema Downloaded!");
-                    main.Invoke((Action)(() =>
-                    {
-                        main.label_status.Text = "Schema downloaded!";
-                    }));
-                }
-
-                if (BackpackTF.CurrentSchema == null)
-                {
-                    log.Info("Fetching backpack.tf pricelist...");
-                    main.Invoke((Action)(() =>
-                    {
-                        main.label_status.Text = "Fetching backpack.tf pricelist...";
-                    }));
-                    BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
-                    log.Success("Pricelist loaded!");
-                    main.Invoke((Action)(() =>
-                    {
-                        main.label_status.Text = "Pricelist loaded!";
-                    }));
-                }
+                }                
 
                 SteamFriends.SetPersonaName (SteamFriends.GetFriendPersonaName(SteamUser.SteamID));
                 SteamFriends.SetPersonaState (EPersonaState.Online);
-
                 log.Success ("Account Logged In Completely!");
                 main.Invoke((Action)(() =>
                 {
                     main.label_status.Text = "Logged in completely!";
-                }));
+                }));                
+                botCookies = new CookieContainer();
+                botCookies.SetCookies(new Uri("http://steamcommunity.com"), string.Format("steamLogin={0}", token));
+                botCookies.SetCookies(new Uri("http://steamcommunity.com"), string.Format("sessionid={0}", sessionId));
+                GenericInventory.SetCookie(botCookies, SteamUser.SteamID);
 
-                IsLoggedIn = true;
-                displayName = SteamFriends.GetPersonaName();
-                //ConnectToGC(13540830642081628378);
-                Thread.Sleep(500);
-                DisconnectFromGC();
+                IsLoggedIn = true;                
                 try
                 {
                     main.Invoke((Action)(main.Hide));
@@ -450,9 +388,35 @@ namespace SteamBot
                 catch (Exception)
                 {
                     Environment.Exit(1);
-                }
-                Thread.Sleep(2500);
-                CDNCache.Initialize();
+                }                
+
+                new Thread(() =>
+                {                    
+                    CDNCache.Initialize();
+                    ConnectToGC(13540830642081628378);
+                    System.Threading.Thread.Sleep(2000);
+                    ConnectToGC(0);
+                    while (true)
+                    {
+                        if (showFriends != null)
+                        {
+                            var numFriendsDisplayed = showFriends.GetNumFriendsDisplayed();
+                            var numSteamFriendCount = SteamFriends.GetFriendCount();
+                            if (numFriendsDisplayed != -1 && numFriendsDisplayed != numSteamFriendCount)
+                            {
+                                LoadFriends();
+                                showFriends.UpdateFriendsHTML();
+                            }
+                            else if (numSteamFriendCount != ListFriends.Get().Count)
+                            {
+                                LoadFriends();
+                                showFriends.UpdateFriendsHTML();                           
+                            }
+                            System.Threading.Thread.Sleep(10000);
+                        }
+                        
+                    }
+                }).Start();
             });
 
             // handle a special JobCallback differently than the others
@@ -464,94 +428,91 @@ namespace SteamBot
             }
             #endregion
 
+            msg.Handle<SteamUser.AccountInfoCallback>(callback =>
+            {
+                DisplayName = callback.PersonaName;
+            });
+
             #region Friends
             msg.Handle<SteamFriends.FriendsListCallback>(callback =>
             {
-                bool newFriend = false;
                 foreach (SteamFriends.FriendsListCallback.Friend friend in callback.FriendList)
                 {
-                    if (!friends.Contains(friend.SteamID) && !friend.SteamID.ToString().StartsWith("1"))
+                    if (friend.SteamID.AccountType == EAccountType.Clan)
                     {
-                        new Thread(() =>
-                        {
-                            main.Invoke((Action)(() =>
-                            {
-                                if (showFriends == null && friend.Relationship == EFriendRelationship.RequestRecipient)
-                                {
-                                    log.Info(SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
-                                    friends.Add(friend.SteamID);
-                                    newFriend = true;
-                                    string name = SteamFriends.GetFriendPersonaName(friend.SteamID);
-                                    string status = SteamFriends.GetFriendPersonaState(friend.SteamID).ToString();
-                                    if (!ListFriendRequests.Find(friend.SteamID))
-                                    {
-                                        ListFriendRequests.Add(name, friend.SteamID, status);
-                                    }
-                                }
-                                if (showFriends != null && friend.Relationship == EFriendRelationship.RequestRecipient)
-                                {
-                                    log.Info(SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
-                                    friends.Add(friend.SteamID);
-                                    /*if (friend.Relationship == EFriendRelationship.RequestRecipient &&
-                                        GetUserHandler(friend.SteamID).OnFriendAdd())
-                                    {
-                                        SteamFriends.AddFriend(friend.SteamID);
-                                    }*/
-                                    newFriend = true;
-                                    string name = SteamFriends.GetFriendPersonaName(friend.SteamID);
-                                    string status = SteamFriends.GetFriendPersonaState(friend.SteamID).ToString();
-                                    if (!ListFriendRequests.Find(friend.SteamID))
-                                    {
-                                        try
-                                        {
-                                            showFriends.NotifyFriendRequest();
-                                            ListFriendRequests.Add(name, friend.SteamID, status);
-                                            log.Info("Notifying you that " + SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
-                                            int duration = 5;
-                                            FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
-                                            FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
-                                            Notification toastNotification = new Notification(name, "has sent you a friend request.", duration, animationMethod, animationDirection);
-                                            toastNotification.Show();
-                                            try
-                                            {
-                                                string soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
-                                                string soundFile = Path.Combine(soundsFolder + "trade_message.wav");
-                                                using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile))
-                                                {
-                                                    player.Play();
-                                                }
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                Console.WriteLine(e.Message);
-                                            }
-                                            showFriends.list_friendreq.SetObjects(ListFriendRequests.Get());
-                                        }
-                                        catch
-                                        {
-                                            Console.WriteLine("Friends list hasn't loaded yet...");
-                                        }
-                                    }
-                                }
-                            }));
-                        }).Start();
+
                     }
                     else
                     {
-                        if (friend.Relationship == EFriendRelationship.None)
+                        if (!friends.Contains(friend.SteamID))
                         {
-                            friends.Remove(friend.SteamID);
-                            GetUserHandler(friend.SteamID).OnFriendRemove();
+                            new Thread(() =>
+                            {
+                                main.Invoke((Action)(() =>
+                                {
+                                    if (showFriends == null && friend.Relationship == EFriendRelationship.RequestRecipient)
+                                    {
+                                        log.Info(SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
+                                        friends.Add(friend.SteamID);
+                                        string name = SteamFriends.GetFriendPersonaName(friend.SteamID);
+                                        string status = SteamFriends.GetFriendPersonaState(friend.SteamID).ToString();
+                                        if (!ListFriendRequests.Find(friend.SteamID))
+                                        {
+                                            ListFriendRequests.Add(name, friend.SteamID, status);
+                                        }
+                                    }
+                                    if (showFriends != null && friend.Relationship == EFriendRelationship.RequestRecipient)
+                                    {
+                                        log.Info(SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
+                                        friends.Add(friend.SteamID);
+                                        string name = SteamFriends.GetFriendPersonaName(friend.SteamID);
+                                        string status = SteamFriends.GetFriendPersonaState(friend.SteamID).ToString();
+                                        if (!ListFriendRequests.Find(friend.SteamID))
+                                        {
+                                            try
+                                            {
+                                                ListFriendRequests.Add(name, friend.SteamID, status);                                              
+                                                log.Info("Notifying you that " + SteamFriends.GetFriendPersonaName(friend.SteamID) + " has added you.");
+                                                int duration = 5;
+                                                FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
+                                                FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
+                                                Notification toastNotification = new Notification(name, Util.GetColorFromPersonaState(this, friend.SteamID), "has sent you a friend request.", duration, animationMethod, animationDirection);
+                                                toastNotification.Show();
+                                                try
+                                                {
+                                                    string soundsFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
+                                                    string soundFile = Path.Combine(soundsFolder + "trade_message.wav");
+                                                    using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundFile))
+                                                    {
+                                                        player.Play();
+                                                    }
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    Console.WriteLine(e.Message);
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                Console.WriteLine("Friends list hasn't loaded yet...");
+                                            }
+                                        }
+                                    }
+                                }));
+                            }).Start();
                         }
-                    }
+                        else
+                        {
+                            if (friend.Relationship == EFriendRelationship.None)
+                            {
+                                friends.Remove(friend.SteamID);
+                                GetUserHandler(friend.SteamID).OnFriendRemove();
+                                RemoveUserHandler(friend.SteamID);
+                            }
+                        }
+                    }                    
                 }
-                if (!newFriend && ListFriendRequests.Get().Count == 0)
-                {
-                    if (showFriends != null)
-                    {
-                        showFriends.HideFriendRequests();
-                    }
-                }
+                LoadFriends();
             });
 
             msg.Handle<SteamFriends.PersonaStateCallback>(callback =>
@@ -560,6 +521,11 @@ namespace SteamBot
                 var sid = callback.FriendID;
                 GetUserHandler(sid).SetStatus(status);
                 ListFriends.UpdateStatus(sid, status.ToString());
+                if (showFriends != null)
+                {
+                    showFriends.UpdateState();
+                    showFriends.UpdateFriendHTML(sid);
+                }                                  
             });
 
 
@@ -610,21 +576,8 @@ namespace SteamBot
                 {
                     tradeManager.InitializeTrade(SteamUser.SteamID, callback.OtherClient);
                 }
-                catch (WebException we)
+                catch
                 {
-                    SteamFriends.SendChatMessage(callback.OtherClient,
-                             EChatEntryType.ChatMsg,
-                             "Trade error: " + we.Message);
-
-                    SteamTrade.RespondToTrade(callback.TradeID, false);
-                    return;
-                }
-                catch (Exception)
-                {
-                    SteamFriends.SendChatMessage(callback.OtherClient,
-                             EChatEntryType.ChatMsg,
-                             "Trade declined. Could not correctly fetch your backpack.");
-
                     SteamTrade.RespondToTrade(callback.TradeID, false);
                     return;
                 }
@@ -725,27 +678,26 @@ namespace SteamBot
         {
             main.Invoke(new MethodInvoker(delegate()
             {
-                showFriends = new Friends(this, Bot.displayName);
+                showFriends = new Friends(this, Bot.DisplayName);
                 showFriends.Show();
                 showFriends.Activate();
-                LoadFriends();
-                showFriends.friends_list.SetObjects(ListFriends.Get(MistClient.Properties.Settings.Default.OnlineOnly));                
-            }));            
+                LoadFriends();            
+            }));
         }
 
         public void LoadFriends()
-        {
+        {            
             ListFriends.Clear();
             Console.WriteLine("Loading all friends...");
             for (int count = 0; count < SteamFriends.GetFriendCount(); count++)
-            {
+            {                
                 var friendID = SteamFriends.GetFriendByIndex(count);
                 var friendName = SteamFriends.GetFriendPersonaName(friendID);
+                var friendNickname = PlayerNicknames.ContainsKey(friendID) ? "(" + PlayerNicknames[friendID] + ")" : "";
                 var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
                 if (friendState.ToString() != "Offline" && SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
                 {
-                    string friend_name = friendName + " (" + friendID + ")" + Environment.NewLine + friendState;
-                    ListFriends.Add(friendName, friendID, friendState);
+                    ListFriends.Add(friendName, friendID, friendNickname, friendState);
                 }
                 Thread.Sleep(25);
             }
@@ -753,14 +705,14 @@ namespace SteamBot
             {
                 var friendID = SteamFriends.GetFriendByIndex(count);
                 var friendName = SteamFriends.GetFriendPersonaName(friendID);
+                var friendNickname = PlayerNicknames.ContainsKey(friendID) ? "(" + PlayerNicknames[friendID] + ")" : "";
                 var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
                 if (friendState.ToString() == "Offline" && SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
                 {
-                    ListFriends.Add(friendName, friendID, friendState);
+                    ListFriends.Add(friendName, friendID, friendNickname, friendState);
                 }
                 Thread.Sleep(25);
             }
-            bool newFriend = true;
             foreach (var item in ListFriends.Get())
             {
                 if (ListFriendRequests.Find(item.SID))
@@ -768,7 +720,6 @@ namespace SteamBot
                     Console.WriteLine("Found friend {0} in list of friend requests, so let's remove the user.", item.Name);
                     // Not a friend request, so let's remove it
                     ListFriendRequests.Remove(item.SID);
-                    newFriend = false;
                 }
             }
             foreach (var item in ListFriendRequests.Get())
@@ -786,13 +737,7 @@ namespace SteamBot
                     ListFriendRequests.Add(name, item.SteamID);
                 }
             }
-            if (newFriend && ListFriendRequests.Get().Count != 0)
-            {
-                Console.WriteLine("Notifying about new friend request.");
-                showFriends.NotifyFriendRequest();
-                showFriends.list_friendreq.SetObjects(ListFriendRequests.Get());
-            }
-            Console.WriteLine("Done!");
+            Console.WriteLine("Done! {0} friends.", ListFriends.Get().Count);
         }
 
         public void NewChat(SteamID sid)
@@ -816,8 +761,8 @@ namespace SteamBot
             var game = new CMsgClientGamesPlayed.GamePlayed
             {
                 game_id = new GameID(appId),
-                game_extra_info = "Mist - Portable Steam Client",
-            };
+                game_extra_info = "Mist - Portable Steam Client",                
+            };            
 
             playMsg.Body.games_played.Add(game);
             SteamClient.Send(playMsg);
@@ -840,7 +785,7 @@ namespace SteamBot
         {
             // get sentry file which has the machine hw info saved 
             // from when a steam guard code was entered
-            FileInfo fi = new FileInfo(String.Format("{0}.sentryfile", logOnDetails.Username));
+            FileInfo fi = new FileInfo(String.Format("{0}/sentryfiles/{1}.sentryfile", Application.StartupPath, logOnDetails.Username));
 
             if (fi.Exists && fi.Length > 0)
                 logOnDetails.SentryFileHash = SHAHash(File.ReadAllBytes(fi.FullName));
@@ -857,6 +802,14 @@ namespace SteamBot
                 userHandlers [sid.ConvertToUInt64 ()] = CreateHandler (this, sid);
             }
             return userHandlers [sid.ConvertToUInt64 ()];
+        }
+
+        void RemoveUserHandler(SteamID sid)
+        {
+            if (userHandlers.ContainsKey(sid))
+            {
+                userHandlers.Remove(sid);
+            }
         }
 
         static byte [] SHAHash (byte[] input)
@@ -882,7 +835,8 @@ namespace SteamBot
 
             MachineAuthData = sb.ToString();
 
-            File.WriteAllBytes (String.Format ("{0}.sentryfile", logOnDetails.Username), machineAuth.Data);
+            Directory.CreateDirectory(Application.StartupPath + "/sentryfiles/");
+            File.WriteAllBytes (String.Format ("{0}/sentryfiles/{1}.sentryfile", Application.StartupPath, logOnDetails.Username), machineAuth.Data);
             
             var authResponse = new SteamUser.MachineAuthDetails
             {
@@ -903,47 +857,6 @@ namespace SteamBot
             
             // send off our response
             SteamUser.SendMachineAuthResponse (authResponse);
-        }
-
-        /// <summary>
-        /// Gets the bot's inventory and stores it in MyInventory.
-        /// </summary>
-        /// <example> This sample shows how to find items in the bot's inventory from a user handler.
-        /// <code>
-        /// Bot.GetInventory(); // Get the inventory first
-        /// foreach (var item in Bot.MyInventory.Items)
-        /// {
-        ///     if (item.Defindex == 5021)
-        ///     {
-        ///         // Bot has a key in its inventory
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public void GetInventory()
-        {
-            myInventoryTask = Task.Factory.StartNew(() => Inventory.FetchInventory(SteamUser.SteamID, apiKey)); 
-        }
-
-        /// <summary>
-        /// Gets the other user's inventory and stores it in OtherInventory.
-        /// </summary>
-        /// <param name="OtherSID">The SteamID of the other user</param>
-        /// <example> This sample shows how to find items in the other user's inventory from a user handler.
-        /// <code>
-        /// Bot.GetOtherInventory(OtherSID); // Get the inventory first
-        /// foreach (var item in Bot.OtherInventory(OtherSID).Items)
-        /// {
-        ///     if (item.Defindex == 5021)
-        ///     {
-        ///         // User has a key in its inventory
-        ///     }
-        /// }
-        /// </code>
-        /// </example>
-        public void GetOtherInventory(SteamID OtherSID)
-        {
-            otherInventoryTask[OtherSID] = Task.Factory.StartNew(() => Inventory.FetchInventory(OtherSID, apiKey));
         }
 
         /// <summary>
@@ -979,5 +892,53 @@ namespace SteamBot
             trade.OnUserSetReady -= handler.OnTradeReadyHandler;
             trade.OnUserAccept -= handler.OnTradeAcceptHandler;
         }
+
+        #region Group Methods
+
+        /// <summary>
+        /// Accepts the invite to a Steam Group
+        /// </summary>
+        /// <param name="group">SteamID of the group to accept the invite from.</param>
+        private void AcceptGroupInvite(SteamID group)
+        {
+            var AcceptInvite = new ClientMsg<CMsgGroupInviteAction>((int)EMsg.ClientAcknowledgeClanInvite);
+
+            AcceptInvite.Body.GroupID = group.ConvertToUInt64();
+            AcceptInvite.Body.AcceptInvite = true;
+
+            this.SteamClient.Send(AcceptInvite);
+
+        }
+
+        /// <summary>
+        /// Declines the invite to a Steam Group
+        /// </summary>
+        /// <param name="group">SteamID of the group to decline the invite from.</param>
+        private void DeclineGroupInvite(SteamID group)
+        {
+            var DeclineInvite = new ClientMsg<CMsgGroupInviteAction>((int)EMsg.ClientAcknowledgeClanInvite);
+
+            DeclineInvite.Body.GroupID = group.ConvertToUInt64();
+            DeclineInvite.Body.AcceptInvite = false;
+
+            this.SteamClient.Send(DeclineInvite);
+        }
+
+        /// <summary>
+        /// Invites a use to the specified Steam Group
+        /// </summary>
+        /// <param name="user">SteamID of the user to invite.</param>
+        /// <param name="groupId">SteamID of the group to invite the user to.</param>
+        public void InviteUserToGroup(SteamID user, SteamID groupId)
+        {
+            var InviteUser = new ClientMsg<CMsgInviteUserToGroup>((int)EMsg.ClientInviteUserToClan);
+
+            InviteUser.Body.GroupID = groupId.ConvertToUInt64();
+            InviteUser.Body.Invitee = user.ConvertToUInt64();
+            InviteUser.Body.UnknownInfo = true;
+
+            this.SteamClient.Send(InviteUser);
+        }
+        #endregion
     }
 }

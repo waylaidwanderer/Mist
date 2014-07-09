@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MetroFramework - Modern UI for WinForms
  * 
  * The MIT License (MIT)
@@ -22,11 +22,19 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+// Based on original work by 
+// (c) Mick Doherty / Oscar Londono
+// http://dotnetrix.co.uk/tabcontrol.htm
+// http://www.pcreview.co.uk/forums/adding-custom-tabpages-design-time-t2904262.html
+// http://www.codeproject.com/Articles/12185/A-NET-Flat-TabControl-CustomDraw
+// http://www.codeproject.com/Articles/278/Fully-owner-drawn-tab-control
+
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Design;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -38,7 +46,6 @@ using MetroFramework.Native;
 
 namespace MetroFramework.Controls
 {
-
     #region MetroTabPageCollection
 
     [ToolboxItem(false)]
@@ -51,34 +58,88 @@ namespace MetroFramework.Controls
 
     #endregion
 
-    [Designer("MetroFramework.Design.MetroTabControlDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    [Designer("MetroFramework.Design.Controls.MetroTabControlDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(TabControl))]
     public class MetroTabControl : TabControl, IMetroControl
     {
         #region Interface
 
-        private MetroColorStyle metroStyle = MetroColorStyle.Blue;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public event EventHandler<MetroPaintEventArgs> CustomPaintBackground;
+        protected virtual void OnCustomPaintBackground(MetroPaintEventArgs e)
+        {
+            if (GetStyle(ControlStyles.UserPaint) && CustomPaintBackground != null)
+            {
+                CustomPaintBackground(this, e);
+            }
+        }
+
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public event EventHandler<MetroPaintEventArgs> CustomPaint;
+        protected virtual void OnCustomPaint(MetroPaintEventArgs e)
+        {
+            if (GetStyle(ControlStyles.UserPaint) && CustomPaint != null)
+            {
+                CustomPaint(this, e);
+            }
+        }
+
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
+        protected virtual void OnCustomPaintForeground(MetroPaintEventArgs e)
+        {
+            if (GetStyle(ControlStyles.UserPaint) && CustomPaintForeground != null)
+            {
+                CustomPaintForeground(this, e);
+            }
+        }
+
+        private MetroColorStyle metroStyle = MetroColorStyle.Default;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(MetroColorStyle.Default)]
         public MetroColorStyle Style
         {
             get
             {
-                if (StyleManager != null)
+                if (DesignMode || metroStyle != MetroColorStyle.Default)
+                {
+                    return metroStyle;
+                }
+
+                if (StyleManager != null && metroStyle == MetroColorStyle.Default)
+                {
                     return StyleManager.Style;
+                }
+                if (StyleManager == null && metroStyle == MetroColorStyle.Default)
+                {
+                    return MetroDefaults.Style;
+                }
 
                 return metroStyle;
             }
             set { metroStyle = value; }
         }
 
-        private MetroThemeStyle metroTheme = MetroThemeStyle.Light;
-        [Category("Metro Appearance")]
+        private MetroThemeStyle metroTheme = MetroThemeStyle.Default;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(MetroThemeStyle.Default)]
         public MetroThemeStyle Theme
         {
             get
             {
-                if (StyleManager != null)
+                if (DesignMode || metroTheme != MetroThemeStyle.Default)
+                {
+                    return metroTheme;
+                }
+
+                if (StyleManager != null && metroTheme == MetroThemeStyle.Default)
+                {
                     return StyleManager.Theme;
+                }
+                if (StyleManager == null && metroTheme == MetroThemeStyle.Default)
+                {
+                    return MetroDefaults.Theme;
+                }
 
                 return metroTheme;
             }
@@ -87,10 +148,47 @@ namespace MetroFramework.Controls
 
         private MetroStyleManager metroStyleManager = null;
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public MetroStyleManager StyleManager
         {
             get { return metroStyleManager; }
             set { metroStyleManager = value; }
+        }
+
+        private bool useCustomBackColor = false;
+        [DefaultValue(false)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public bool UseCustomBackColor
+        {
+            get { return useCustomBackColor; }
+            set { useCustomBackColor = value; }
+        }
+
+        private bool useCustomForeColor = false;
+        [DefaultValue(false)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public bool UseCustomForeColor
+        {
+            get { return useCustomForeColor; }
+            set { useCustomForeColor = value; }
+        }
+
+        private bool useStyleColors = false;
+        [DefaultValue(false)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public bool UseStyleColors
+        {
+            get { return useStyleColors; }
+            set { useStyleColors = value; }
+        }
+
+        [Browsable(false)]
+        [Category(MetroDefaults.PropertyCategory.Behaviour)]
+        [DefaultValue(false)]
+        public bool UseSelectable
+        {
+            get { return GetStyle(ControlStyles.Selectable); }
+            set { SetStyle(ControlStyles.Selectable, value); }
         }
 
         #endregion
@@ -101,19 +199,10 @@ namespace MetroFramework.Controls
         private bool bUpDown = false;
 
         private const int TabBottomBorderHeight = 3;
- 
-        private bool useStyleColors = false;
-        [DefaultValue(false)]
-        [Category("Metro Appearance")]
-        public bool UseStyleColors
-        {
-            get { return useStyleColors; }
-            set { useStyleColors = value; }
-        }
 
         private MetroTabControlSize metroLabelSize = MetroTabControlSize.Medium;
         [DefaultValue(MetroTabControlSize.Medium)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroTabControlSize FontSize
         {
             get { return metroLabelSize; }
@@ -122,7 +211,7 @@ namespace MetroFramework.Controls
 
         private MetroTabControlWeight metroLabelWeight = MetroTabControlWeight.Light;
         [DefaultValue(MetroTabControlWeight.Light)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroTabControlWeight FontWeight
         {
             get { return metroLabelWeight; }
@@ -131,7 +220,7 @@ namespace MetroFramework.Controls
 
         private ContentAlignment textAlign = ContentAlignment.MiddleLeft;
         [DefaultValue(ContentAlignment.MiddleLeft)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public ContentAlignment TextAlign
         {
             get
@@ -156,7 +245,7 @@ namespace MetroFramework.Controls
 
         private bool isMirrored;
         [DefaultValue(false)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public new bool IsMirrored
         {
             get
@@ -172,15 +261,6 @@ namespace MetroFramework.Controls
                 isMirrored = value;
                 UpdateStyles();
             }
-        }
-
-        private bool useCustomBackground = false;
-        [DefaultValue(false)]
-        [Category("Metro Appearance")]
-        public bool CustomBackground
-        {
-            get { return useCustomBackground; }
-            set { useCustomBackground = value; }
         }
 
         #endregion
@@ -202,19 +282,53 @@ namespace MetroFramework.Controls
 
         #region Paint Methods
 
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            try
+            {
+                Color backColor = BackColor;
+
+                if (!useCustomBackColor)
+                {
+                    backColor = MetroPaint.BackColor.Form(Theme);
+                }
+
+                if (backColor.A == 255 && BackgroundImage == null)
+                {
+                    e.Graphics.Clear(backColor);
+                    return;
+                }
+
+                base.OnPaintBackground(e);
+
+                OnCustomPaintBackground(new MetroPaintEventArgs(backColor, Color.Empty, e.Graphics));
+            }
+            catch
+            {
+                Invalidate();
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
+            try
+            {
+                if (GetStyle(ControlStyles.AllPaintingInWmPaint))
+                {
+                    OnPaintBackground(e);
+                }
 
-            Color backColor;
+                OnCustomPaint(new MetroPaintEventArgs(Color.Empty, Color.Empty, e.Graphics));
+                OnPaintForeground(e);
+            }
+            catch
+            {
+                Invalidate();
+            }
+        }
 
-            if (useCustomBackground)
-                backColor = BackColor;
-            else
-                backColor = MetroPaint.BackColor.Form(Theme);
-
-            e.Graphics.Clear(backColor);
-
+        protected virtual void OnPaintForeground(PaintEventArgs e)
+        {
             for (var index = 0; index < TabPages.Count; index++)
             {
                 if (index != SelectedIndex)
@@ -230,18 +344,15 @@ namespace MetroFramework.Controls
             DrawTabBottomBorder(SelectedIndex, e.Graphics);
             DrawTab(SelectedIndex, e.Graphics);
             DrawTabSelected(SelectedIndex, e.Graphics);
+
+            OnCustomPaintForeground(new MetroPaintEventArgs(Color.Empty, Color.Empty, e.Graphics));
         }
 
         private void DrawTabBottomBorder(int index, Graphics graphics)
         {
             using (Brush bgBrush = new SolidBrush(MetroPaint.BorderColor.TabControl.Normal(Theme)))
             {
-                //graphics.FillRectangle(bgBrush, -2 + GetTabRect(0).X + DisplayRectangle.X, GetTabRect(index).Bottom + 2 - TabBottomBorderHeight,
-                //                       Width - (Width - DisplayRectangle.Width + DisplayRectangle.X) + 4,
-                //                       TabBottomBorderHeight);
-
                 Rectangle borderRectangle = new Rectangle(DisplayRectangle.X, GetTabRect(index).Bottom + 2 - TabBottomBorderHeight, DisplayRectangle.Width, TabBottomBorderHeight);
-
                 graphics.FillRectangle(bgBrush, borderRectangle);
             }
         }
@@ -251,15 +362,8 @@ namespace MetroFramework.Controls
             using (Brush selectionBrush = new SolidBrush(MetroPaint.GetStyleColor(Style)))
             {
                 Rectangle selectedTabRect = GetTabRect(index);
-                //Size textAreaRect = MeasureText(TabPages[index].Text);
-
-                graphics.FillRectangle(selectionBrush, new Rectangle
-                {
-                    X = -2 + selectedTabRect.X + DisplayRectangle.X,
-                    Y = selectedTabRect.Bottom + 2 - TabBottomBorderHeight,
-                    Width = selectedTabRect.Width + 2,
-                    Height = TabBottomBorderHeight
-                });
+                Rectangle borderRectangle = new Rectangle(selectedTabRect.X + ((index == 0) ? 2 : 0), GetTabRect(index).Bottom + 2 - TabBottomBorderHeight, selectedTabRect.Width + ((index == 0) ? 0 : 2), TabBottomBorderHeight);
+                graphics.FillRectangle(selectionBrush, borderRectangle);
             }
         }
 
@@ -280,7 +384,12 @@ namespace MetroFramework.Controls
         private void DrawTab(int index, Graphics graphics)
         {
             Color foreColor;
-            Color backColor = Parent != null ? Parent.BackColor : MetroPaint.BackColor.Form(Theme);
+            Color backColor = BackColor;
+
+            if (!useCustomBackColor)
+            {
+                backColor = MetroPaint.BackColor.Form(Theme);
+            }
 
             TabPage tabPage = TabPages[index];
             Rectangle tabRect = GetTabRect(index);
@@ -291,7 +400,14 @@ namespace MetroFramework.Controls
             }
             else
             {
-                foreColor = !useStyleColors ? MetroPaint.ForeColor.TabControl.Normal(Theme) : MetroPaint.GetStyleColor(Style);
+                if (useCustomForeColor)
+                {
+                    foreColor = DefaultForeColor;
+                }
+                else
+                {
+                    foreColor = !useStyleColors ? MetroPaint.ForeColor.TabControl.Normal(Theme) : MetroPaint.GetStyleColor(Style);
+                }
             }
 
             if (index == 0)
@@ -315,17 +431,7 @@ namespace MetroFramework.Controls
         [SecuritySafeCritical]
         private void DrawUpDown(Graphics graphics)
         {
-            //Color foreColor;
             Color backColor = Parent != null ? Parent.BackColor : MetroPaint.BackColor.Form(Theme);
-
-            //if (!Enabled)
-            //{
-            //    foreColor = MetroPaint.ForeColor.Label.Disabled(Theme);
-            //}
-            //else
-            //{
-            //    foreColor = !useStyleColors ? MetroPaint.ForeColor.TabControl.Normal(Theme) : MetroPaint.GetStyleColor(Style);
-            //}
 
             Rectangle borderRect = new Rectangle();
             WinApi.GetClientRect(scUpDown.Handle, ref borderRect);
@@ -383,7 +489,14 @@ namespace MetroFramework.Controls
 
             if (!DesignMode)
             {
-                WinApi.ShowScrollBar(Handle, (int)WinApi.ScrollBar.SB_BOTH, 0);
+                try
+                {
+                    WinApi.ShowScrollBar(Handle, (int)WinApi.ScrollBar.SB_BOTH, 0);
+                }
+                catch
+                {
+
+                }
             }
         }
 
@@ -442,6 +555,7 @@ namespace MetroFramework.Controls
         protected override void OnCreateControl()
         {
             base.OnCreateControl();
+            this.OnFontChanged(EventArgs.Empty);
             FindUpDown();
         }
 
@@ -466,6 +580,23 @@ namespace MetroFramework.Controls
             Invalidate();
         }
 
+        //send font change to properly resize tab page header rects
+        //http://www.codeproject.com/Articles/13305/Painting-Your-Own-Tabs?msg=2707590#xx2707590xx
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+        private const int WM_SETFONT = 0x30;
+        private const int WM_FONTCHANGE = 0x1d;
+
+        [SecuritySafeCritical]
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            IntPtr hFont = MetroFonts.TabControl(metroLabelSize, metroLabelWeight).ToHfont();
+            SendMessage(this.Handle, WM_SETFONT, hFont, (IntPtr)(-1));
+            SendMessage(this.Handle, WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
+            this.UpdateStyles();
+        }
         #endregion
 
         #region Helper Methods
@@ -473,43 +604,46 @@ namespace MetroFramework.Controls
         [SecuritySafeCritical]
         private void FindUpDown()
         {
-            bool bFound = false;
-
-            IntPtr pWnd = WinApi.GetWindow(Handle, WinApi.GW_CHILD);
-
-            while (pWnd != IntPtr.Zero)
+            if (!DesignMode)
             {
-                char[] className = new char[33];
+                bool bFound = false;
 
-                int length = WinApi.GetClassName(pWnd, className, 32);
+                IntPtr pWnd = WinApi.GetWindow(Handle, WinApi.GW_CHILD);
 
-                string s = new string(className, 0, length);
-
-                if (s == "msctls_updown32")
+                while (pWnd != IntPtr.Zero)
                 {
-                    bFound = true;
+                    char[] className = new char[33];
 
-                    if (!bUpDown)
+                    int length = WinApi.GetClassName(pWnd, className, 32);
+
+                    string s = new string(className, 0, length);
+
+                    if (s == "msctls_updown32")
                     {
-                        this.scUpDown = new SubClass(pWnd, true);
-                        this.scUpDown.SubClassedWndProc += new SubClass.SubClassWndProcEventHandler(scUpDown_SubClassedWndProc);
+                        bFound = true;
 
-                        bUpDown = true;
+                        if (!bUpDown)
+                        {
+                            this.scUpDown = new SubClass(pWnd, true);
+                            this.scUpDown.SubClassedWndProc += new SubClass.SubClassWndProcEventHandler(scUpDown_SubClassedWndProc);
+
+                            bUpDown = true;
+                        }
+                        break;
                     }
-                    break;
+
+                    pWnd = WinApi.GetWindow(pWnd, WinApi.GW_HWNDNEXT);
                 }
 
-                pWnd = WinApi.GetWindow(pWnd, WinApi.GW_HWNDNEXT);
+                if ((!bFound) && (bUpDown))
+                    bUpDown = false;
             }
-
-            if ((!bFound) && (bUpDown))
-                bUpDown = false;
         }
 
         [SecuritySafeCritical]
         private void UpdateUpDown()
         {
-            if (bUpDown)
+            if (bUpDown && !DesignMode)
             {
                 if (WinApi.IsWindowVisible(scUpDown.Handle))
                 {
@@ -551,5 +685,6 @@ namespace MetroFramework.Controls
         }
 
         #endregion
+
     }
 }

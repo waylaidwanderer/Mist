@@ -21,11 +21,26 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace MetroFramework.Drawing
 {
+    public class MetroPaintEventArgs : EventArgs
+    {
+        public Color BackColor { get; private set; }
+        public Color ForeColor { get; private set; }
+        public Graphics Graphics { get; private set; }
+
+        public MetroPaintEventArgs(Color backColor, Color foreColor, Graphics g)
+        {
+            BackColor = backColor;
+            ForeColor = foreColor;
+            Graphics = g;
+        }
+    }
+
     public sealed class MetroPaint
     {
         public sealed class BorderColor
@@ -842,10 +857,74 @@ namespace MetroFramework.Drawing
             }
         }
 
+        public static StringFormat GetStringFormat(ContentAlignment textAlign)
+        {
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Trimming = StringTrimming.EllipsisCharacter;
+
+            switch (textAlign)
+            {
+                case ContentAlignment.TopLeft:
+                    stringFormat.Alignment = StringAlignment.Near;
+                    stringFormat.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.TopCenter:
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.TopRight:
+                    stringFormat.Alignment = StringAlignment.Far;
+                    stringFormat.LineAlignment = StringAlignment.Near;
+                    break;
+
+                case ContentAlignment.MiddleLeft:
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.MiddleCenter:
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.MiddleRight:
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Far;
+                    break;
+
+                case ContentAlignment.BottomLeft:
+                    stringFormat.Alignment = StringAlignment.Far;
+                    stringFormat.LineAlignment = StringAlignment.Near;
+                    break;
+                case ContentAlignment.BottomCenter:
+                    stringFormat.Alignment = StringAlignment.Far;
+                    stringFormat.LineAlignment = StringAlignment.Center;
+                    break;
+                case ContentAlignment.BottomRight:
+                    stringFormat.Alignment = StringAlignment.Far;
+                    stringFormat.LineAlignment = StringAlignment.Far;
+                    break;
+            }
+
+            return stringFormat;
+        }
+
         public static TextFormatFlags GetTextFormatFlags(ContentAlignment textAlign)
         {
-            TextFormatFlags controlFlags = TextFormatFlags.EndEllipsis;
+            return GetTextFormatFlags(textAlign, false);
+        }
 
+        public static TextFormatFlags GetTextFormatFlags(ContentAlignment textAlign,bool WrapToLine)
+        {
+            TextFormatFlags controlFlags = TextFormatFlags.Default;
+
+            switch (WrapToLine)
+            {
+                case true:
+                    controlFlags = TextFormatFlags.WordBreak;
+                    break;
+                case false:
+                    controlFlags = TextFormatFlags.EndEllipsis;
+                    break;
+            }
             switch (textAlign)
             {
                 case ContentAlignment.TopLeft:

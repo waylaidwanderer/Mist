@@ -7,17 +7,18 @@ namespace MistClient
 {
     class ListFriends
     {
-        string name;
-        ulong sid;
-        string status;
-        public static Friends friends;
-
+        string name = "";
+        string nickname = "";
+        ulong sid = 0;
+        string status = "";
+        static Object locker = new Object();
         static List<ListFriends> list = new List<ListFriends>();
 
-        public ListFriends(string name, ulong sid, string status = "Offline")
+        public ListFriends(string name, ulong sid, string nickname, string status)
         {
             this.name = name;
             this.sid = sid;
+            this.nickname = nickname;
             this.status = status;
         }
 
@@ -25,6 +26,12 @@ namespace MistClient
         {
             get { return name; }
             set { name = value; }
+        }
+
+        public string Nickname
+        {
+            get { return nickname; }
+            set { nickname = value; }
         }
 
         public ulong SID
@@ -39,129 +46,176 @@ namespace MistClient
             set { status = value; }
         }
 
-        public static void Add(string name, ulong sid, string status = "Offline")
+        public static void Add(string name, ulong sid, string nickname = "", string status = "Offline")
         {
-            ListFriends item = new ListFriends(name, sid, status);
-            list.Add(item);
+            lock (locker)
+            {
+                ListFriends item = new ListFriends(name, sid, nickname, status);
+                list.Add(item);
+            }            
         }
 
         public static void Remove(ulong sid)
         {
-            ListFriends item = list.Find(x => x.SID == sid);
-            list.Remove(item);
-            friends.SetObject(Get(MistClient.Properties.Settings.Default.OnlineOnly));
+            lock (locker)
+            {
+                ListFriends item = list.Find(x => x.SID == sid);
+                list.Remove(item);
+            }
         }
 
         public static void Clear()
         {
-            list.Clear();
+            lock (locker)
+            {
+                list.Clear();
+            }            
         }
 
         public static void UpdateStatus(ulong sid, string status)
         {
-            ListFriends item = null;
-            try
+            lock (locker)
             {
-                item = list.Find(x => x.SID == sid);
-                item.Status = status;
-                friends.SetObject(list);
-            }
-            catch
-            {
-                // Friends form hasn't been initialized yet, so let's not worry about it
-            }
+                ListFriends item = null;
+                try
+                {
+                    item = list.Find(x => x.SID == sid);
+                    item.Status = status;
+                }
+                catch
+                {
+                    // Friends form hasn't been initialized yet, so let's not worry about it
+                }
+            }            
         }
 
         public static void UpdateName(ulong sid, string name)
         {
-            ListFriends item = null;
-            try
+            lock (locker)
             {
-                item = list.Find(x => x.SID == sid);
-                item.Name = name;
-                friends.SetObject(list);
-            }
-            catch
-            {
-                // Friends form hasn't been initialized yet, so let's not worry about it
-            }
+                ListFriends item = null;
+                try
+                {
+                    item = list.Find(x => x.SID == sid);
+                    item.Name = name;
+                }
+                catch
+                {
+                    // Friends form hasn't been initialized yet, so let's not worry about it
+                }
+            }            
         }
 
-        public static ulong GetSID (string name)
+        public static ulong GetSID(string name)
         {
-            ListFriends item = null;
-            try
+            lock (locker)
             {
-                item = list.Find(x => x.name == name);
-                return item.sid;
-            }
-            catch
-            {
-                
-            }
-            return 0;
+                ListFriends item = null;
+                try
+                {
+                    item = list.Find(x => x.name == name);
+                    return item.sid;
+                }
+                catch
+                {
+
+                }
+                return 0;
+            }            
         }
 
         static internal List<ListFriends> Get(string name)
         {
-            name = name.ToLower();
-            List<ListFriends> returnList = new List<ListFriends>();
-            foreach (ListFriends item in list)
+            lock (locker)
             {
-                if (item.name.ToLower().Contains(name))
-                    returnList.Add(item);
-            }
-            return returnList;
+                name = name.ToLower();
+                List<ListFriends> returnList = new List<ListFriends>();
+                foreach (ListFriends item in list)
+                {
+                    if (item.name.ToLower().Contains(name))
+                        returnList.Add(item);
+                }
+                return returnList;
+            }            
+        }
+
+        static internal ListFriends GetFriend(ulong steamId)
+        {
+            lock (locker)
+            {
+                var item = list.Find(x => x.SID == steamId);
+                if (item != null)
+                {
+                    if (item.status == "LookingToTrade")
+                    {
+                        var temp = new ListFriends(item.Name, item.SID, item.Nickname, item.Status);
+                        temp.status = "Looking to Trade";
+                        return temp;
+                    }
+                    else if (item.status == "LookingToPlay")
+                    {
+                        var temp = new ListFriends(item.Name, item.SID, item.Nickname, item.Status);
+                        temp.status = "Looking to Play";
+                        return temp;
+                    }
+                }
+                return item;
+            }            
         }
 
         static internal List<ListFriends> Get(bool onlineOnly = false)
         {
-            List<ListFriends> returnList = new List<ListFriends>();
-            foreach (ListFriends item in list)
+            lock (locker)
             {
-                if (item.status.ToString() == "Online")
-                    returnList.Add(item);
-            }
-            foreach (ListFriends item in list)
-            {
-                if (item.status.ToString() == "LookingToTrade")
-                {
-                    item.Status = "Looking to Trade";
-                    returnList.Add(item);
-                }
-            }
-            foreach (ListFriends item in list)
-            {
-                if (item.status.ToString() == "LookingToPlay")
-                {
-                    item.Status = "Looking to Play";
-                    returnList.Add(item);
-                }
-            }
-            foreach (ListFriends item in list)
-            {
-                if (item.status.ToString() == "Busy")
-                    returnList.Add(item);
-            }
-            foreach (ListFriends item in list)
-            {
-                if (item.status.ToString() == "Away")
-                    returnList.Add(item);
-            }
-            foreach (ListFriends item in list)
-            {
-                if (item.status.ToString() == "Snooze")
-                    returnList.Add(item);
-            }
-            if (!onlineOnly)
-            {
+                List<ListFriends> returnList = new List<ListFriends>();
                 foreach (ListFriends item in list)
                 {
-                    if (item.status.ToString() == "Offline")
+                    if (item.status == "Online")
                         returnList.Add(item);
                 }
-            }
-            return returnList;
+                foreach (ListFriends item in list)
+                {
+                    if (item.status == "LookingToTrade")
+                    {
+                        var temp = new ListFriends(item.Name, item.SID, item.Nickname, item.Status);
+                        temp.status = "Looking to Trade";
+                        returnList.Add(temp);
+                    }
+                }
+                foreach (ListFriends item in list)
+                {
+                    if (item.status == "LookingToPlay")
+                    {
+                        var temp = new ListFriends(item.Name, item.SID, item.Nickname, item.Status);
+                        temp.status = "Looking to Play";
+                        returnList.Add(temp);
+                    }
+                }
+                foreach (ListFriends item in list)
+                {
+                    if (item.status == "Busy")
+                        returnList.Add(item);
+                }
+                foreach (ListFriends item in list)
+                {
+                    if (item.status == "Away")
+                        returnList.Add(item);
+                }
+                foreach (ListFriends item in list)
+                {
+                    if (item.status == "Snooze")
+                        returnList.Add(item);
+                }
+                if (!onlineOnly)
+                {
+                    foreach (ListFriends item in list)
+                    {
+                        if (item.status == "Offline")
+                            returnList.Add(item);
+                    }
+                }
+                return returnList;
+            }            
         }
     }
 }

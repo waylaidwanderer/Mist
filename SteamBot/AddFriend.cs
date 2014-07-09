@@ -19,14 +19,14 @@ namespace MistClient
         {
             InitializeComponent();
             this.bot = bot;
-            Util.LoadTheme(metroStyleManager1);
+            Util.LoadTheme(this, this.Controls);
         }
 
         private void button_ok_Click(object sender, EventArgs e)
         {
-            if (text_profile.Text.Length < 17 || text_profile.Text == "" || Regex.IsMatch(text_profile.Text, "^[A-Za-z]$"))
+            if (text_profile.Text == "" || Regex.IsMatch(text_profile.Text, "^[A-Za-z]$"))
             {
-                MessageBox.Show("The SteamID64 is invalid. It must be 17 characters and cannot be blank or contain letters.",
+                MetroFramework.MetroMessageBox.Show(this, "The SteamID64 is invalid. It cannot be blank or contain letters.",
                                 "Error",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error,
@@ -37,7 +37,7 @@ namespace MistClient
                 SteamKit2.SteamID id = Convert.ToUInt64(text_profile.Text);
                 bot.SteamFriends.AddFriend(id);
                 this.Close();
-                MessageBox.Show("Friend added successfully!",
+                MetroFramework.MetroMessageBox.Show(this, "Friend added successfully!",
                                 "Success",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information,

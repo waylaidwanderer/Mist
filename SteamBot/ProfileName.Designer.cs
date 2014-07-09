@@ -50,13 +50,13 @@
             this.label_profile.Name = "label_profile";
             this.label_profile.Size = new System.Drawing.Size(142, 19);
             this.label_profile.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label_profile.StyleManager = this.metroStyleManager1;
             this.label_profile.TabIndex = 3;
             this.label_profile.Text = "Change Display Name:";
             this.label_profile.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // text_newprofile
             // 
+            this.text_newprofile.Lines = new string[0];
             this.text_newprofile.Location = new System.Drawing.Point(23, 82);
             this.text_newprofile.MaxLength = 32;
             this.text_newprofile.Name = "text_newprofile";
@@ -65,9 +65,9 @@
             this.text_newprofile.SelectedText = "";
             this.text_newprofile.Size = new System.Drawing.Size(229, 23);
             this.text_newprofile.Style = MetroFramework.MetroColorStyle.Blue;
-            this.text_newprofile.StyleManager = this.metroStyleManager1;
             this.text_newprofile.TabIndex = 0;
             this.text_newprofile.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_newprofile.UseSelectable = true;
             // 
             // button_ok
             // 
@@ -75,10 +75,10 @@
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_ok.StyleManager = this.metroStyleManager1;
             this.button_ok.TabIndex = 1;
             this.button_ok.Text = "OK";
             this.button_ok.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_ok.UseSelectable = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
             // button_cancel
@@ -88,10 +88,10 @@
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 2;
             this.button_cancel.Text = "Cancel";
             this.button_cancel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_cancel.UseSelectable = true;
             this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
             // 
             // ProfileName
@@ -99,7 +99,6 @@
             this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(275, 157);
             this.Controls.Add(this.button_cancel);

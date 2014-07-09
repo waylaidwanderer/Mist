@@ -11,7 +11,6 @@ namespace MistClient
         string imageURL;
         ulong itemID;
         string price;
-        public static ShowTrade ShowTrade;
 
         static List<ListInventory> list = new List<ListInventory>();
 

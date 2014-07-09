@@ -6,7 +6,7 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E81DED36-EDF5-41A5-8666-A3A0C581762F}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>MistClient</RootNamespace>
     <AssemblyName>Mist</AssemblyName>
     <PublishUrl>publish\</PublishUrl>
@@ -34,7 +34,7 @@
     <OutputPath>..\Bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <Externalconsole>True</Externalconsole>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -48,6 +48,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <Externalconsole>True</Externalconsole>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>mist.ico</ApplicationIcon>
@@ -56,6 +57,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Awesomium.Core, Version=1.7.4.2, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Awesomium.Windows.Controls, Version=1.7.4.2, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Awesomium.Windows.Forms, Version=1.7.4.2, Culture=neutral, PublicKeyToken=9bd24830fbe304a0, processorArchitecture=x86">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Lib\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
@@ -91,7 +101,6 @@
     <Compile Include="AddFriend.Designer.cs">
       <DependentUpon>AddFriend.cs</DependentUpon>
     </Compile>
-    <Compile Include="BackpackTF.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CDNCache.cs" />
@@ -114,6 +123,7 @@
     <Compile Include="ChatTab.Designer.cs">
       <DependentUpon>ChatTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Custom\PlayerNicknames.cs" />
     <Compile Include="FlashWindow.cs" />
     <Compile Include="ListBackpack.cs" />
     <Compile Include="ListFriendRequests.cs" />
@@ -153,23 +163,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SetBackpackTfApiKey.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SetBackpackTfApiKey.Designer.cs">
-      <DependentUpon>SetBackpackTfApiKey.cs</DependentUpon>
-    </Compile>
     <Compile Include="ShowBackpack.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ShowBackpack.Designer.cs">
       <DependentUpon>ShowBackpack.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ShowTrade.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ShowTrade.Designer.cs">
-      <DependentUpon>ShowTrade.cs</DependentUpon>
     </Compile>
     <Compile Include="ShowTrade_Web.cs">
       <SubType>Form</SubType>
@@ -177,6 +175,8 @@
     <Compile Include="ShowTrade_Web.Designer.cs">
       <DependentUpon>ShowTrade_Web.cs</DependentUpon>
     </Compile>
+    <Compile Include="SteamGroups\CMsgGroupInviteAction.cs" />
+    <Compile Include="SteamGroups\CMsgInviteUserToGroup.cs" />
     <Compile Include="SteamGuard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -232,14 +232,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SetBackpackTfApiKey.resx">
-      <DependentUpon>SetBackpackTfApiKey.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ShowBackpack.resx">
       <DependentUpon>ShowBackpack.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShowTrade.resx">
-      <DependentUpon>ShowTrade.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ShowTrade_Web.resx">
       <DependentUpon>ShowTrade_Web.cs</DependentUpon>
@@ -280,6 +274,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\mist_white.png" />
+    <Content Include="Resources\Friends.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MiniProfile.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mist.ico" />
     <None Include="Resources\mist_icon.png" />
     <Content Include="trade_message.wav">
@@ -312,10 +312,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lib\ObjectListView\ObjectListView2010.csproj">
-      <Project>{18feda0c-d147-4286-b39a-01204808106a}</Project>
-      <Name>ObjectListView2010</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lib\ToastNotifications\ToastNotifications.csproj">
       <Project>{380d8d88-386c-4c50-9a54-800f79fdf7d2}</Project>
       <Name>ToastNotifications</Name>
@@ -342,7 +338,8 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y $(SolutionDir)Lib\Ionic.Zip.Reduced.dll $(SolutionDir)Bin\$(ConfigurationName)\lib\</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

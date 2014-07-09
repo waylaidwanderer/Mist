@@ -90,6 +90,9 @@
     <Compile Include="Controls\MetroComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\MetroContextMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\MetroLabel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -132,6 +135,38 @@
     <Compile Include="Controls\MetroUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Drawing\Html\CssAnonymousBlockBox.cs" />
+    <Compile Include="Drawing\Html\CssAnonymousBox.cs" />
+    <Compile Include="Drawing\Html\CssBlock.cs" />
+    <Compile Include="Drawing\Html\CssBox.cs" />
+    <Compile Include="Drawing\Html\CssBoxWord.cs" />
+    <Compile Include="Drawing\Html\CssBoxWordSplitter.cs" />
+    <Compile Include="Drawing\Html\CssConstants.cs" />
+    <Compile Include="Drawing\Html\CssDefaults.cs" />
+    <Compile Include="Drawing\Html\CssDrawingHelper.cs" />
+    <Compile Include="Drawing\Html\CssLayoutEngine.cs" />
+    <Compile Include="Drawing\Html\CssLength.cs" />
+    <Compile Include="Drawing\Html\CssLineBox.cs" />
+    <Compile Include="Drawing\Html\CssPropertyAttribute.cs" />
+    <Compile Include="Drawing\Html\CssPropertyInheritedAttribute.cs" />
+    <Compile Include="Drawing\Html\CssRectangle.cs" />
+    <Compile Include="Drawing\Html\CssTable.cs" />
+    <Compile Include="Drawing\Html\CssValue.cs" />
+    <Compile Include="Drawing\Html\HtmlConstants.cs" />
+    <Compile Include="Drawing\Html\HtmlLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Drawing\Html\HtmlPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Drawing\Html\HtmlRenderer.cs" />
+    <Compile Include="Drawing\Html\HtmlTag.cs" />
+    <Compile Include="Drawing\Html\HtmlToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Drawing\Html\InitialContainer.cs" />
+    <Compile Include="Drawing\Html\Parser.cs" />
+    <Compile Include="Drawing\MetroBackBuffer.cs" />
     <Compile Include="Drawing\MetroPaint.cs" />
     <Compile Include="Forms\MetroMessageBox.cs">
       <SubType>Form</SubType>
@@ -146,10 +181,20 @@
     <Compile Include="Interfaces\IMetroForm.cs" />
     <Compile Include="Interfaces\IMetroComponent.cs" />
     <Compile Include="Localization\MetroLocalize.cs" />
+    <Compile Include="MessageBox\MetroMessageBox.cs" />
+    <Compile Include="MessageBox\MetroMessageBoxControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageBox\MetroMessageBoxControl.Designer.cs">
+      <DependentUpon>MetroMessageBoxControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBox\MetroMessageBoxProperties.cs" />
     <Compile Include="MetroBrushes.cs" />
     <Compile Include="MetroColors.cs" />
     <Compile Include="MetroColorStyle.cs" />
+    <Compile Include="MetroDefaults.cs" />
     <Compile Include="MetroFonts.cs" />
+    <Compile Include="MetroImage.cs" />
     <Compile Include="MetroPens.cs" />
     <Compile Include="MetroThemeStyle.cs" />
     <Compile Include="Native\DwmApi.cs" />
@@ -190,6 +235,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Localization\de\MetroToggle.xml" />
+    <EmbeddedResource Include="MessageBox\MetroMessageBoxControl.resx">
+      <DependentUpon>MetroMessageBoxControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -200,9 +248,6 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /y $(ProjectDir)$(OutDir)$(TargetFileName) $(SolutionDir)Bin\$(ConfigurationName)\lib\</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

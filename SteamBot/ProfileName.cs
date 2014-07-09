@@ -18,17 +18,14 @@ namespace MistClient
         {
             InitializeComponent();
             this.bot = bot;
-            Util.LoadTheme(metroStyleManager1);
+            Util.LoadTheme(this, this.Controls);
         }
 
         private void button_ok_Click(object sender, EventArgs e)
         {
             if (text_newprofile.Text != "")
-            {
-                bot.SteamFriends.SetPersonaName(text_newprofile.Text);
-            }
-            else
-            {
+            {                
+                bot.SteamFriends.SetPersonaName(text_newprofile.Text.Trim());
                 this.Close();
             }
         }

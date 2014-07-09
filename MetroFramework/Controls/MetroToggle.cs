@@ -34,33 +34,88 @@ using MetroFramework.Localization;
 
 namespace MetroFramework.Controls
 {
+    [Designer("MetroFramework.Design.Controls.MetroToggleDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(CheckBox))]
     public class MetroToggle : CheckBox, IMetroControl
     {
         #region Interface
 
-        private MetroColorStyle metroStyle = MetroColorStyle.Blue;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public event EventHandler<MetroPaintEventArgs> CustomPaintBackground;
+        protected virtual void OnCustomPaintBackground(MetroPaintEventArgs e)
+        {
+            if (GetStyle(ControlStyles.UserPaint) && CustomPaintBackground != null)
+            {
+                CustomPaintBackground(this, e);
+            }
+        }
+
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public event EventHandler<MetroPaintEventArgs> CustomPaint;
+        protected virtual void OnCustomPaint(MetroPaintEventArgs e)
+        {
+            if (GetStyle(ControlStyles.UserPaint) && CustomPaint != null)
+            {
+                CustomPaint(this, e);
+            }
+        }
+
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
+        protected virtual void OnCustomPaintForeground(MetroPaintEventArgs e)
+        {
+            if (GetStyle(ControlStyles.UserPaint) && CustomPaintForeground != null)
+            {
+                CustomPaintForeground(this, e);
+            }
+        }
+
+        private MetroColorStyle metroStyle = MetroColorStyle.Default;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(MetroColorStyle.Default)]
         public MetroColorStyle Style
         {
             get
             {
-                if (StyleManager != null)
+                if (DesignMode || metroStyle != MetroColorStyle.Default)
+                {
+                    return metroStyle;
+                }
+
+                if (StyleManager != null && metroStyle == MetroColorStyle.Default)
+                {
                     return StyleManager.Style;
+                }
+                if (StyleManager == null && metroStyle == MetroColorStyle.Default)
+                {
+                    return MetroDefaults.Style;
+                }
 
                 return metroStyle;
             }
             set { metroStyle = value; }
         }
 
-        private MetroThemeStyle metroTheme = MetroThemeStyle.Light;
-        [Category("Metro Appearance")]
+        private MetroThemeStyle metroTheme = MetroThemeStyle.Default;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(MetroThemeStyle.Default)]
         public MetroThemeStyle Theme
         {
             get
             {
-                if (StyleManager != null)
+                if (DesignMode || metroTheme != MetroThemeStyle.Default)
+                {
+                    return metroTheme;
+                }
+
+                if (StyleManager != null && metroTheme == MetroThemeStyle.Default)
+                {
                     return StyleManager.Theme;
+                }
+                if (StyleManager == null && metroTheme == MetroThemeStyle.Default)
+                {
+                    return MetroDefaults.Theme;
+                }
 
                 return metroTheme;
             }
@@ -69,30 +124,67 @@ namespace MetroFramework.Controls
 
         private MetroStyleManager metroStyleManager = null;
         [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public MetroStyleManager StyleManager
         {
             get { return metroStyleManager; }
             set { metroStyleManager = value; }
         }
 
-        #endregion
+        private bool useCustomBackColor = false;
+        [DefaultValue(false)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public bool UseCustomBackColor
+        {
+            get { return useCustomBackColor; }
+            set { useCustomBackColor = value; }
+        }
 
-        #region Fields
-
-        private MetroLocalize metroLocalize = null;
+        private bool useCustomForeColor = false;
+        [DefaultValue(false)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public bool UseCustomForeColor
+        {
+            get { return useCustomForeColor; }
+            set { useCustomForeColor = value; }
+        }
 
         private bool useStyleColors = false;
         [DefaultValue(false)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public bool UseStyleColors
         {
             get { return useStyleColors; }
             set { useStyleColors = value; }
         }
 
+        [Browsable(false)]
+        [Category(MetroDefaults.PropertyCategory.Behaviour)]
+        [DefaultValue(false)]
+        public bool UseSelectable
+        {
+            get { return GetStyle(ControlStyles.Selectable); }
+            set { SetStyle(ControlStyles.Selectable, value); }
+        }
+
+        #endregion
+
+        #region Fields
+
+        private bool displayFocusRectangle = false;
+        [DefaultValue(false)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public bool DisplayFocus
+        {
+            get { return displayFocusRectangle; }
+            set { displayFocusRectangle = value; }
+        }
+
+        private MetroLocalize metroLocalize = null;
+
         private MetroLinkSize metroLinkSize = MetroLinkSize.Small;
         [DefaultValue(MetroLinkSize.Small)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroLinkSize FontSize
         {
             get { return metroLinkSize; }
@@ -101,7 +193,7 @@ namespace MetroFramework.Controls
 
         private MetroLinkWeight metroLinkWeight = MetroLinkWeight.Regular;
         [DefaultValue(MetroLinkWeight.Regular)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroLinkWeight FontWeight
         {
             get { return metroLinkWeight; }
@@ -110,7 +202,7 @@ namespace MetroFramework.Controls
 
         private bool displayStatus = true;
         [DefaultValue(true)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public bool DisplayStatus
         {
             get { return displayStatus; }
@@ -157,15 +249,6 @@ namespace MetroFramework.Controls
             }
         }
 
-        private bool useCustomBackground = false;
-        [DefaultValue(false)]
-        [Category("Metro Appearance")]
-        public bool CustomBackground
-        {
-            get { return useCustomBackground; }
-            set { useCustomBackground = value; }
-        }
-
         private bool isHovered = false;
         private bool isPressed = false;
         private bool isFocused = false;
@@ -190,14 +273,54 @@ namespace MetroFramework.Controls
 
         #region Paint Methods
 
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            try
+            {
+                Color backColor = BackColor;
+
+                if (!useCustomBackColor)
+                {
+                    backColor = MetroPaint.BackColor.Form(Theme);
+                }
+
+                if (backColor.A == 255)
+                {
+                    e.Graphics.Clear(backColor);
+                    return;
+                }
+
+                base.OnPaintBackground(e);
+
+                OnCustomPaintBackground(new MetroPaintEventArgs(backColor, Color.Empty, e.Graphics));
+            }
+            catch
+            {
+                Invalidate();
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
-            Color backColor, borderColor, foreColor;
+            try
+            {
+                if (GetStyle(ControlStyles.AllPaintingInWmPaint))
+                {
+                    OnPaintBackground(e);
+                }
 
-            if (useCustomBackground)
-                backColor = BackColor;
-            else
-                backColor = MetroPaint.BackColor.Form(Theme);
+                OnCustomPaint(new MetroPaintEventArgs(Color.Empty, Color.Empty, e.Graphics));
+                OnPaintForeground(e);
+            }
+            catch
+            {
+                Invalidate();
+            }
+        }
+
+        protected virtual void OnPaintForeground(PaintEventArgs e)
+        {
+            Color borderColor, foreColor;
 
             if (isHovered && !isPressed && Enabled)
             {
@@ -220,8 +343,6 @@ namespace MetroFramework.Controls
                 borderColor = MetroPaint.BorderColor.CheckBox.Normal(Theme);
             }
 
-            e.Graphics.Clear(backColor);
-
             using (Pen p = new Pen(borderColor))
             {
                 Rectangle boxRect = new Rectangle((DisplayStatus ? 30 : 0), 0, ClientRectangle.Width - (DisplayStatus ? 31 : 1), ClientRectangle.Height - 1);
@@ -234,6 +355,13 @@ namespace MetroFramework.Controls
             {
                 Rectangle boxRect = new Rectangle(DisplayStatus ? 32 : 2, 2, ClientRectangle.Width - (DisplayStatus ? 34 : 4), ClientRectangle.Height - 4);
                 e.Graphics.FillRectangle(b, boxRect);
+            }
+
+            Color backColor = BackColor;
+
+            if (!useCustomBackColor)
+            {
+                backColor = MetroPaint.BackColor.Form(Theme);
             }
 
             using (SolidBrush b = new SolidBrush(backColor))
@@ -254,10 +382,10 @@ namespace MetroFramework.Controls
             if (DisplayStatus)
             {
                 Rectangle textRect = new Rectangle(0, 0, 30, ClientRectangle.Height);
-                TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Link(metroLinkSize, metroLinkWeight), textRect, foreColor, backColor, MetroPaint.GetTextFormatFlags(TextAlign));
+                TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Link(metroLinkSize, metroLinkWeight), textRect, foreColor, MetroPaint.GetTextFormatFlags(TextAlign));
             }
 
-            if (false && isFocused)
+            if (displayFocusRectangle && isFocused)
                 ControlPaint.DrawFocusRectangle(e.Graphics, ClientRectangle);
         }
 
@@ -268,6 +396,7 @@ namespace MetroFramework.Controls
         protected override void OnGotFocus(EventArgs e)
         {
             isFocused = true;
+            isHovered = true;
             Invalidate();
 
             base.OnGotFocus(e);
@@ -286,6 +415,7 @@ namespace MetroFramework.Controls
         protected override void OnEnter(EventArgs e)
         {
             isFocused = true;
+            isHovered = true;
             Invalidate();
 
             base.OnEnter(e);
@@ -319,8 +449,9 @@ namespace MetroFramework.Controls
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            isHovered = false;
-            isPressed = false;
+            //Remove this code cause this prevents the focus color
+            //isHovered = false;
+            //isPressed = false;
             Invalidate();
 
             base.OnKeyUp(e);
@@ -359,7 +490,12 @@ namespace MetroFramework.Controls
 
         protected override void OnMouseLeave(EventArgs e)
         {
-            isHovered = false;
+            //This will check if control got the focus
+            //If not thats the only it will remove the focus color
+            if (!isFocused)
+            {
+                isHovered = false;
+            }
             Invalidate();
 
             base.OnMouseLeave(e);

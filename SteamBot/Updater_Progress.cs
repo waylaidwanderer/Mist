@@ -26,7 +26,7 @@ namespace MistClient
             InitializeComponent();
             this.updater = updater;
             this.log = log;
-            Util.LoadTheme(metroStyleManager1);
+            Util.LoadTheme(this, this.Controls);
         }
 
         private void Updater_Progress_Load(object sender, EventArgs e)
@@ -42,7 +42,7 @@ namespace MistClient
                 File.Delete("Update.zip");
             }
             // the URL to download the file from
-            string sUrlToReadFileFrom = "https://dl.dropbox.com/u/10793087/Mist_latest.zip";
+            string sUrlToReadFileFrom = "http://jzhang.net/mist/releases/Mist_latest.zip";
             // the path to write the file to
             string sFilePathToWriteFileTo = "Update.zip";
             // first, we need to get the exact size (in bytes) of the file we are downloading
@@ -53,7 +53,7 @@ namespace MistClient
             if (response == null || response.StatusCode != HttpStatusCode.OK)
             {
                 log.Error("[UPDATER] Error contacting the update server! Aborting.");
-                MessageBox.Show("Could not contact the update server. Please try again later.",
+                MetroFramework.MetroMessageBox.Show(this, "Could not contact the update server. Please try again later.",
                                     "Connection Error",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error,
@@ -105,12 +105,11 @@ namespace MistClient
                     // close the connection to the remote server
                     streamRemote.Close();
                 }
-            }
-            Util.HTTPRequest("http://www.thectscommunity.com/dev/tracker.php");
+            }            
             if (!File.Exists("Update.zip"))
             {
                 log.Error("[UPDATER] The file has failed to download.");
-                MessageBox.Show("The file has failed to download.",
+                MetroFramework.MetroMessageBox.Show(this, "The file has failed to download.",
                                     "Downloading Error",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error,
@@ -178,7 +177,7 @@ namespace MistClient
 
             }
             log.Success("[UPDATER] Mist has been successfully updated!");
-            MessageBox.Show("Mist has been successfully updated!",
+            MetroFramework.MetroMessageBox.Show(this, "Mist has been successfully updated!",
                                     "Success",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Information,

@@ -37,7 +37,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.text_input = new System.Windows.Forms.TextBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStrip1 = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.viewProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showBackpackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewChatLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +62,7 @@
             // 
             this.text_input.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.text_input.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.text_input.Location = new System.Drawing.Point(0, 309);
             this.text_input.MaxLength = 2048;
             this.text_input.Multiline = true;
@@ -120,7 +121,7 @@
             // 
             this.avatarBox.BackColor = System.Drawing.Color.Transparent;
             this.avatarBox.ContextMenuStrip = this.contextMenuStrip1;
-            this.avatarBox.Location = new System.Drawing.Point(1, 5);
+            this.avatarBox.Location = new System.Drawing.Point(3, 5);
             this.avatarBox.Name = "avatarBox";
             this.avatarBox.Size = new System.Drawing.Size(40, 40);
             this.avatarBox.TabIndex = 10;
@@ -136,7 +137,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.text_log.BackColor = System.Drawing.SystemColors.Window;
-            this.text_log.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.text_log.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.text_log.Location = new System.Drawing.Point(0, 51);
             this.text_log.Name = "text_log";
             this.text_log.ReadOnly = true;
@@ -159,10 +160,10 @@
             this.button_trade.Name = "button_trade";
             this.button_trade.Size = new System.Drawing.Size(143, 42);
             this.button_trade.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_trade.StyleManager = this.metroStyleManager1;
             this.button_trade.TabIndex = 2;
             this.button_trade.Text = "Invite to Trade";
             this.button_trade.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_trade.UseSelectable = true;
             this.button_trade.Click += new System.EventHandler(this.button_trade_Click);
             // 
             // metroStyleManager1
@@ -177,10 +178,10 @@
             this.button_send.Name = "button_send";
             this.button_send.Size = new System.Drawing.Size(145, 50);
             this.button_send.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_send.StyleManager = this.metroStyleManager1;
             this.button_send.TabIndex = 1;
             this.button_send.Text = "Send";
             this.button_send.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_send.UseSelectable = true;
             this.button_send.Click += new System.EventHandler(this.button_send_Click);
             // 
             // steam_name
@@ -191,7 +192,6 @@
             this.steam_name.Name = "steam_name";
             this.steam_name.Size = new System.Drawing.Size(83, 19);
             this.steam_name.Style = MetroFramework.MetroColorStyle.Blue;
-            this.steam_name.StyleManager = this.metroStyleManager1;
             this.steam_name.TabIndex = 14;
             this.steam_name.Text = "steam_name";
             this.steam_name.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -205,7 +205,6 @@
             this.steam_status.Name = "steam_status";
             this.steam_status.Size = new System.Drawing.Size(82, 19);
             this.steam_status.Style = MetroFramework.MetroColorStyle.Blue;
-            this.steam_status.StyleManager = this.metroStyleManager1;
             this.steam_status.TabIndex = 15;
             this.steam_status.Text = "steam_status";
             this.steam_status.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -218,7 +217,6 @@
             this.chat_status.Name = "chat_status";
             this.chat_status.Size = new System.Drawing.Size(71, 19);
             this.chat_status.Style = MetroFramework.MetroColorStyle.Blue;
-            this.chat_status.StyleManager = this.metroStyleManager1;
             this.chat_status.TabIndex = 16;
             this.chat_status.Text = "chat_status";
             this.chat_status.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -238,8 +236,9 @@
             this.MinimumSize = new System.Drawing.Size(286, 156);
             this.Name = "ChatTab";
             this.Size = new System.Drawing.Size(370, 387);
-            this.StyleManager = this.metroStyleManager1;
+            this.Style = MetroFramework.MetroColorStyle.Blue;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.UseStyleColors = true;
             this.Load += new System.EventHandler(this.ChatTab_Load);
             this.Enter += new System.EventHandler(this.ChatTab_Enter);
             this.Leave += new System.EventHandler(this.ChatTab_Leave);
@@ -254,7 +253,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox text_input;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private MetroFramework.Controls.MetroContextMenu contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem showBackpackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem steamRepStatusToolStripMenuItem;
         public System.Windows.Forms.PictureBox avatarBox;

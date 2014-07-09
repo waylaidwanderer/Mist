@@ -45,7 +45,6 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(328, 38);
             this.label1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label1.StyleManager = this.metroStyleManager1;
             this.label1.TabIndex = 4;
             this.label1.Text = "This account is protected by Steam Guard.\r\nEnter the authentication code sent to " +
     "the proper email:";
@@ -59,6 +58,7 @@
             // 
             // text_auth
             // 
+            this.text_auth.Lines = new string[0];
             this.text_auth.Location = new System.Drawing.Point(64, 101);
             this.text_auth.MaxLength = 32767;
             this.text_auth.Name = "text_auth";
@@ -67,9 +67,9 @@
             this.text_auth.SelectedText = "";
             this.text_auth.Size = new System.Drawing.Size(247, 23);
             this.text_auth.Style = MetroFramework.MetroColorStyle.Blue;
-            this.text_auth.StyleManager = this.metroStyleManager1;
             this.text_auth.TabIndex = 0;
             this.text_auth.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_auth.UseSelectable = true;
             // 
             // button_ok
             // 
@@ -77,10 +77,10 @@
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_ok.StyleManager = this.metroStyleManager1;
             this.button_ok.TabIndex = 1;
             this.button_ok.Text = "OK";
             this.button_ok.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_ok.UseSelectable = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
             // button_cancel
@@ -90,10 +90,10 @@
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 2;
             this.button_cancel.Text = "Cancel";
             this.button_cancel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_cancel.UseSelectable = true;
             this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
             // 
             // SteamGuard
@@ -101,7 +101,6 @@
             this.AcceptButton = this.button_ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(375, 177);
             this.Controls.Add(this.button_cancel);

@@ -81,6 +81,7 @@
             // 
             // textBox1
             // 
+            this.textBox1.Lines = new string[0];
             this.textBox1.Location = new System.Drawing.Point(23, 63);
             this.textBox1.MaxLength = 32767;
             this.textBox1.Multiline = true;
@@ -90,9 +91,9 @@
             this.textBox1.SelectedText = "";
             this.textBox1.Size = new System.Drawing.Size(497, 394);
             this.textBox1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.textBox1.StyleManager = this.metroStyleManager1;
             this.textBox1.TabIndex = 0;
             this.textBox1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.textBox1.UseSelectable = true;
             this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
             // 
             // ChatLog

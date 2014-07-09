@@ -50,13 +50,13 @@
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(300, 38);
             this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroLabel1.StyleManager = this.metroStyleManager1;
             this.metroLabel1.TabIndex = 4;
             this.metroLabel1.Text = "Enter the SteamID64 of the friend you wish to add\r\n(e.g. 76561197960265728):";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // text_profile
             // 
+            this.text_profile.Lines = new string[0];
             this.text_profile.Location = new System.Drawing.Point(23, 107);
             this.text_profile.MaxLength = 32767;
             this.text_profile.Name = "text_profile";
@@ -65,9 +65,9 @@
             this.text_profile.SelectedText = "";
             this.text_profile.Size = new System.Drawing.Size(300, 23);
             this.text_profile.Style = MetroFramework.MetroColorStyle.Blue;
-            this.text_profile.StyleManager = this.metroStyleManager1;
             this.text_profile.TabIndex = 0;
             this.text_profile.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_profile.UseSelectable = true;
             // 
             // button_ok
             // 
@@ -75,10 +75,10 @@
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_ok.StyleManager = this.metroStyleManager1;
             this.button_ok.TabIndex = 1;
             this.button_ok.Text = "OK";
             this.button_ok.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_ok.UseSelectable = true;
             this.button_ok.Click += new System.EventHandler(this.button_ok_Click);
             // 
             // button_cancel
@@ -88,10 +88,10 @@
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 2;
             this.button_cancel.Text = "Cancel";
             this.button_cancel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_cancel.UseSelectable = true;
             this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
             // 
             // AddFriend

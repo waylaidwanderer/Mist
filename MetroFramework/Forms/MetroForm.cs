@@ -63,6 +63,14 @@ namespace MetroFramework.Forms
         FixedSingle
     }
 
+    public enum BackLocation
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    }
+
     #endregion
 
     public class MetroForm : Form, IMetroForm, IDisposable
@@ -70,7 +78,7 @@ namespace MetroFramework.Forms
         #region Interface
 
         private MetroColorStyle metroStyle = MetroColorStyle.Blue;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroColorStyle Style
         {
             get
@@ -85,7 +93,7 @@ namespace MetroFramework.Forms
 
         private MetroThemeStyle metroTheme = MetroThemeStyle.Light;
 
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroThemeStyle Theme
         {
             get
@@ -112,7 +120,7 @@ namespace MetroFramework.Forms
 
         private MetroFormTextAlign textAlign = MetroFormTextAlign.Left;
         [Browsable(true)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroFormTextAlign TextAlign
         {
             get { return textAlign; }
@@ -128,7 +136,7 @@ namespace MetroFramework.Forms
         private MetroFormBorderStyle formBorderStyle = MetroFormBorderStyle.None;
         [DefaultValue(MetroFormBorderStyle.None)]
         [Browsable(true)]
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public MetroFormBorderStyle BorderStyle
         {
             get { return formBorderStyle; }
@@ -136,7 +144,7 @@ namespace MetroFramework.Forms
         }
 
         private bool isMovable = true;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public bool Movable
         {
             get { return isMovable; }
@@ -159,7 +167,7 @@ namespace MetroFramework.Forms
         }
 
         private bool displayHeader = true;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         [DefaultValue(true)]
         public bool DisplayHeader
         {
@@ -177,7 +185,7 @@ namespace MetroFramework.Forms
         }
 
         private bool isResizable = true;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         public bool Resizable
         {
             get { return isResizable; }
@@ -185,7 +193,7 @@ namespace MetroFramework.Forms
         }
 
         private MetroFormShadowType shadowType = MetroFormShadowType.Flat;
-        [Category("Metro Appearance")]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
         [DefaultValue(MetroFormShadowType.Flat)]
         public MetroFormShadowType ShadowType
         {
@@ -217,6 +225,70 @@ namespace MetroFramework.Forms
 
         private const int borderWidth = 5;
 
+        private Bitmap _image = null;
+        private Image backImage;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(null)]
+        public Image BackImage
+        {
+            get { return backImage; }
+            set
+            {
+                backImage = value;
+                _image = ApplyInvert(new Bitmap(value));
+                Refresh();
+            }
+        }
+
+        private Padding backImagePadding;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public Padding BackImagePadding
+        {
+            get { return backImagePadding; }
+            set
+            {
+                backImagePadding = value;
+                Refresh();
+            }
+        }
+
+        private int backMaxSize;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public int BackMaxSize
+        {
+            get { return backMaxSize; }
+            set
+            {
+                backMaxSize = value;
+                Refresh();
+            }
+        }
+
+        private BackLocation backLocation;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(BackLocation.TopLeft)]
+        public BackLocation BackLocation
+        {
+            get { return backLocation; }
+            set
+            {
+                backLocation = value;
+                Refresh();
+            }
+        }
+
+        private bool _imageinvert;
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        [DefaultValue(true)]
+        public bool ApplyImageInvert
+        {
+            get { return _imageinvert; }
+            set
+            {
+                _imageinvert = value;
+                Refresh();
+            }
+        }
         #endregion
 
         #region Constructor
@@ -231,6 +303,7 @@ namespace MetroFramework.Forms
             FormBorderStyle = FormBorderStyle.None;
             Name = "MetroForm";
             StartPosition = FormStartPosition.CenterScreen;
+            TransparencyKey = Color.Lavender;
         }
 
         protected override void Dispose(bool disposing)
@@ -246,6 +319,32 @@ namespace MetroFramework.Forms
         #endregion
 
         #region Paint Methods
+
+        public Bitmap ApplyInvert(Bitmap bitmapImage)
+        {
+            byte A, R, G, B;
+            Color pixelColor;
+
+            for (int y = 0; y < bitmapImage.Height; y++)
+            {
+                for (int x = 0; x < bitmapImage.Width; x++)
+                {
+                    pixelColor = bitmapImage.GetPixel(x, y);
+                    A = pixelColor.A;
+                    R = (byte)(255 - pixelColor.R);
+                    G = (byte)(255 - pixelColor.G);
+                    B = (byte)(255 - pixelColor.B);
+
+                    if (R <= 0) R= 17;
+                    if (G <= 0) G= 17;
+                    if (B <= 0) B= 17;
+                    //bitmapImage.SetPixel(x, y, Color.FromArgb((int)A, (int)R, (int)G, (int)B));
+                    bitmapImage.SetPixel(x, y, Color.FromArgb((int)R, (int)G, (int)B));
+                }
+            }
+
+            return bitmapImage;
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -273,6 +372,32 @@ namespace MetroFramework.Forms
                             new Point(Width - 1, Height - 1),
                             new Point(Width - 1, borderWidth)
                         });
+                }
+            }
+
+            if (backImage != null && backMaxSize != 0)
+            {
+                Image img = MetroImage.ResizeImage(backImage, new Rectangle(0, 0, backMaxSize, backMaxSize));
+                if (_imageinvert)
+                {
+                    img = MetroImage.ResizeImage((Theme == MetroThemeStyle.Dark) ? _image : backImage, new Rectangle(0, 0, backMaxSize, backMaxSize));
+                }
+
+                switch (backLocation)
+                {
+                    case BackLocation.TopLeft:
+                        e.Graphics.DrawImage(img, 0 + backImagePadding.Left, 0 + backImagePadding.Top);
+                        break;
+                    case BackLocation.TopRight:
+                        e.Graphics.DrawImage(img, ClientRectangle.Right - (backImagePadding.Right + img.Width), 0 + backImagePadding.Top);
+                        break;
+                    case BackLocation.BottomLeft:
+                        e.Graphics.DrawImage(img, 0 + backImagePadding.Left, ClientRectangle.Bottom - (img.Height + backImagePadding.Bottom));
+                        break;
+                    case BackLocation.BottomRight:
+                        e.Graphics.DrawImage(img, ClientRectangle.Right - (backImagePadding.Right + img.Width),
+                                             ClientRectangle.Bottom - (img.Height + backImagePadding.Bottom));
+                        break;
                 }
             }
 
@@ -381,8 +506,21 @@ namespace MetroFramework.Forms
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
+            if (shadowType == MetroFormShadowType.AeroShadow &&
+                IsAeroThemeEnabled() && IsDropShadowSupported())
+            {
+                int val = 2;
+                DwmApi.DwmSetWindowAttribute(Handle, 2, ref val, 4);
+                var m = new DwmApi.MARGINS
+                {
+                    cyBottomHeight = 1,
+                    cxLeftWidth = 0,
+                    cxRightWidth = 0,
+                    cyTopHeight = 0
+                };
 
-            if (DesignMode) return;
+                DwmApi.DwmExtendFrameIntoClientArea(Handle, ref m);
+            }
         }
 
         protected override void OnEnabledChanged(EventArgs e)
@@ -508,6 +646,21 @@ namespace MetroFramework.Forms
             WinApi.SendMessage(Handle, (int)WinApi.Messages.WM_NCLBUTTONDOWN, (int)WinApi.HitTest.HTCAPTION, 0);
         }
 
+        [SecuritySafeCritical]
+        private static bool IsAeroThemeEnabled()
+        {
+            if (Environment.OSVersion.Version.Major <= 5) return false;
+
+            bool aeroEnabled;
+            DwmApi.DwmIsCompositionEnabled(out aeroEnabled);
+            return aeroEnabled;
+        }
+
+        private static bool IsDropShadowSupported()
+        {
+            return Environment.OSVersion.Version.Major > 5 && SystemInformation.IsDropShadowEnabled;
+        }
+
         #endregion
 
         #region Window Buttons
@@ -552,6 +705,7 @@ namespace MetroFramework.Forms
             newButton.Tag = button;
             newButton.Size = new Size(25, 20);
             newButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            newButton.TabStop = false; //remove the form controls from the tab stop
             newButton.Click += WindowButton_Click;
             Controls.Add(newButton);
 
@@ -633,28 +787,82 @@ namespace MetroFramework.Forms
         {
             #region Interface
 
-            private MetroColorStyle metroStyle = MetroColorStyle.Blue;
-            [Category("Metro Appearance")]
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            public event EventHandler<MetroPaintEventArgs> CustomPaintBackground;
+            protected virtual void OnCustomPaintBackground(MetroPaintEventArgs e)
+            {
+                if (GetStyle(ControlStyles.UserPaint) && CustomPaintBackground != null)
+                {
+                    CustomPaintBackground(this, e);
+                }
+            }
+
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            public event EventHandler<MetroPaintEventArgs> CustomPaint;
+            protected virtual void OnCustomPaint(MetroPaintEventArgs e)
+            {
+                if (GetStyle(ControlStyles.UserPaint) && CustomPaint != null)
+                {
+                    CustomPaint(this, e);
+                }
+            }
+
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
+            protected virtual void OnCustomPaintForeground(MetroPaintEventArgs e)
+            {
+                if (GetStyle(ControlStyles.UserPaint) && CustomPaintForeground != null)
+                {
+                    CustomPaintForeground(this, e);
+                }
+            }
+
+            private MetroColorStyle metroStyle = MetroColorStyle.Default;
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            [DefaultValue(MetroColorStyle.Default)]
             public MetroColorStyle Style
             {
                 get
                 {
-                    if (StyleManager != null)
+                    if (DesignMode || metroStyle != MetroColorStyle.Default)
+                    {
+                        return metroStyle;
+                    }
+
+                    if (StyleManager != null && metroStyle == MetroColorStyle.Default)
+                    {
                         return StyleManager.Style;
+                    }
+                    if (StyleManager == null && metroStyle == MetroColorStyle.Default)
+                    {
+                        return MetroDefaults.Style;
+                    }
 
                     return metroStyle;
                 }
                 set { metroStyle = value; }
             }
 
-            private MetroThemeStyle metroTheme = MetroThemeStyle.Light;
-            [Category("Metro Appearance")]
+            private MetroThemeStyle metroTheme = MetroThemeStyle.Default;
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            [DefaultValue(MetroThemeStyle.Default)]
             public MetroThemeStyle Theme
             {
                 get
                 {
-                    if (StyleManager != null)
+                    if (DesignMode || metroTheme != MetroThemeStyle.Default)
+                    {
+                        return metroTheme;
+                    }
+
+                    if (StyleManager != null && metroTheme == MetroThemeStyle.Default)
+                    {
                         return StyleManager.Theme;
+                    }
+                    if (StyleManager == null && metroTheme == MetroThemeStyle.Default)
+                    {
+                        return MetroDefaults.Theme;
+                    }
 
                     return metroTheme;
                 }
@@ -663,10 +871,47 @@ namespace MetroFramework.Forms
 
             private MetroStyleManager metroStyleManager = null;
             [Browsable(false)]
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
             public MetroStyleManager StyleManager
             {
                 get { return metroStyleManager; }
                 set { metroStyleManager = value; }
+            }
+
+            private bool useCustomBackColor = false;
+            [DefaultValue(false)]
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            public bool UseCustomBackColor
+            {
+                get { return useCustomBackColor; }
+                set { useCustomBackColor = value; }
+            }
+
+            private bool useCustomForeColor = false;
+            [DefaultValue(false)]
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            public bool UseCustomForeColor
+            {
+                get { return useCustomForeColor; }
+                set { useCustomForeColor = value; }
+            }
+
+            private bool useStyleColors = false;
+            [DefaultValue(false)]
+            [Category(MetroDefaults.PropertyCategory.Appearance)]
+            public bool UseStyleColors
+            {
+                get { return useStyleColors; }
+                set { useStyleColors = value; }
+            }
+
+            [Browsable(false)]
+            [Category(MetroDefaults.PropertyCategory.Behaviour)]
+            [DefaultValue(false)]
+            public bool UseSelectable
+            {
+                get { return GetStyle(ControlStyles.Selectable); }
+                set { SetStyle(ControlStyles.Selectable, value); }
             }
 
             #endregion
@@ -696,11 +941,13 @@ namespace MetroFramework.Forms
             {
                 Color backColor, foreColor;
 
+                MetroThemeStyle _Theme = Theme;
                 if (Parent != null)
                 {
                     if (Parent is IMetroForm)
                     {
-                        backColor = MetroPaint.BackColor.Form(Theme);
+                        _Theme = ((IMetroForm)Parent).Theme;
+                        backColor = MetroPaint.BackColor.Form(_Theme);
                     }
                     else if (Parent is IMetroControl)
                     {
@@ -713,27 +960,27 @@ namespace MetroFramework.Forms
                 }
                 else
                 {
-                    backColor = MetroPaint.BackColor.Form(Theme);
+                    backColor = MetroPaint.BackColor.Form(_Theme);
                 }
 
                 if (isHovered && !isPressed && Enabled)
                 {
-                    foreColor = MetroPaint.ForeColor.Button.Normal(Theme);
-                    backColor = MetroPaint.BackColor.Button.Normal(Theme);
+                    foreColor = MetroPaint.ForeColor.Button.Normal(_Theme);
+                    backColor = MetroPaint.BackColor.Button.Normal(_Theme);
                 }
                 else if (isHovered && isPressed && Enabled)
                 {
-                    foreColor = MetroPaint.ForeColor.Button.Press(Theme);
+                    foreColor = MetroPaint.ForeColor.Button.Press(_Theme);
                     backColor = MetroPaint.GetStyleColor(Style);
                 }
                 else if (!Enabled)
                 {
-                    foreColor = MetroPaint.ForeColor.Button.Disabled(Theme);
-                    backColor = MetroPaint.BackColor.Button.Disabled(Theme);
+                    foreColor = MetroPaint.ForeColor.Button.Disabled(_Theme);
+                    backColor = MetroPaint.BackColor.Button.Disabled(_Theme);
                 }
                 else
                 {
-                    foreColor = MetroPaint.ForeColor.Button.Normal(Theme);
+                    foreColor = MetroPaint.ForeColor.Button.Normal(_Theme);
                 }
 
                 e.Graphics.Clear(backColor);
@@ -788,11 +1035,13 @@ namespace MetroFramework.Forms
         #region Shadows
 
         private const int CS_DROPSHADOW = 0x20000;
+        const int WS_MINIMIZEBOX = 0x20000;
         protected override CreateParams CreateParams
         {
             get
             {
                 CreateParams cp = base.CreateParams;
+                cp.Style |= WS_MINIMIZEBOX;
                 if (ShadowType == MetroFormShadowType.SystemShadow)
                     cp.ClassStyle |= CS_DROPSHADOW;
                 return cp;
@@ -811,19 +1060,6 @@ namespace MetroFramework.Forms
 
                 case MetroFormShadowType.DropShadow:
                     shadowForm = new MetroRealisticDropShadow(this);
-                    return;
-
-                case MetroFormShadowType.AeroShadow:
-                    try
-                    {
-                        shadowForm = new MetroAeroDropShadow(this);
-                        return;
-                    }
-                    catch (Exception)
-                    {
-                        ShadowType = MetroFormShadowType.DropShadow;
-                        CreateShadow();
-                    }
                     return;
             }
         }

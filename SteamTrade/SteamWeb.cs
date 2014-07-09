@@ -14,19 +14,30 @@ namespace SteamTrade
 {
     public class SteamWeb
     {
-        public static string Fetch (string url, string method, NameValueCollection data = null, CookieContainer cookies = null, bool ajax = true)
+        public static string Fetch (string url, string method = "GET", NameValueCollection data = null, CookieContainer cookies = null, bool ajax = true, string referer = "")
         {
-            HttpWebResponse response = Request (url, method, data, cookies, ajax);
-            using(Stream responseStream = response.GetResponseStream())
+            for (int i = 0; i < 5; i++)
             {
-                using(StreamReader reader = new StreamReader(responseStream))
+                try
                 {
-                    return reader.ReadToEnd();
+                    HttpWebResponse response = Request(url, method, data, cookies, ajax, referer);
+                    using (Stream responseStream = response.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(responseStream))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
                 }
-            }
+                catch
+                {
+                    System.Threading.Thread.Sleep(2000);
+                }
+            }            
+            return "";
         }
 
-        public static HttpWebResponse Request (string url, string method, NameValueCollection data = null, CookieContainer cookies = null, bool ajax = true)
+        public static HttpWebResponse Request (string url, string method, NameValueCollection data = null, CookieContainer cookies = null, bool ajax = true, string referer = "")
         {
             HttpWebRequest request = WebRequest.Create (url) as HttpWebRequest;
 
@@ -35,7 +46,7 @@ namespace SteamTrade
             request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
             //request.Host is set automatically
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36";
-            request.Referer = "http://steamcommunity.com/trade/1";
+            request.Referer = string.IsNullOrEmpty(referer) ? "http://steamcommunity.com/trade/1" : referer;
             request.Timeout = 50000; //Timeout after 50 seconds
 
             if (ajax)

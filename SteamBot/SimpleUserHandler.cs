@@ -12,17 +12,9 @@ namespace SteamBot
 {
     public class SimpleUserHandler : UserHandler
     {
-        ShowTrade ShowTrade;
+        ShowTrade_Web ShowTradeWeb;
 
         public SimpleUserHandler(Bot bot, SteamID sid) : base(bot, sid) { }
-
-        public void SendMessage(string message)
-        {
-            if (message != "")
-            {
-                Bot.SteamFriends.SendChatMessage(OtherSID, EChatEntryType.ChatMsg, message);
-            }
-        }
 
         public override bool OnGroupAdd()
         {
@@ -31,7 +23,7 @@ namespace SteamBot
 
         public override void OnLoginCompleted()
         {
-            
+
         }
 
         public override void OnTradeSuccess()
@@ -205,7 +197,7 @@ namespace SteamBot
             
         }
 
-        public override void OpenChat(SteamID SID)
+        public override bool OpenChat(SteamID SID)
         {
             string selected = Bot.SteamFriends.GetFriendPersonaName(SID);
             ulong sid = SID;
@@ -216,6 +208,7 @@ namespace SteamBot
                 Friends.chat.Show();
                 Friends.chat.Flash();
                 Friends.chat_opened = true;
+                return true;
             }
             else
             {
@@ -242,6 +235,7 @@ namespace SteamBot
                 {
                     Console.WriteLine(ex);
                 }
+                return false;
             }
         }
 
@@ -254,65 +248,10 @@ namespace SteamBot
 
         public override void OnMessage(string message, EChatEntryType type)
         {
-            if (Bot.main.InvokeRequired)
-            {
-                Bot.main.Invoke((Action)(() =>
-                {
-                    var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
-                    OpenChat(OtherSID);
-                    string date = "[" + DateTime.Now + "] ";
-                    string name = other + ": ";
-                    foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
-                    {
-                        if (tab.Text == other)
-                        {
-                            foreach (var item in tab.Controls)
-                            {
-                                Friends.chat.chatTab = (ChatTab)item;
-                            }
-                        }
-                    }
-                    int islink;
-                    islink = 0;
-                    if (message.Contains("http://") || (message.Contains("https://")) || (message.Contains("www.")) || (message.Contains("ftp."))){
-                        string[] stan = message.Split(' ');
-                        foreach (string word in stan)
-                        {
-                            if (word.Contains("http://") || (word.Contains("https://")) || (word.Contains("www.")) || (word.Contains("ftp.")))
-                            {
-                                if (word.Contains("."))
-                                {
-                                    islink = 1;
-                                }
-                            }
-                        }
-                    }
-                    if (islink == 1)
-                    {
-                        Friends.chat.chatTab.UpdateChat("[INFO] ", "WARNING: ", "Do not click on links that you feel that maybe unsafe. Make sure the link is what it should be by looking at it.");
-                    }
-                    Friends.chat.chatTab.UpdateChat(date, name, message);
-                    new Thread(() =>
-                    {
-                        if (!Chat.hasFocus)
-                        {
-                            int duration = 3;
-                            FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
-                            FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
-                            string title = Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " says:";
-                            Notification toastNotification = new Notification(title, message, duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox);
-                            Bot.main.Invoke((Action)(() =>
-                            {
-                                toastNotification.Show();
-                            }));
-                        }
-                    }).Start();
-                }));
-            }
-            else
+            Bot.main.Invoke((Action)(() =>
             {
                 var other = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
-                OpenChat(OtherSID);
+                var opened = OpenChat(OtherSID);
                 string date = "[" + DateTime.Now + "] ";
                 string name = other + ": ";
                 foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
@@ -325,8 +264,46 @@ namespace SteamBot
                         }
                     }
                 }
+                int islink;
+                islink = 0;
+                if (message.Contains("http://") || (message.Contains("https://")) || (message.Contains("www.")) || (message.Contains("ftp.")))
+                {
+                    string[] stan = message.Split(' ');
+                    foreach (string word in stan)
+                    {
+                        if (word.Contains("http://") || (word.Contains("https://")) || (word.Contains("www.")) || (word.Contains("ftp.")))
+                        {
+                            if (word.Contains("."))
+                            {
+                                islink = 1;
+                            }
+                        }
+                    }
+                }
+                if (islink == 1)
+                {
+                    Friends.chat.chatTab.UpdateChat("[INFO] ", "WARNING: ", "Be cautious when clicking unknown links.");
+                }
                 Friends.chat.chatTab.UpdateChat(date, name, message);
-            }
+                new Thread(() =>
+                {
+                    if (opened || !Chat.hasFocus)
+                    {
+                        int duration = 3;
+                        FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
+                        FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
+                        string title = Bot.SteamFriends.GetFriendPersonaName(OtherSID);
+                        Notification toastNotification = new Notification(title, Util.GetColorFromPersonaState(Bot, OtherSID), message, duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox, new Action(() =>
+                        {
+                            Friends.chat.BringToFront();
+                        }));
+                        Bot.main.Invoke((Action)(() =>
+                        {
+                            toastNotification.Show();
+                        }));
+                    }
+                }).Start();
+            }));
         }
 
         public override void SendTradeState(uint tradeID)
@@ -397,10 +374,6 @@ namespace SteamBot
                 try
                 {
                     base.OnTradeClose();
-                    Bot.main.Invoke((Action)(() =>
-                    {
-                        ShowTrade.Close();
-                    }));
                 }
                 catch (Exception ex)
                 {
@@ -503,7 +476,6 @@ namespace SteamBot
                 try
                 {
                     base.OnTradeClose();
-                    ShowTrade.Close();
                 }
                 catch (Exception ex)
                 {
@@ -524,7 +496,7 @@ namespace SteamBot
                     if (Friends.chat_opened)
                     {
                         Friends.chat.chatTab.TradeButtonMode(1);
-                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has expired.\r\n", false);
+                        Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] The trade has closed.\r\n", false);
                     }
                 }));
             }));
@@ -532,7 +504,12 @@ namespace SteamBot
 
         public override void OnTradeInit()
         {
-            ShowTrade.itemsAdded = 0;
+            Bot.main.Invoke((Action)(() =>
+            {
+                ShowTradeWeb = new ShowTrade_Web(Bot);
+                ShowTradeWeb.Show();
+                ShowTradeWeb.Activate();
+            }));
             ChatTab.AppendLog(OtherSID, "==========[TRADE STARTED]==========\r\n");            
             Bot.log.Success("Trade successfully initialized.");
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
@@ -549,28 +526,11 @@ namespace SteamBot
             {
                 Friends.chat.chatTab.UpdateButton("Currently in Trade");
                 Friends.chat.chatTab.UpdateChat("[" + DateTime.Now + "] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " has accepted your trade request.\r\n", false);
-            }));
-            ShowTrade.loading = true;
-            Bot.main.Invoke((Action)(() =>
-            {
-                ShowTrade.ClearAll();
-            }));
-            TradeCountInventory();
+            }));            
         }
 
         public override void OnTradeClose()
         {
-            try
-            {
-                Friends.chat.Invoke((Action)(() =>
-                {
-                    ShowTrade.Close();
-                }));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
             {
                 if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
@@ -591,206 +551,20 @@ namespace SteamBot
             base.OnTradeClose();
         }
 
-        public void TradeCountInventory()
+        public override void OnTradeAddItem(GenericInventory.Inventory.Item inventoryItem)
         {
             Bot.main.Invoke((Action)(() =>
             {
-                ShowTrade = new ShowTrade(Bot, Bot.SteamFriends.GetFriendPersonaName(OtherSID));
-                ShowTrade.Show();
-                ShowTrade.Activate();
-            }));
-            BackpackTF.CurrentSchema = BackpackTF.FetchSchema();
-            // Let's count our inventory
-            Thread loadInventory = new Thread(() =>
-            {   
-                Console.WriteLine("Trade window opened.");
-                Console.WriteLine("Loading all inventory items.");
-                if (Bot.CurrentTrade == null)
-                    return;
-                for (int i = 0; i < 5; i++)
-                {
-                    if (Trade.MyInventory == null)
-                    {
-                        Thread.Sleep(1000);
-                    }
-                    else { break; }
-                }
-                Inventory.Item[] inventory = Trade.MyInventory.Items;
-                foreach (Inventory.Item item in inventory)
-                {
-                    if (!item.IsNotTradeable)
-                    {
-                        var currentItem = Trade.CurrentSchema.GetItem(item.Defindex);
-                        string name = Util.GetItemName(currentItem, item);
-                        string price = "";
-                        bool isGift = Util.IsItemGifted(item);
-
-                        if (currentItem.Name == "Wrapped Gift")
-                        {
-                            price = Util.GetPrice(item.ContainedItem.Defindex, Convert.ToInt32(item.ContainedItem.Quality.ToString()), item, isGift);
-                        }
-                        else
-                        {
-                            price = Util.GetPrice(currentItem.Defindex, Convert.ToInt32(item.Quality.ToString()), item, isGift);
-                        }
-
-                        ListInventory.Add(name, item.Id, currentItem.ImageURL, price);
-                    }
-                }
-                try
-                {
-                    ShowTrade.loading = false;
-                    Bot.main.Invoke((Action)(() => {
-                        try
-                        {
-                            ShowTrade.list_inventory.SetObjects(ListInventory.Get());
-                        }
-                        catch
-                        {
-
-                        }
-                    }));
-                }
-                catch
-                {
-
-                }
-            });
-            loadInventory.Start();
+                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + inventoryItem.Name + "\r\n");
+            }));     
         }
 
-        public override void OnTradeAddItem(Schema.Item schemaItem, Inventory.Item inventoryItem)
+        public override void OnTradeRemoveItem(GenericInventory.Inventory.Item inventoryItem)
         {
             Bot.main.Invoke((Action)(() =>
             {
-                string itemValue = "";
-                string completeName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
-                ulong itemID = inventoryItem.Id;
-                //string itemValue = Util.GetPrice(schemaItem.Defindex, schemaItem.ItemQuality, inventoryItem);
-                double value = 0;
-                if (itemValue.Contains("ref"))
-                {
-                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "ref", "");
-                    value = Convert.ToDouble(newValue);
-                }
-                else if (itemValue.Contains("key"))
-                {
-                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "keys", "");
-                    value = Convert.ToDouble(newValue);
-                    value = value * BackpackTF.KeyPrice;
-                }
-                else if (itemValue.Contains("bud"))
-                {
-                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "buds", "");
-                    value = Convert.ToDouble(newValue);
-                    value = value * BackpackTF.BudPrice;
-                }
-                ShowTrade.OtherTotalValue += value;
-                if (ShowTrade.OtherTotalValue >= BackpackTF.BudPrice * 1.33)
-                {
-                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.BudPrice;
-                    string label = "Total Value: " + formatPrice.ToString("0.00") + " buds";
-                    ShowTrade.UpdateLabel(label);
-                }
-                else if (ShowTrade.OtherTotalValue >= BackpackTF.KeyPrice)
-                {
-                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.KeyPrice;
-                    string label = "Total Value: " + formatPrice.ToString("0.00") + " keys";
-                    ShowTrade.UpdateLabel(label);
-                }
-                else
-                {
-                    double formatPrice = ShowTrade.OtherTotalValue;
-                    string label = "Total Value: " + formatPrice.ToString("0.00") + " ref";
-                    ShowTrade.UpdateLabel(label);
-                }
-                ListOtherOfferings.Add(completeName, itemID, itemValue);
-                ShowTrade.list_otherofferings.SetObjects(ListOtherOfferings.Get());
-                ShowTrade.itemsAdded++;
-                if (ShowTrade.itemsAdded > 0)
-                {
-                    ShowTrade.check_userready.Enabled = true;
-                }
-                string itemName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
-                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: ", itemName);
-                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " added: " + itemName + "\r\n");
-                ShowTrade.ResetTradeStatus();
-            }));
-        }
-
-        public override void OnTradeRemoveItem(Schema.Item schemaItem, Inventory.Item inventoryItem)
-        {
-            Bot.main.Invoke((Action)(() =>
-            {
-                string itemValue = "";
-                string completeName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
-                ulong itemID = inventoryItem.Id;
-                double value = 0;
-                if (itemValue.Contains("ref"))
-                {
-                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "ref", "");
-                    value = Convert.ToDouble(newValue);
-                }
-                else if (itemValue.Contains("key"))
-                {
-                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "keys", "");
-                    value = Convert.ToDouble(newValue);
-                    value = value * BackpackTF.KeyPrice;
-                }
-                else if (itemValue.Contains("bud"))
-                {
-                    string newValue = ShowTrade.ReplaceLastOccurrence(itemValue, "buds", "");
-                    value = Convert.ToDouble(newValue);
-                    value = value * BackpackTF.BudPrice;
-                }
-                ShowTrade.OtherTotalValue -= value;
-                if (ShowTrade.OtherTotalValue >= BackpackTF.BudPrice * 1.33)
-                {
-                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.BudPrice;
-                    string label = "Total Value: " + formatPrice.ToString("0.00") + " buds";
-                    ShowTrade.UpdateLabel(label);
-                }
-                else if (ShowTrade.OtherTotalValue >= BackpackTF.KeyPrice)
-                {
-                    double formatPrice = ShowTrade.OtherTotalValue / BackpackTF.KeyPrice;
-                    string label = "Total Value: " + formatPrice.ToString("0.00") + " keys";
-                    ShowTrade.UpdateLabel(label);
-                }
-                else
-                {
-                    double formatPrice = ShowTrade.OtherTotalValue;
-                    string label = "Total Value: " + formatPrice.ToString("0.00") + " ref";
-                    ShowTrade.UpdateLabel(label);
-                }
-                ListOtherOfferings.Remove(completeName, itemID);
-                ShowTrade.list_otherofferings.SetObjects(ListOtherOfferings.Get());
-                ShowTrade.itemsAdded--;
-                if (ShowTrade.itemsAdded <= 0)
-                {
-                    ShowTrade.check_userready.Enabled = false;                    
-                }
-                string itemName = GetItemName(schemaItem, inventoryItem, out itemValue, false);
-                ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: ", itemName);
-                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: " + itemName + "\r\n");
-                ShowTrade.ResetTradeStatus();
-            }));
-        }
-
-        string GetItemName(Schema.Item schemaItem, Inventory.Item inventoryItem, out string price, bool id = false)
-        {
-            var currentItem = Trade.CurrentSchema.GetItem(schemaItem.Defindex);
-            var name = Util.GetItemName(currentItem, inventoryItem);
-            var isGift = Util.IsItemGifted(inventoryItem);
-
-            if (currentItem.Name == "Wrapped Gift")
-            {
-                price = Util.GetPrice(inventoryItem.ContainedItem.Defindex, Convert.ToInt32(inventoryItem.ContainedItem.Quality.ToString()), inventoryItem, isGift);
-            }
-            else
-            {
-                price = Util.GetPrice(currentItem.Defindex, Convert.ToInt32(inventoryItem.Quality.ToString()), inventoryItem, isGift);
-            }
-            return name;
+                ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " removed: " + inventoryItem.Name + "\r\n");
+            }));           
         }
 
         public override void OnTradeMessage(string message)
@@ -798,15 +572,18 @@ namespace SteamBot
             Bot.main.Invoke((Action)(() =>
             {
                 string send = Bot.SteamFriends.GetFriendPersonaName(OtherSID) + ": " + message + " [" + DateTime.Now.ToLongTimeString() + "]\r\n";
-                ShowTrade.UpdateChat(send);
                 ChatTab.AppendLog(OtherSID, "[Trade Chat] " + send);
-                if (!ShowTrade.focused)
+                if (!ShowTradeWeb.Focused)
                 {
                     int duration = 3;
                     FormAnimator.AnimationMethod animationMethod = FormAnimator.AnimationMethod.Slide;
                     FormAnimator.AnimationDirection animationDirection = FormAnimator.AnimationDirection.Up;
-                    string title = "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " says:";
-                    Notification toastNotification = new Notification(title, message, duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox);
+                    string title = "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID);
+                    Notification toastNotification = new Notification(title, Util.GetColorFromPersonaState(Bot, OtherSID
+                    ), message, duration, animationMethod, animationDirection, Friends.chat.chatTab.avatarBox, new Action(() =>
+                    {
+                        ShowTradeWeb.BringToFront();
+                    }));
                     toastNotification.Show();
                 }
             }));
@@ -816,32 +593,20 @@ namespace SteamBot
         {
             Bot.main.Invoke((Action)(() =>
             {
-                ShowTrade.check_otherready.Checked = ready;
                 if (ready)
                 {
-                    ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is ready.");
                     ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is ready. [" + DateTime.Now.ToLongTimeString() + "]\r\n");
                 }
                 else
                 {
-                    ShowTrade.AppendText(Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is not ready.");
                     ChatTab.AppendLog(OtherSID, "[Trade Chat] " + Bot.SteamFriends.GetFriendPersonaName(OtherSID) + " is not ready. [" + DateTime.Now.ToLongTimeString() + "]\r\n");
-                    ShowTrade.ResetTradeStatus();
                 }
-                if (ready && ShowTrade.check_userready.Checked)
-                    ShowTrade.button_accept.Enabled = true;
-                else
-                    ShowTrade.button_accept.Enabled = false;
             }));
         }
 
         public override void OnTradeAccept()
         {
             Bot.otherAccepted = true;
-            while (!ShowTrade.accepted)
-            {
-                // wait
-            }
             OnTradeClose();
         }
     }

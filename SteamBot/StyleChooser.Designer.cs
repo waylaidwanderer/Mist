@@ -60,9 +60,10 @@
             this.metroComboBox1.Name = "metroComboBox1";
             this.metroComboBox1.Size = new System.Drawing.Size(209, 29);
             this.metroComboBox1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroComboBox1.StyleManager = this.metroStyleManager1;
             this.metroComboBox1.TabIndex = 0;
             this.metroComboBox1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroComboBox1.UseSelectable = true;
+            this.metroComboBox1.SelectedIndexChanged += new System.EventHandler(this.metroComboBox1_SelectedIndexChanged);
             // 
             // metroStyleManager1
             // 
@@ -76,7 +77,6 @@
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(121, 19);
             this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroLabel1.StyleManager = this.metroStyleManager1;
             this.metroLabel1.TabIndex = 2;
             this.metroLabel1.Text = "Select a style color:";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -87,10 +87,10 @@
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Size = new System.Drawing.Size(92, 23);
             this.metroButton1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroButton1.StyleManager = this.metroStyleManager1;
             this.metroButton1.TabIndex = 1;
             this.metroButton1.Text = "OK";
             this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroButton1.UseSelectable = true;
             this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
             // 
             // StyleChooser
@@ -98,7 +98,6 @@
             this.AcceptButton = this.metroButton1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.ClientSize = new System.Drawing.Size(255, 163);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.metroLabel1);

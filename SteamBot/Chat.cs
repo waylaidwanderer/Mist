@@ -22,7 +22,7 @@ namespace MistClient
             InitializeComponent();
             this.bot = bot;
             hasFocus = false;
-            Util.LoadTheme(metroStyleManager1);
+            Util.LoadTheme(this, this.Controls);     
         }
 
         private void Chat_Load(object sender, EventArgs e)
@@ -52,6 +52,7 @@ namespace MistClient
             this.ChatTabControl.TabPages.Add(page);
             this.ChatTabControl.SelectTab(page);
             this.Text = this.ChatTabControl.SelectedTab.Text + " - Chat";
+            this.Refresh();
         }
 
         private void Chat_FormClosed(object sender, FormClosedEventArgs e)
@@ -94,7 +95,7 @@ namespace MistClient
         private void Chat_Deactivate(object sender, EventArgs e)
         {
             FlashWindow.Stop(this);
-            hasFocus = false;
+            hasFocus = false;   
         }
 
         private void closeChatToolStripMenuItem_Click(object sender, EventArgs e)
@@ -120,6 +121,29 @@ namespace MistClient
             string name = ChatTabControl.SelectedTab.Text;
             Friends.chat.Text = name + " - Chat";
             this.Refresh();
+        }
+
+        public void ViewSteamRepStatus(ulong steamId)
+        {
+            var status = Util.GetSteamRepStatus(steamId);
+            if (status == "None" || status == "")
+            {
+                MetroFramework.MetroMessageBox.Show(this, "User has no special reputation.",
+                "SteamRep Status",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Exclamation,
+                MessageBoxDefaultButton.Button1);
+            }
+            else
+            {
+                var icon = MessageBoxIcon.Information;
+                if (status.Contains("SCAMMER")) icon = MessageBoxIcon.Error;
+                MetroFramework.MetroMessageBox.Show(this, status,
+                "SteamRep Status",
+                MessageBoxButtons.OK,
+                icon,
+                MessageBoxDefaultButton.Button1);
+            }
         }
     }
 }

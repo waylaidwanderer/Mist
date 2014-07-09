@@ -12,56 +12,56 @@ namespace MistClient
 {
     class Util
     {
-        public static void LoadTheme(MetroFramework.Components.MetroStyleManager MetroStyleManager)
-        {
-            Friends.globalThemeManager.Add(MetroStyleManager);
-            MetroStyleManager.Theme = Friends.globalStyleManager.Theme;
-            MetroStyleManager.Style = Friends.globalStyleManager.Style;
-        }
+        public static string UpdateCheckUrl = "http://jzhang.net/mist/update.php";
 
-        public static string HTTPRequest(string url)
+        public static void LoadTheme(MetroFramework.Forms.MetroForm Form, System.Windows.Forms.Control.ControlCollection Controls, MetroFramework.Controls.MetroUserControl MetroUserControl = null)
         {
-            var result = "";
-            try
+            foreach (var form in System.Windows.Forms.Application.OpenForms)
             {
-                using (var webClient = new WebClient())
+                if (form is MetroForm && !form.Equals(Form))
                 {
-                    using (var stream = webClient.OpenRead(url))
+                    try
                     {
-                        using (var streamReader = new StreamReader(stream))
-                        {
-                            result = streamReader.ReadToEnd();
-                        }
+                        var metroForm = (MetroForm)form;
+                        metroForm.Theme = metroForm.StyleManager.Theme = Friends.GlobalStyleManager.Theme;
+                        metroForm.Style = metroForm.StyleManager.Style = Friends.GlobalStyleManager.Style;
+                        metroForm.Refresh();
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-                var wtf = ex.Message;
-            }
+                    catch
+                    {
 
-            return result;
-        }
-
-        public static HttpWebResponse Fetch(string url)
-        {
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-            request.Method = "POST";
-            HttpWebResponse response;
-            for (int count = 0; count < 10; count++)
+                    }                    
+                }          
+            }
+            if (Controls != null)
             {
-                try
+                foreach (System.Windows.Forms.Control control in Controls)
                 {
-                    response = request.GetResponse() as HttpWebResponse;
-                    return response;
-                }
-                catch
-                {
-                    System.Threading.Thread.Sleep(100);
-                    Console.WriteLine("retry");
+                    if (control.GetType().GetProperties().Any(x => x.Name == "StyleManager") || (control.GetType().GetProperties().Any(x => x.Name == "Theme") && control.GetType().GetProperties().Any(x => x.Name == "Style")))
+                    {
+                        control.GetType().GetProperty("Theme").SetValue(control, Friends.GlobalStyleManager.Theme, null);
+                        control.GetType().GetProperty("Style").SetValue(control, Friends.GlobalStyleManager.Style, null);
+                        var styleManager = control.GetType().GetProperty("StyleManager").GetValue(control, null) as MetroFramework.Components.MetroStyleManager;
+                        styleManager = Friends.GlobalStyleManager;
+                        styleManager.Style = Friends.GlobalStyleManager.Style;
+                        styleManager.Theme = Friends.GlobalStyleManager.Theme;
+                        control.Refresh();
+                    }                    
+                    LoadTheme(null, control.Controls);
                 }
             }
-            return null;
+            if (Form != null)
+            {
+                Form.Theme = Form.StyleManager.Theme = Friends.GlobalStyleManager.Theme;
+                Form.Style = Form.StyleManager.Style = Friends.GlobalStyleManager.Style;
+                Form.Refresh();
+            }            
+            if (MetroUserControl != null)
+            {
+                MetroUserControl.Theme = MetroUserControl.StyleManager.Theme = Friends.GlobalStyleManager.Theme;
+                MetroUserControl.Style = MetroUserControl.StyleManager.Style = Friends.GlobalStyleManager.Style;
+                MetroUserControl.Refresh();
+            }
         }
 
         public static string ParseBetween(string Subject, string Start, string End)
@@ -101,301 +101,200 @@ namespace MistClient
             return result;
         }
 
-        public static string GetPrice(int defindex, int quality, SteamTrade.Inventory.Item inventoryItem, bool gifted = false, int attribute = 0)
+        public static double GetSteamMarketPrice(SteamBot.Bot bot, GenericInventory.Inventory.Item item, bool withFee = true)
+        {
+            var url = string.Format("http://steamcommunity.com/market/listings/{0}/{1}/render?currency=1", item.AppId, item.MarketHashName);
+            var response = SteamWeb.Fetch(url, "GET", null, bot.botCookies, false);
+            try
+            {
+                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(response);
+                List<double> prices = new List<double>();
+                int count = 0;
+                var listings = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(json.listinginfo));
+                foreach (var listingItem in listings.Values)
+                {
+                    if (listingItem.price == 0) continue;
+                    if (count == 3) break;
+                    var basePrice = (double)listingItem.converted_price;
+                    var fee = withFee ? (double)listingItem.converted_fee : 0;
+                    var price = (double)((basePrice + fee) / 100);
+                    prices.Add(price);
+                    count++;
+                }
+                var totalPrices = 0.0;
+                foreach (var price in prices)
+                {
+                    totalPrices += price;
+                }
+                var averagePrice = prices.Count > 0 ? Math.Round(totalPrices / prices.Count, 2) : 0;
+                return averagePrice;
+            }
+            catch
+            {
+                return 0;
+            }            
+        }
+
+        public static string GetSteamIDInfo(SteamBot.Bot bot, SteamKit2.SteamID steamId)
+        {
+            string output = "";
+            output += "| steamname: " + bot.SteamFriends.GetFriendPersonaName(steamId);
+            output += "\r\n| steamID32: " + steamId.ToString();
+            output += "\r\n| steamID64: http://steamcommunity.com/profiles/" + steamId.ConvertToUInt64();
+            output += "\r\n|  steamrep: http://steamrep.com/profiles/" + steamId.ConvertToUInt64();
+            return output;
+        }
+
+        public static string GetSteamRepStatus(ulong sid, bool useCache = false)
+        {
+            if (useCache)
+            {
+                var file = Path.Combine(System.Windows.Forms.Application.StartupPath, "steamrep.cache");
+                var cache = ReadAllLines(file);
+                foreach (var line in cache)
+                {
+                    if (line.Contains(sid.ToString()))
+                    {
+                        var lastChecked = Util.ParseBetween(line, "Date:", ".");
+                        var dateLast = Convert.ToDateTime(lastChecked);
+                        var dateNow = DateTime.Now;
+                        var difference = dateNow - dateLast;
+                        if (difference.TotalDays >= 1) break;
+                        return Util.ParseBetween(line, "Rep:", ";");
+                    }
+                }
+                return GetSteamRepStatus(sid);
+            }
+            else
+            {
+                try
+                {
+                    // This is a proxy for SteamRep's beta API. Not recommended for heavy/wide usage.
+                    string url = "http://scam.io/profiles/" + sid;
+                    string response = SteamTrade.SteamWeb.Fetch(url);
+                    if (response != "")
+                    {
+                        var status = Util.ParseBetween(response, "<reputation>", "</reputation>");
+                        WriteToSteamRepCache(sid.ToString(), status);
+                        return status;
+                    }
+                }
+                catch { }
+            }     
+            return "";
+        }
+
+        private static Object locker = new Object();
+
+        public static void WriteToSteamRepCache(string steamId, string rep)
+        {
+            lock (locker)
+            {
+                if (rep == "") rep = "None";
+                var newFile = new StringBuilder();
+                var filePath = Path.Combine(System.Windows.Forms.Application.StartupPath, "steamrep.cache");
+                var file = ReadAllLines(filePath);
+                var add = "SteamID:" + steamId + ";Rep:" + rep + ";Date:" + DateTime.Now + ".\r\n";
+                var found = false;
+                foreach (var line in file)
+                {
+                    if (line.Contains(steamId))
+                    {
+                        found = true;
+                        newFile.Append(line.Replace(line, add));
+                        continue;
+                    }
+                    newFile.Append(line + "\r\n");
+                }
+                if (!found)
+                    newFile.Append(add + "\r\n");
+                File.WriteAllText(filePath, newFile.ToString());
+            }            
+        }
+
+        public static System.Drawing.Bitmap GetAvatar(string path)
         {
             try
             {
-                var item = SteamTrade.Trade.CurrentSchema.GetItem(defindex);
-                string craftable = inventoryItem.IsNotCraftable ? "Non-Craftable" : "Craftable";
-                double value = BackpackTF.CurrentSchema.Response.Items[item.ItemName].Prices[quality.ToString()]["Tradable"][craftable]["0"].Value;
-                double keyValue = BackpackTF.KeyPrice;
-                double billsValue = BackpackTF.BillPrice * keyValue;
-                double budValue = BackpackTF.BudPrice * keyValue;
+                if (path == null)
+                    return MistClient.Properties.Resources.IconUnknown;
+                return (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(path);
+            }
+            catch
+            {
+                return MistClient.Properties.Resources.IconUnknown;
+            }
+        }
 
-                string result = "";
+        public static void ShowSteamProfile(SteamBot.Bot bot, ulong steamId)
+        {
+            var form = new MetroForm();
+            form.Text = "Steam Community";
+            form.Width = 800;
+            form.Height = 600;
+            form.Style = Friends.GlobalStyleManager.Style;
+            form.Theme = Friends.GlobalStyleManager.Theme;
+            form.Icon = MistClient.Properties.Resources.Icon;
+            form.ShadowType = MetroFormShadowType.DropShadow;
+            var webControl = new Awesomium.Windows.Forms.WebControl();
+            webControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            string cookies = string.Format("steamLogin={0}; sessionid={1}", bot.token, bot.sessionId);
+            webControl.WebSession = Awesomium.Core.WebCore.CreateWebSession(new Awesomium.Core.WebPreferences());
+            webControl.WebSession.SetCookie(new Uri("http://steamcommunity.com"), cookies, true, true);
+            webControl.Source = new Uri((string.Format("http://steamcommunity.com/profiles/{0}/", steamId)));
+            webControl.TitleChanged += (s, e) => webControl_TitleChanged(s, e, form);
+            form.Controls.Add(webControl);
+            form.Show();
+        }
 
-                if (inventoryItem.IsNotCraftable)
-                {
-                    value = value / 2.0;
-                }
-                if (inventoryItem.IsNotTradeable)
-                {
-                    value = value / 2.0;
-                }
-                if (gifted)
-                {
-                    value = value * 0.75;
-                }
-                if (quality == 3)
-                {
-                    if (item.CraftMaterialType == "weapon")
-                    {
-                        int level = inventoryItem.Level;
-                        switch (level)
-                        {
-                            case 0:
-                                value = billsValue + 5.11;
-                                break;
-                            case 1:
-                                value = billsValue;
-                                break;
-                            case 42:
-                                value = value * 10.0;
-                                break;
-                            case 69:
-                                value = billsValue;
-                                break;
-                            case 99:
-                                value = billsValue;
-                                break;
-                            case 100:
-                                value = billsValue;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    else if (item.CraftMaterialType == "hat")
-                    {
-                        int level = inventoryItem.Level;
-                        switch (level)
-                        {
-                            case 0:
-                                value = value * 10.0;
-                                break;
-                            case 1:
-                                value = value * 5.0;
-                                break;
-                            case 42:
-                                value = value * 3.0;
-                                break;
-                            case 69:
-                                value = value * 4.0;
-                                break;
-                            case 99:
-                                value = value * 4.0;
-                                break;
-                            case 100:
-                                value = value * 6.0;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
+        private static void webControl_TitleChanged(object sender, Awesomium.Core.TitleChangedEventArgs e, MetroForm parentForm)
+        {
+            parentForm.Text = e.Title;
+            parentForm.Refresh();
+            ((Awesomium.Windows.Forms.WebControl)sender).TitleChanged -= (s, ev) => webControl_TitleChanged(s, ev, parentForm);
+        }
 
-                if (value >= budValue * 1.33)
-                {
-                    value = value / budValue;
-                    result = value.ToString("0.00") + " buds";
-                }
-                else if (value >= keyValue && !item.ItemName.Contains("Crate Key"))
-                {
-                    value = value / keyValue;
-                    result = value.ToString("0.00") + " keys";
-                }
+        public static string[] ReadAllLines(string path)
+        {
+            System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite);
+
+            System.IO.StreamReader sr = new System.IO.StreamReader(fs);
+
+            List<String> lst = new List<string>();
+
+            while (!sr.EndOfStream)
+                lst.Add(sr.ReadLine());
+
+            return lst.ToArray();
+        }
+
+        public static System.Drawing.Color GetColorFromPersonaState(SteamBot.Bot bot, SteamKit2.SteamID steamId)
+        {
+            var state = bot.SteamFriends.GetFriendPersonaState(steamId);
+            if (state != SteamKit2.EPersonaState.Offline)
+            {
+                var isPlayingGame = !string.IsNullOrEmpty(bot.SteamFriends.GetFriendGamePlayedName(steamId));
+                if (isPlayingGame)
+                    return (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml("#81b900");
                 else
-                {
-                    result = value.ToString("0.00") + " ref";
-                }
-
-                return result;
+                    return (System.Drawing.Color)System.Drawing.ColorTranslator.FromHtml("#5db2ff");
             }
-            catch
-            {
-                return "Unknown";
-            }
+            return System.Drawing.ColorTranslator.FromHtml("#8a8a8a");
         }
 
-        public static string GetItemName(Schema.Item schemaItem, Inventory.Item inventoryItem, bool id = false)
+        public static void SendUsageStats(ulong steamId)
         {
-            var currentItem = Trade.CurrentSchema.GetItem(schemaItem.Defindex);
-            string name = "";
-            var quality = Convert.ToInt32(inventoryItem.Quality);
-            if (quality != 6)
-                name += QualityToName(quality) + " ";
-            name += currentItem.ItemName;
-            if (quality == 5)
+            string systemName = string.Empty;
+            System.Management.ManagementObjectSearcher searcher = new System.Management.ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
+            foreach (System.Management.ManagementObject os in searcher.Get())
             {
-                try
-                {
-                    for (int count = 0; count < inventoryItem.Attributes.Length; count++)
-                    {
-                        if (inventoryItem.Attributes[count].Defindex == 134)
-                        {
-                            name += " (Effect: " + EffectToName(inventoryItem.Attributes[count].FloatValue) + ")";
-                        }
-                    }
-                }
-                catch
-                {
-
-                }
+                systemName = os["Caption"].ToString();
+                break;
             }
-            if (currentItem.CraftMaterialType == "supply_crate")
-            {
-                for (int count = 0; count < inventoryItem.Attributes.Length; count++)
-                {
-                    if (inventoryItem.Attributes[count].Defindex == 187)
-                    {
-                        name += " #" + (inventoryItem.Attributes[count].FloatValue);
-                    }
-                }
-            }
-            name += " (Level " + inventoryItem.Level + ")";
-            try
-            {
-                int size = inventoryItem.Attributes.Length;
-                for (int count = 0; count < size; count++)
-                {
-                    if (inventoryItem.Attributes[count].Defindex == 261)
-                    {
-                        string paint = PaintToName(inventoryItem.Attributes[count].FloatValue);
-                        name += " (Painted: " + paint + ")";
-                    }
-                    if (inventoryItem.Attributes[count].Defindex == 186)
-                    {
-                        name += " (Gifted)";
-                    }
-                }
-            }
-            catch
-            {
-                // Item has no attributes... or something.
-            }
-            if (inventoryItem.IsNotCraftable)
-                name += " (Uncraftable)";
-            if (currentItem.Name == "Wrapped Gift")
-            {
-                // Untested!
-                try
-                {
-                    int size = inventoryItem.Attributes.Length;
-                    for (int count = 0; count < size; count++)
-                    {
-                        var containedItem = Trade.CurrentSchema.GetItem(inventoryItem.ContainedItem.Defindex);
-                        var containedName = GetItemName(containedItem, inventoryItem.ContainedItem);
-                        name += " (Contains: " + containedName + ")";
-                    }
-                }
-                catch
-                {
-                    // Item has no attributes... or something.
-                }
-            }
-            if (id)
-                name += " :" + inventoryItem.Id;
-            return name;
-        }
-
-        public static bool IsItemGifted(Inventory.Item inventoryItem)
-        {
-            try
-            {
-                for (int count = 0; count < inventoryItem.Attributes.Length; count++)
-                {
-                    if (inventoryItem.Attributes[count].Defindex == 186)
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch
-            {
-                // Item has no attributes... or something.
-            }
-            return false;
-        }
-
-        public static string QualityToName(int quality)
-        {
-            foreach (var key in Trade.CurrentSchema.Qualities)
-            {
-                if (key.Value == quality)
-                {
-                    foreach (var key2 in Trade.CurrentSchema.QualityNames)
-                    {
-                        if (key2.Key == key.Key)
-                        {
-                            return key2.Value;
-                        }
-                    }
-                }
-            }
-            return "";
-        }
-
-        static string EffectToName(float defindex)
-        {
-            foreach (var effect in Trade.CurrentSchema.AttachedParticles)
-            {
-                if (effect.Defindex == defindex)
-                    return effect.Name;
-            }
-            return "";
-        }
-
-        static string PaintToName(float color)
-        {
-            if (color == 3100495)
-                return "A Color Similar to Slate";
-            if (color == 7511618)
-                return "Indubitably Green";
-            if (color == 8208497)
-                return "A Deep Commitment to Purple";
-            if (color == 13595446)
-                return "Mann Co. Orange";
-            if (color == 1315860)
-                return "A Distinctive Lack of Hue";
-            if (color == 10843461)
-                return "Muskelmannbraun";
-            if (color == 12377523)
-                return "A Mann's Mint";
-            if (color == 5322826)
-                return "Noble Hatter's Violet";
-            if (color == 2960676)
-                return "After Eight";
-            if (color == 12955537)
-                return "Peculiarly Drab Tincture";
-            if (color == 8289918)
-                return "Aged Moustache Grey";
-            if (color == 16738740)
-                return "Pink as Hell";
-            if (color == 15132390)
-                return "An Extraordinary Abundance of Tinge";
-            if (color == 6901050)
-                return "Radigan Conagher Brown";
-            if (color == 15185211)
-                return "Australium Gold";
-            if (color == 3329330)
-                return "The Bitter Taste of Defeat and Lime";
-            if (color == 14204632)
-                return "Color No. 216-190-216";
-            if (color == 15787660)
-                return "The Color of a Gentlemann's Business Pants";
-            if (color == 15308410)
-                return "Dark Salmon Injustice";
-            if (color == 8154199)
-                return "Ye Olde Rustic Colour";
-            if (color == 8421376)
-                return "Drably Olive";
-            if (color == 4345659)
-                return "Zepheniah's Greed";
-            if (color == 6637376 || color == 2636109)
-                return "An Air of Debonair";
-            if (color == 12073019 || color == 5801378)
-                return "Team Spirit";
-            if (color == 3874595 || color == 1581885)
-                return "Balaclavas Are Forever";
-            if (color == 8400928 || color == 2452877)
-                return "The Value of Teamwork";
-            if (color == 12807213 || color == 12091445)
-                return "Cream Spirit";
-            if (color == 11049612 || color == 8626083)
-                return "Waterlogged Lab Coat";
-            if (color == 4732984 || color == 3686984)
-                return "Operator's Overalls";
-            return "Unknown";
+            var data = new System.Collections.Specialized.NameValueCollection();
+            data.Add("steamId", steamId.ToString());
+            data.Add("os", systemName);
+            SteamWeb.Fetch("http://jzhang.net/mist/stats.php", "POST", data);
         }
     }
 }

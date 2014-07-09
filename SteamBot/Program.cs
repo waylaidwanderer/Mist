@@ -36,17 +36,15 @@ namespace SteamBot
                     Environment.Exit(0);
                     return;
                 }
-                else if (userChoice == DialogResult.No)
-                {
-
-                }
-                else if (userChoice == DialogResult.Cancel)
+                else
                 {
                     Environment.Exit(0);
                     return;
                 }
             }        
             CleanUp();
+            string steamRepCacheFile = Path.Combine(Application.StartupPath, "steamrep.cache");
+            if (!File.Exists(steamRepCacheFile)) File.Create(steamRepCacheFile);
             string LogDirectory = Path.Combine(Application.StartupPath, "logs");
             if (!Directory.Exists(LogDirectory))
             {
@@ -63,7 +61,7 @@ namespace SteamBot
             }
             Log mainLog;
             bool created;
-            mutex = new Mutex(false, "Mist-AF12AF2", out created);
+            mutex = new Mutex(false, "Mist-waylaidwandererrox", out created);
             if (!created)
             {
                 int pid = 0;

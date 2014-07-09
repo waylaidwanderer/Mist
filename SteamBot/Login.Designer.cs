@@ -41,7 +41,6 @@
             this.label1 = new MetroFramework.Controls.MetroLabel();
             this.label2 = new MetroFramework.Controls.MetroLabel();
             this.label4 = new MetroFramework.Controls.MetroLabel();
-            this.label3 = new MetroFramework.Controls.MetroLabel();
             this.label_status = new MetroFramework.Controls.MetroLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
@@ -54,6 +53,7 @@
             // 
             // text_username
             // 
+            this.text_username.Lines = new string[0];
             this.text_username.Location = new System.Drawing.Point(155, 160);
             this.text_username.MaxLength = 32767;
             this.text_username.Name = "text_username";
@@ -62,9 +62,9 @@
             this.text_username.SelectedText = "";
             this.text_username.Size = new System.Drawing.Size(128, 20);
             this.text_username.Style = MetroFramework.MetroColorStyle.Blue;
-            this.text_username.StyleManager = this.metroStyleManager1;
             this.text_username.TabIndex = 0;
             this.text_username.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_username.UseSelectable = true;
             // 
             // metroStyleManager1
             // 
@@ -73,6 +73,7 @@
             // 
             // text_password
             // 
+            this.text_password.Lines = new string[0];
             this.text_password.Location = new System.Drawing.Point(155, 186);
             this.text_password.MaxLength = 32767;
             this.text_password.Name = "text_password";
@@ -81,14 +82,15 @@
             this.text_password.SelectedText = "";
             this.text_password.Size = new System.Drawing.Size(128, 20);
             this.text_password.Style = MetroFramework.MetroColorStyle.Blue;
-            this.text_password.StyleManager = this.metroStyleManager1;
             this.text_password.TabIndex = 1;
             this.text_password.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_password.UseSelectable = true;
             this.text_password.UseSystemPasswordChar = true;
             this.text_password.TextChanged += new System.EventHandler(this.text_password_TextChanged);
             // 
             // text_api
             // 
+            this.text_api.Lines = new string[0];
             this.text_api.Location = new System.Drawing.Point(155, 212);
             this.text_api.MaxLength = 32767;
             this.text_api.Name = "text_api";
@@ -97,9 +99,9 @@
             this.text_api.SelectedText = "";
             this.text_api.Size = new System.Drawing.Size(128, 20);
             this.text_api.Style = MetroFramework.MetroColorStyle.Blue;
-            this.text_api.StyleManager = this.metroStyleManager1;
             this.text_api.TabIndex = 2;
             this.text_api.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.text_api.UseSelectable = true;
             // 
             // check_remember
             // 
@@ -108,11 +110,10 @@
             this.check_remember.Name = "check_remember";
             this.check_remember.Size = new System.Drawing.Size(134, 15);
             this.check_remember.Style = MetroFramework.MetroColorStyle.Blue;
-            this.check_remember.StyleManager = this.metroStyleManager1;
             this.check_remember.TabIndex = 3;
             this.check_remember.Text = "Remember Password";
             this.check_remember.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.check_remember.UseVisualStyleBackColor = true;
+            this.check_remember.UseSelectable = true;
             // 
             // button_cancel
             // 
@@ -121,10 +122,10 @@
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_cancel.StyleManager = this.metroStyleManager1;
             this.button_cancel.TabIndex = 5;
             this.button_cancel.Text = "Cancel";
             this.button_cancel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_cancel.UseSelectable = true;
             this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
             // 
             // button_login
@@ -133,10 +134,10 @@
             this.button_login.Name = "button_login";
             this.button_login.Size = new System.Drawing.Size(75, 23);
             this.button_login.Style = MetroFramework.MetroColorStyle.Blue;
-            this.button_login.StyleManager = this.metroStyleManager1;
             this.button_login.TabIndex = 4;
             this.button_login.Text = "Login";
             this.button_login.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.button_login.UseSelectable = true;
             this.button_login.Click += new System.EventHandler(this.button_login_Click);
             // 
             // label1
@@ -146,7 +147,6 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(68, 19);
             this.label1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label1.StyleManager = this.metroStyleManager1;
             this.label1.TabIndex = 18;
             this.label1.Text = "Username";
             this.label1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -156,9 +156,8 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(86, 187);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 19);
+            this.label2.Size = new System.Drawing.Size(64, 19);
             this.label2.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label2.StyleManager = this.metroStyleManager1;
             this.label2.TabIndex = 19;
             this.label2.Text = "Password";
             this.label2.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -171,7 +170,6 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 19);
             this.label4.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label4.StyleManager = this.metroStyleManager1;
             this.label4.TabIndex = 20;
             this.label4.Text = "API Key";
             this.label4.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -179,28 +177,15 @@
             this.label4.Click += new System.EventHandler(this.label4_Click);
             this.label4.MouseHover += new System.EventHandler(this.label4_MouseHover);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(83, 287);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 19);
-            this.label3.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label3.StyleManager = this.metroStyleManager1;
-            this.label3.TabIndex = 21;
-            this.label3.Text = "Status:";
-            this.label3.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // label_status
             // 
-            this.label_status.AutoSize = true;
-            this.label_status.Location = new System.Drawing.Point(128, 287);
+            this.label_status.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label_status.Location = new System.Drawing.Point(20, 287);
             this.label_status.Name = "label_status";
-            this.label_status.Size = new System.Drawing.Size(30, 19);
+            this.label_status.Size = new System.Drawing.Size(327, 19);
             this.label_status.Style = MetroFramework.MetroColorStyle.Blue;
-            this.label_status.StyleManager = this.metroStyleManager1;
             this.label_status.TabIndex = 22;
-            this.label_status.Text = "Idle";
+            this.label_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_status.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // pictureBox1
@@ -222,7 +207,6 @@
             this.CancelButton = this.button_cancel;
             this.ClientSize = new System.Drawing.Size(367, 326);
             this.Controls.Add(this.label_status);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -263,7 +247,6 @@
         private MetroFramework.Controls.MetroLabel label1;
         private MetroFramework.Controls.MetroLabel label2;
         private MetroFramework.Controls.MetroLabel label4;
-        private MetroFramework.Controls.MetroLabel label3;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         public MetroFramework.Controls.MetroLabel label_status;
     }

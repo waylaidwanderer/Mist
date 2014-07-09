@@ -24,12 +24,12 @@ namespace MistClient
         public string APIKey;
         public static bool LoginClicked = false;
         public bool wrongAPI = false;
-        Log log;        
+        Log log;
 
         public Login(Log log)
         {
             InitializeComponent();
-            this.Text = "Login - Mist v" + Friends.mist_ver;
+            this.Text = "Login - Mist v" + Friends.MistVersion;
             MakePortable(Properties.Settings.Default);
             this.log = log;
             LoadTheme();
@@ -38,6 +38,30 @@ namespace MistClient
                 pictureBox1.Image = MistClient.Properties.Resources.mist;
             }
             updatechecker.RunWorkerAsync();
+            if (Properties.Settings.Default.IsFirstRun)
+            {
+                string message = "Would you like to share Mist usage stats? The following information will sent each time you are logged in:\r\n" +
+                                    "\t- Your Steam ID\r\n" +
+                                    "\t- Your Operating System\r\n" +
+                                    "If you say no now, you can choose to opt-in to sharing usage stats any time in the main menu after logging in.";
+                DialogResult choice = MessageBox.Show(this, message,
+                                "Usage Statistics",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Information,
+                                MessageBoxDefaultButton.Button1);
+                switch (choice)
+                {
+                    case DialogResult.Yes:
+                        Properties.Settings.Default.IsFirstRun = false;
+                        Properties.Settings.Default.ShareUsageStats = true;
+                        break;
+                    case DialogResult.No:
+                        Properties.Settings.Default.IsFirstRun = false;
+                        Properties.Settings.Default.ShareUsageStats = false;
+                        break;
+                }
+                Properties.Settings.Default.Save();
+            }
             if (Properties.Settings.Default.Username != "")
                 text_username.Text = Properties.Settings.Default.Username;
             if (Properties.Settings.Default.apiKey != "")
@@ -71,7 +95,7 @@ namespace MistClient
                     Properties.Settings.Default.apiKey = text_api.Text;
                     Properties.Settings.Default.Username = text_username.Text;
                     if (check_remember.Checked)
-                        Properties.Settings.Default.Password = Encrypt(text_password.Text);
+                        Properties.Settings.Default.Password = Encrypt(text_password.Text); // this is really just to prevent someone from casually reading your Mist.settings file to get your password
                     else
                         Properties.Settings.Default.Password = "";
                     Properties.Settings.Default.Save();
@@ -171,8 +195,8 @@ namespace MistClient
 
         private void label4_Click(object sender, EventArgs e)
         {
-            string message = "Would you like to be taken to http://steamcommunity.com/dev/apikey to get an API key? Click No to simply close this message box.";
-            DialogResult choice = MessageBox.Show(new Form() { TopMost = true }, message,
+            string message = "Would you like to be taken to http://steamcommunity.com/dev/apikey to get an API key?\r\nClick No to simply close this message box.";
+            DialogResult choice = MetroFramework.MetroMessageBox.Show(this, message,
                             "Steam API Key",
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Information,
@@ -189,8 +213,7 @@ namespace MistClient
 
         private void updatechecker_DoWork(object sender, DoWorkEventArgs e)
         {
-            string url = "http://www.thectscommunity.com/dev/update_check.php";
-            string response = Util.HTTPRequest(url);
+            string response = SteamTrade.SteamWeb.Fetch(Util.UpdateCheckUrl);
             if (response != "")
             {
                 string latestVer = Util.ParseBetween(response, "<version>", "</version>");
@@ -206,7 +229,7 @@ namespace MistClient
                         updater.Activate();
                     }
                 }
-                else if (!Properties.Settings.Default.SkipUpdate && latestVer.Trim() != Friends.mist_ver)
+                else if (!Properties.Settings.Default.SkipUpdate && latestVer.Trim() != Friends.MistVersion)
                 {
                     string[] changelog = Util.GetStringInBetween("<changelog>", "</changelog>", response, false, false);
                     if (!string.IsNullOrEmpty(changelog[0]))
@@ -230,41 +253,41 @@ namespace MistClient
 
         private void LoadTheme()
         {
-            string Theme = Properties.Settings.Default.Theme;
-            string Style = Properties.Settings.Default.Style;
-            if (Theme == "Light")
-                Friends.globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
-            else if (Theme == "Dark")
-                Friends.globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
-            if (Style == "Blue")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
-            else if (Style == "Black")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Black;
-            else if (Style == "Brown")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Brown;
-            else if (Style == "Green")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Green;
-            else if (Style == "Lime")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Lime;
-            else if (Style == "Magenta")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
-            else if (Style == "Orange")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Orange;
-            else if (Style == "Pink")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Pink;
-            else if (Style == "Purple")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Purple;
-            else if (Style == "Red")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Red;
-            else if (Style == "Silver")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Silver;
-            else if (Style == "Teal")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Teal;
-            else if (Style == "White")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.White;
-            else if (Style == "Yellow")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Yellow;
-            Util.LoadTheme(metroStyleManager1);
+            string theme = Properties.Settings.Default.Theme;
+            string style = Properties.Settings.Default.Style;
+            if (theme == "Light")
+                Friends.GlobalStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
+            else if (theme == "Dark")
+                Friends.GlobalStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
+            if (style == "Blue")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
+            else if (style == "Black")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Black;
+            else if (style == "Brown")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Brown;
+            else if (style == "Green")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Green;
+            else if (style == "Lime")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Lime;
+            else if (style == "Magenta")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
+            else if (style == "Orange")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Orange;
+            else if (style == "Pink")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Pink;
+            else if (style == "Purple")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Purple;
+            else if (style == "Red")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Red;
+            else if (style == "Silver")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Silver;
+            else if (style == "Teal")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Teal;
+            else if (style == "White")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.White;
+            else if (style == "Yellow")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Yellow;
+            Util.LoadTheme(this, this.Controls);
         }
     }
 }

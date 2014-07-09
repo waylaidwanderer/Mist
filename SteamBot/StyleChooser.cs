@@ -17,7 +17,8 @@ namespace MistClient
         public StyleChooser(string Theme)
         {
             InitializeComponent();
-            Util.LoadTheme(metroStyleManager1);
+            Util.LoadTheme(this, this.Controls);
+            metroComboBox1.SelectedIndex = 0;
             if (Theme == "Light")
                 light = true;
             if (Theme == "Dark")
@@ -31,53 +32,59 @@ namespace MistClient
             {
                 return;
             }
-            SetStyle(selection);
-            Friends.RefreshTheme();
+            SetStyle(selection);            
             this.Close();
         }
 
-        private void SetStyle(string Style)
+        private void SetStyle(string style)
         {
             if (light)
             {
-                Friends.globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
+                Friends.GlobalStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
                 Properties.Settings.Default.Theme = "Light";
             }
             if (dark)
             {
-                Friends.globalStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
+                Friends.GlobalStyleManager.Theme = MetroFramework.MetroThemeStyle.Dark;
                 Properties.Settings.Default.Theme = "Dark";
             }
-            if (Style == "Blue")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
-            if (Style == "Black")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Black;
-            if (Style == "Brown")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Brown;
-            if (Style == "Green")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Green;
-            if (Style == "Lime")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Lime;
-            if (Style == "Magenta")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
-            if (Style == "Orange")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Orange;
-            if (Style == "Pink")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Pink;
-            if (Style == "Purple")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Purple;
-            if (Style == "Red")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Red;
-            if (Style == "Silver")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Silver;
-            if (Style == "Teal")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Teal;
-            if (Style == "White")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.White;
-            if (Style == "Yellow")
-                Friends.globalStyleManager.Style = MetroFramework.MetroColorStyle.Yellow;
-            Properties.Settings.Default.Style = Style;
+            if (style == "Blue")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Blue;
+            if (style == "Black")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Black;
+            if (style == "Brown")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Brown;
+            if (style == "Green")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Green;
+            if (style == "Lime")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Lime;
+            if (style == "Magenta")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Magenta;
+            if (style == "Orange")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Orange;
+            if (style == "Pink")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Pink;
+            if (style == "Purple")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Purple;
+            if (style == "Red")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Red;
+            if (style == "Silver")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Silver;
+            if (style == "Teal")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Teal;
+            if (style == "White")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.White;
+            if (style == "Yellow")
+                Friends.GlobalStyleManager.Style = MetroFramework.MetroColorStyle.Yellow;
+            Properties.Settings.Default.Style = style;
             Properties.Settings.Default.Save();
+            Util.LoadTheme(this, this.Controls);
+        }
+
+        private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selection = metroComboBox1.SelectedItem.ToString();
+            SetStyle(selection);
         }
     }
 }

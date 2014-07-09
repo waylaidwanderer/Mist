@@ -15,7 +15,7 @@ namespace ToastNotifications
         private bool allowFocus = false;
         private FormAnimator animator;
         private IntPtr currentForegroundWindow;
-
+        private Action actionToComplete;
         /// <summary>
         /// 
         /// </summary>
@@ -24,7 +24,7 @@ namespace ToastNotifications
         /// <param name="duration"></param>
         /// <param name="animation"></param>
         /// <param name="direction"></param>
-        public Notification(string title, string body, int duration, FormAnimator.AnimationMethod animation, FormAnimator.AnimationDirection direction, PictureBox avatar = null)
+        public Notification(string title, Color titleColor, string body, int duration, FormAnimator.AnimationMethod animation, FormAnimator.AnimationDirection direction, PictureBox avatar = null, Action actionToComplete = null)
         {
             InitializeComponent();
 
@@ -34,17 +34,19 @@ namespace ToastNotifications
                 duration = duration * 1000;
 
             this.lifeTimer.Interval = duration;
+            this.labelTitle.ForeColor = titleColor;
             this.labelTitle.Text = title;
             this.labelBody.Text = body;
+            this.actionToComplete = actionToComplete;
 
             if (avatar != null)
                 avatarBox.Image = avatar.Image;
             else
                 avatarBox.Image = avatarBox.InitialImage;
 
-            this.animator = new FormAnimator(this, animation, direction, 500);
+            this.animator = new FormAnimator(this, animation, direction, 250);
 
-            Region = Region.FromHrgn(NativeMethods.CreateRoundRectRgn(0, 0, Width - 5, Height - 5, 20, 20));
+            Region = Region.FromHrgn(NativeMethods.CreateRoundRectRgn(0, 0, Width + 1, Height + 1, 0, 0));   
         }
 
         #region Methods
@@ -122,6 +124,9 @@ namespace ToastNotifications
 
         private void Notification_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (actionToComplete != null)
+                actionToComplete();
+
             // Move down any open forms above this one
             foreach (Notification openForm in Notification.openNotifications)
             {
@@ -130,7 +135,7 @@ namespace ToastNotifications
                     // Remaining forms are below this one
                     break;
                 }
-                openForm.Top += this.Height;
+                openForm.Top += this.Height;                
             }
 
             Notification.openNotifications.Remove(this);

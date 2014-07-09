@@ -51,7 +51,6 @@
             this.progress_download.Name = "progress_download";
             this.progress_download.Size = new System.Drawing.Size(341, 45);
             this.progress_download.Style = MetroFramework.MetroColorStyle.Blue;
-            this.progress_download.StyleManager = this.metroStyleManager1;
             this.progress_download.TabIndex = 0;
             this.progress_download.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
@@ -67,7 +66,6 @@
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(249, 19);
             this.metroLabel1.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroLabel1.StyleManager = this.metroStyleManager1;
             this.metroLabel1.TabIndex = 5;
             this.metroLabel1.Text = "Downloading the newest version of Mist...";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -76,7 +74,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.None;
             this.ClientSize = new System.Drawing.Size(389, 150);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.progress_download);

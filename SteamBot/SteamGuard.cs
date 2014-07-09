@@ -20,7 +20,8 @@ namespace MistClient
             InitializeComponent();
             if (title != null)
                 label1.Text = title;
-            metroStyleManager1.Theme = Friends.globalStyleManager.Theme;
+            metroStyleManager1.Theme = Friends.GlobalStyleManager.Theme;
+            metroStyleManager1.Style = Friends.GlobalStyleManager.Style;
         }
 
         private void button_ok_Click(object sender, EventArgs e)

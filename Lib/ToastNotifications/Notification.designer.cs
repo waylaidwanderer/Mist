@@ -45,11 +45,11 @@ namespace ToastNotifications
             // 
             this.labelBody.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelBody.BackColor = System.Drawing.Color.Transparent;
-            this.labelBody.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBody.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBody.ForeColor = System.Drawing.Color.White;
-            this.labelBody.Location = new System.Drawing.Point(52, 29);
+            this.labelBody.Location = new System.Drawing.Point(58, 30);
             this.labelBody.Name = "labelBody";
-            this.labelBody.Size = new System.Drawing.Size(191, 42);
+            this.labelBody.Size = new System.Drawing.Size(185, 41);
             this.labelBody.TabIndex = 0;
             this.labelBody.Text = "Body goes here and here and here and here and here";
             this.labelBody.Click += new System.EventHandler(this.labelRO_Click);
@@ -57,20 +57,21 @@ namespace ToastNotifications
             // labelTitle
             // 
             this.labelTitle.BackColor = System.Drawing.Color.Transparent;
-            this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelTitle.Location = new System.Drawing.Point(3, 1);
+            this.labelTitle.Location = new System.Drawing.Point(58, 9);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(253, 21);
+            this.labelTitle.Size = new System.Drawing.Size(185, 21);
             this.labelTitle.TabIndex = 0;
             this.labelTitle.Text = "title goes here";
+            this.labelTitle.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.labelTitle.Click += new System.EventHandler(this.labelTitle_Click);
             // 
             // avatarBox
             // 
             this.avatarBox.BackColor = System.Drawing.Color.Transparent;
             this.avatarBox.InitialImage = global::ToastNotifications.Properties.Resources.IconUnknown;
-            this.avatarBox.Location = new System.Drawing.Point(6, 29);
+            this.avatarBox.Location = new System.Drawing.Point(12, 19);
             this.avatarBox.Name = "avatarBox";
             this.avatarBox.Size = new System.Drawing.Size(40, 40);
             this.avatarBox.TabIndex = 11;
@@ -88,13 +89,13 @@ namespace ToastNotifications
             this.Controls.Add(this.avatarBox);
             this.Controls.Add(this.labelTitle);
             this.Controls.Add(this.labelBody);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Notification";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "EDGE Shop Flag Notification";
             this.TopMost = true;
             this.Activated += new System.EventHandler(this.Notification_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Notification_FormClosed);

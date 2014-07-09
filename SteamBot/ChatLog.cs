@@ -26,7 +26,7 @@ namespace MistClient
             this.Text = "Chat Log Between You and " + name;
             this.textBox1.Text = log;
             this.sid = sid;
-            Util.LoadTheme(metroStyleManager1);
+            Util.LoadTheme(this, this.Controls);
         }
 
         private void copyToClipboardToolStripMenuItem_Click(object sender, EventArgs e)

@@ -62,9 +62,10 @@
             this.ChatTabControl.Name = "ChatTabControl";
             this.ChatTabControl.Size = new System.Drawing.Size(513, 396);
             this.ChatTabControl.Style = MetroFramework.MetroColorStyle.Blue;
-            this.ChatTabControl.StyleManager = this.metroStyleManager1;
             this.ChatTabControl.TabIndex = 3;
             this.ChatTabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.ChatTabControl.UseSelectable = true;
+            this.ChatTabControl.UseStyleColors = true;
             this.ChatTabControl.Click += new System.EventHandler(this.ChatTabControl_Click);
             this.ChatTabControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ChatTabControl_MouseUp);
             // 

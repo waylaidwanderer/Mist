@@ -25,58 +25,71 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
-
+using MetroFramework.Controls;
 using MetroFramework.Interfaces;
 
 namespace MetroFramework.Components
 {
+    [Designer("MetroFramework.Design.Components.MetroStyleManagerDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public sealed class MetroStyleManager : Component, ICloneable, ISupportInitialize
     {
-        public MetroStyleManager()
+        public delegate void ThemeChangedHandler(object sender, EventArgs e);
+        public event ThemeChangedHandler OnThemeChanged;
+
+        public void FireOnThemeChanged(EventArgs e)
         {
-        
+            if (OnThemeChanged != null)
+                OnThemeChanged(this, e);
         }
+
+        #region Fields
 
         private readonly IContainer parentContainer;
 
-        public MetroStyleManager(IContainer parentContainer)
-            : this()
+        private MetroColorStyle metroStyle = MetroDefaults.Style;
+        [DefaultValue(MetroDefaults.Style)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public MetroColorStyle Style
         {
-            if (parentContainer != null)
+            get { return metroStyle; }
+            set
             {
-                this.parentContainer = parentContainer;
-                this.parentContainer.Add(this);
+                if (value == MetroColorStyle.Default)
+                {
+                    value = MetroDefaults.Style;
+                }
+
+                metroStyle = value;
+
+                if (!isInitializing)
+                {                    
+                    Update();                
+                }
             }
         }
 
-        #region ICloneable
-
-        public object Clone()
+        private MetroThemeStyle metroTheme = MetroDefaults.Theme;
+        [DefaultValue(MetroDefaults.Theme)]
+        [Category(MetroDefaults.PropertyCategory.Appearance)]
+        public MetroThemeStyle Theme
         {
-            MetroStyleManager newStyleManager = new MetroStyleManager();
-            newStyleManager.metroTheme = Theme;
-            newStyleManager.metroStyle = Style;
-            return newStyleManager;
+            get { return metroTheme; }
+            set
+            {
+                if (value == MetroThemeStyle.Default)
+                {
+                    value = MetroDefaults.Theme;
+                }
+
+                metroTheme = value;
+
+                if (!isInitializing)
+                {
+                    Update();
+                    FireOnThemeChanged(EventArgs.Empty);
+                }
+            }
         }
-
-        #endregion
-
-        #region ISupportInitialize
-
-        private bool isInitializing;
-
-        void ISupportInitialize.BeginInit()
-        {
-            isInitializing = true;
-        }
-
-        void ISupportInitialize.EndInit()
-        {
-            isInitializing = false;
-            Refresh();
-        }
-
-        #endregion
 
         private ContainerControl owner;
         public ContainerControl Owner
@@ -84,7 +97,7 @@ namespace MetroFramework.Components
             get { return owner; }
             set
             {
-                if (owner != null) 
+                if (owner != null)
                 {
                     owner.ControlAdded -= ControlAdded;
                 }
@@ -103,39 +116,69 @@ namespace MetroFramework.Components
             }
         }
 
-        private MetroColorStyle metroStyle = MetroColorStyle.Blue;
-        [DefaultValue(MetroColorStyle.Blue)]
-        [Category("Metro Appearance")]
-        public MetroColorStyle Style
-        {
-            get { return metroStyle; }
-            set 
-            { 
-                metroStyle = value;
+        #endregion
 
-                if (!isInitializing)
-                {
-                    Refresh();
-                }
-            }
+        #region Constructor
+
+        public MetroStyleManager()
+        {
+        
         }
 
-        private MetroThemeStyle metroTheme = MetroThemeStyle.Light;
-        [DefaultValue(MetroThemeStyle.Light)]
-        [Category("Metro Appearance")]
-        public MetroThemeStyle Theme
+        public MetroStyleManager(IContainer parentContainer)
+            : this()
         {
-            get { return metroTheme; }
-            set 
+            if (parentContainer != null)
             {
-                metroTheme = value;
-
-                if (!isInitializing)
-                {
-                    Refresh();
-                }
+                this.parentContainer = parentContainer;
+                this.parentContainer.Add(this);
             }
         }
+
+        #endregion
+
+        #region ICloneable
+
+        public object Clone()
+        {
+            MetroStyleManager newStyleManager = new MetroStyleManager();
+            newStyleManager.metroTheme = Theme;
+            newStyleManager.metroStyle = Style;
+            return newStyleManager;
+        }
+
+        public object Clone(ContainerControl owner)
+        {
+            MetroStyleManager clonedManager = Clone() as MetroStyleManager;
+
+            if (owner is IMetroForm)
+            {
+                clonedManager.Owner = owner;
+            }
+
+            return clonedManager;
+        }
+
+        #endregion
+
+        #region ISupportInitialize
+
+        private bool isInitializing;
+
+        void ISupportInitialize.BeginInit()
+        {
+            isInitializing = true;
+        }
+
+        void ISupportInitialize.EndInit()
+        {
+            isInitializing = false;
+            Update();
+        }
+
+        #endregion
+
+        #region Management Methods
 
         private void ControlAdded(object sender, ControlEventArgs e)
         {
@@ -145,7 +188,7 @@ namespace MetroFramework.Components
             }
         }
 
-        public void Refresh()
+        public void Update()
         {
             if (owner != null)
             {
@@ -162,6 +205,11 @@ namespace MetroFramework.Components
                 if (obj is IMetroComponent)
                 {
                     ApplyTheme((IMetroComponent)obj);
+                }
+
+                if (obj.GetType() == typeof(MetroContextMenu))
+                {
+                    ApplyTheme((MetroContextMenu)obj);
                 }
             }
         }
@@ -212,16 +260,14 @@ namespace MetroFramework.Components
 
         private void ApplyTheme(IMetroControl control)
         {
-            control.Style = Style;
-            control.Theme = Theme;
             control.StyleManager = this;
         }
 
         private void ApplyTheme(IMetroComponent component)
         {
-            component.Style = Style;
-            component.Theme = Theme;
             component.StyleManager = this;
         }
+
+        #endregion
     }
 }

@@ -77,7 +77,7 @@ public class PortableSettingsProvider : SettingsProvider
         {
             SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
         }
-        catch (Exception ex)
+        catch
         {
         }
         //Ignore if cant save, device been ejected
@@ -116,7 +116,7 @@ public class PortableSettingsProvider : SettingsProvider
                 {
                     _settingsXML.Load(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
                 }
-                catch (Exception ex)
+                catch
                 {
                     //Create new document
                     XmlDeclaration dec = _settingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
@@ -139,17 +139,10 @@ public class PortableSettingsProvider : SettingsProvider
 
         try
         {
-            if (IsRoaming(setting))
-            {
-                ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + setting.Name).InnerText;
-            }
-            else
-            {
-                ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName + "/" + setting.Name).InnerText;
-            }
+            ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + setting.Name).InnerText;
         }
 
-        catch (Exception ex)
+        catch
         {
             if ((setting.DefaultValue != null))
             {
@@ -166,8 +159,6 @@ public class PortableSettingsProvider : SettingsProvider
 
     private void SetValue(SettingsPropertyValue propVal)
     {
-
-        XmlElement MachineNode = default(XmlElement);
         XmlElement SettingNode = default(XmlElement);
 
         //Determine if the setting is roaming.
@@ -175,16 +166,9 @@ public class PortableSettingsProvider : SettingsProvider
         //Otherwise it is stored under a machine name node 
         try
         {
-            if (IsRoaming(propVal.Property))
-            {
-                SettingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name);
-            }
-            else
-            {
-                SettingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName + "/" + propVal.Name);
-            }
+            SettingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name);
         }
-        catch (Exception ex)
+        catch
         {
             SettingNode = null;
         }
@@ -196,38 +180,10 @@ public class PortableSettingsProvider : SettingsProvider
         }
         else
         {
-            if (IsRoaming(propVal.Property))
-            {
-                //Store the value as an element of the Settings Root Node
-                SettingNode = SettingsXML.CreateElement(propVal.Name);
-                SettingNode.InnerText = propVal.SerializedValue.ToString();
-                SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(SettingNode);
-            }
-            else
-            {
-                //Its machine specific, store as an element of the machine name node,
-                //creating a new machine name node if one doesnt exist.
-                try
-                {
-
-                    MachineNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName);
-                }
-                catch (Exception ex)
-                {
-                    MachineNode = SettingsXML.CreateElement(Environment.MachineName);
-                    SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(MachineNode);
-                }
-
-                if (MachineNode == null)
-                {
-                    MachineNode = SettingsXML.CreateElement(Environment.MachineName);
-                    SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(MachineNode);
-                }
-
-                SettingNode = SettingsXML.CreateElement(propVal.Name);
-                SettingNode.InnerText = propVal.SerializedValue.ToString();
-                MachineNode.AppendChild(SettingNode);
-            }
+            //Store the value as an element of the Settings Root Node
+            SettingNode = SettingsXML.CreateElement(propVal.Name);
+            SettingNode.InnerText = propVal.SerializedValue.ToString();
+            SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(SettingNode);
         }
     }
 
@@ -245,5 +201,4 @@ public class PortableSettingsProvider : SettingsProvider
         return false;
     }
 }
-
 // --------- code end -------------

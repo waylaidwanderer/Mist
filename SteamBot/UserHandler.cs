@@ -12,18 +12,13 @@ namespace SteamBot
     {
         protected Bot Bot;
         protected SteamID OtherSID;
-        protected Inventory OtherInventory;
+        protected SteamID MySID;
 
         public UserHandler(Bot bot, SteamID sid)
         {
             Bot = bot;
             OtherSID = sid;
-            OtherInventory = GetInventory(sid);
-        }
-
-        public Inventory GetInventory(SteamID sid)
-        {
-            return Inventory.FetchInventory(sid.ConvertToUInt64(), Bot.apiKey);
+            MySID = bot.SteamUser.SteamID;
         }
 
         /// <summary>
@@ -146,9 +141,9 @@ namespace SteamBot
 
         public abstract void OnTradeInit();
 
-        public abstract void OnTradeAddItem(Schema.Item schemaItem, Inventory.Item inventoryItem);
+        public abstract void OnTradeAddItem(GenericInventory.Inventory.Item inventoryItem);
 
-        public abstract void OnTradeRemoveItem(Schema.Item schemaItem, Inventory.Item inventoryItem);
+        public abstract void OnTradeRemoveItem(GenericInventory.Inventory.Item inventoryItem);
 
         public abstract void OnTradeMessage(string message);
 
@@ -175,7 +170,7 @@ namespace SteamBot
 
         public abstract void SetStatus(EPersonaState state);
 
-        public abstract void OpenChat(SteamID SID);
+        public abstract bool OpenChat(SteamID SID);
 
         public abstract void SendTradeState(uint tradeID);
 

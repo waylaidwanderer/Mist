@@ -50,19 +50,17 @@ namespace MetroFramework.Forms
             singletonWindow = new MetroTaskWindow(secToClose, userControl);
             singletonWindow.Text = title;
             singletonWindow.Resizable = false;
+            singletonWindow.Movable = true;
             singletonWindow.StartPosition = FormStartPosition.Manual;
             
             if (parent != null && parent is IMetroForm)
             {
                 singletonWindow.Theme = ((IMetroForm)parent).Theme;
                 singletonWindow.Style = ((IMetroForm)parent).Style;
-                singletonWindow.StyleManager = ((IMetroForm)parent).StyleManager.Clone() as MetroStyleManager;
-
-                if (singletonWindow.StyleManager != null)
-                    singletonWindow.StyleManager.Owner = singletonWindow;
+                singletonWindow.StyleManager = ((IMetroForm)parent).StyleManager.Clone(singletonWindow) as MetroStyleManager;
             }
 
-            singletonWindow.Show(parent);
+            singletonWindow.Show();
         }
 
         public static bool IsVisible()
@@ -145,10 +143,9 @@ namespace MetroFramework.Forms
 
                 MaximizeBox = false;
                 MinimizeBox = false;
-                Movable = false;
+                Movable = true;
 
                 TopMost = true;
-                FormBorderStyle = FormBorderStyle.FixedDialog;
 
                 Size = new Size(400, 200);
 
@@ -177,7 +174,15 @@ namespace MetroFramework.Forms
                 controlContainer.Size = new Size(Width - 40, Height - 80);
                 controlContainer.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
 
-                StyleManager.Refresh();
+                controlContainer.AutoScroll = false;
+                controlContainer.HorizontalScrollbar = false;
+                controlContainer.VerticalScrollbar = false;
+                controlContainer.Refresh();
+
+                if (StyleManager != null)
+                {
+                    StyleManager.Update();
+                }
 
                 isInitialized = true;
 
