@@ -53,9 +53,13 @@
             this.steam_name = new MetroFramework.Controls.MetroLabel();
             this.steam_status = new MetroFramework.Controls.MetroLabel();
             this.chat_status = new MetroFramework.Controls.MetroLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // text_input
@@ -63,16 +67,18 @@
             this.text_input.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.text_input.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_input.Location = new System.Drawing.Point(0, 309);
+            this.text_input.Location = new System.Drawing.Point(8, 326);
             this.text_input.MaxLength = 2048;
             this.text_input.Multiline = true;
             this.text_input.Name = "text_input";
-            this.text_input.Size = new System.Drawing.Size(218, 49);
+            this.text_input.Size = new System.Drawing.Size(244, 58);
             this.text_input.TabIndex = 0;
             this.text_input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_input_KeyPress);
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.contextMenuStrip1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewProfileToolStripMenuItem,
             this.showBackpackToolStripMenuItem,
@@ -121,7 +127,7 @@
             // 
             this.avatarBox.BackColor = System.Drawing.Color.Transparent;
             this.avatarBox.ContextMenuStrip = this.contextMenuStrip1;
-            this.avatarBox.Location = new System.Drawing.Point(3, 5);
+            this.avatarBox.Location = new System.Drawing.Point(13, 5);
             this.avatarBox.Name = "avatarBox";
             this.avatarBox.Size = new System.Drawing.Size(40, 40);
             this.avatarBox.TabIndex = 10;
@@ -133,16 +139,14 @@
             // 
             // text_log
             // 
-            this.text_log.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.text_log.BackColor = System.Drawing.SystemColors.Window;
             this.text_log.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.text_log.Location = new System.Drawing.Point(0, 51);
+            this.text_log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.text_log.Location = new System.Drawing.Point(10, 10);
             this.text_log.Name = "text_log";
             this.text_log.ReadOnly = true;
             this.text_log.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.text_log.Size = new System.Drawing.Size(369, 252);
+            this.text_log.Size = new System.Drawing.Size(353, 216);
             this.text_log.TabIndex = 3;
             this.text_log.Text = "";
             this.text_log.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.text_log_LinkClicked);
@@ -156,9 +160,9 @@
             // button_trade
             // 
             this.button_trade.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_trade.Location = new System.Drawing.Point(224, 3);
+            this.button_trade.Location = new System.Drawing.Point(223, 3);
             this.button_trade.Name = "button_trade";
-            this.button_trade.Size = new System.Drawing.Size(143, 42);
+            this.button_trade.Size = new System.Drawing.Size(134, 42);
             this.button_trade.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_trade.TabIndex = 2;
             this.button_trade.Text = "Invite to Trade";
@@ -174,9 +178,9 @@
             // button_send
             // 
             this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.Location = new System.Drawing.Point(224, 309);
+            this.button_send.Location = new System.Drawing.Point(258, 326);
             this.button_send.Name = "button_send";
-            this.button_send.Size = new System.Drawing.Size(145, 50);
+            this.button_send.Size = new System.Drawing.Size(103, 58);
             this.button_send.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_send.TabIndex = 1;
             this.button_send.Text = "Send";
@@ -188,7 +192,7 @@
             // 
             this.steam_name.AutoSize = true;
             this.steam_name.ContextMenuStrip = this.contextMenuStrip1;
-            this.steam_name.Location = new System.Drawing.Point(47, 5);
+            this.steam_name.Location = new System.Drawing.Point(57, 5);
             this.steam_name.Name = "steam_name";
             this.steam_name.Size = new System.Drawing.Size(83, 19);
             this.steam_name.Style = MetroFramework.MetroColorStyle.Blue;
@@ -201,7 +205,7 @@
             // 
             this.steam_status.AutoSize = true;
             this.steam_status.ContextMenuStrip = this.contextMenuStrip1;
-            this.steam_status.Location = new System.Drawing.Point(47, 24);
+            this.steam_status.Location = new System.Drawing.Point(57, 24);
             this.steam_status.Name = "steam_status";
             this.steam_status.Size = new System.Drawing.Size(82, 19);
             this.steam_status.Style = MetroFramework.MetroColorStyle.Blue;
@@ -211,28 +215,57 @@
             // 
             // chat_status
             // 
-            this.chat_status.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chat_status.AutoSize = true;
-            this.chat_status.Location = new System.Drawing.Point(0, 363);
+            this.chat_status.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chat_status.Location = new System.Drawing.Point(10, 0);
+            this.chat_status.Margin = new System.Windows.Forms.Padding(0);
             this.chat_status.Name = "chat_status";
             this.chat_status.Size = new System.Drawing.Size(71, 19);
             this.chat_status.Style = MetroFramework.MetroColorStyle.Blue;
             this.chat_status.TabIndex = 16;
             this.chat_status.Text = "chat_status";
+            this.chat_status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.chat_status.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chat_status.UseCustomBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.text_log);
+            this.panel1.Location = new System.Drawing.Point(-2, 51);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(10);
+            this.panel1.Size = new System.Drawing.Size(373, 236);
+            this.panel1.TabIndex = 17;
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.chat_status);
+            this.panel2.Location = new System.Drawing.Point(-2, 288);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.panel2.Size = new System.Drawing.Size(373, 23);
+            this.panel2.TabIndex = 18;
             // 
             // ChatTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.chat_status);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.steam_status);
             this.Controls.Add(this.steam_name);
             this.Controls.Add(this.button_send);
             this.Controls.Add(this.button_trade);
-            this.Controls.Add(this.text_log);
             this.Controls.Add(this.avatarBox);
             this.Controls.Add(this.text_input);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.MinimumSize = new System.Drawing.Size(286, 156);
             this.Name = "ChatTab";
             this.Size = new System.Drawing.Size(370, 387);
@@ -245,6 +278,9 @@
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.avatarBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,6 +305,8 @@
         public MetroFramework.Controls.MetroLabel chat_status;
         public MetroFramework.Controls.MetroLabel steam_status;
         private System.Windows.Forms.ToolStripMenuItem removeFriendToolStripMenuItem;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
 
     }
 }

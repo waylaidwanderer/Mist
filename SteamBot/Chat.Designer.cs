@@ -58,9 +58,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ChatTabControl.ContextMenuStrip = this.contextMenuStrip1;
-            this.ChatTabControl.Location = new System.Drawing.Point(23, 63);
+            this.ChatTabControl.Location = new System.Drawing.Point(-4, 63);
+            this.ChatTabControl.Margin = new System.Windows.Forms.Padding(0);
             this.ChatTabControl.Name = "ChatTabControl";
-            this.ChatTabControl.Size = new System.Drawing.Size(513, 396);
+            this.ChatTabControl.Size = new System.Drawing.Size(569, 396);
             this.ChatTabControl.Style = MetroFramework.MetroColorStyle.Blue;
             this.ChatTabControl.TabIndex = 3;
             this.ChatTabControl.Theme = MetroFramework.MetroThemeStyle.Dark;

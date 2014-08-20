@@ -37,17 +37,24 @@ namespace MistClient
             {
                 foreach (System.Windows.Forms.Control control in Controls)
                 {
-                    if (control.GetType().GetProperties().Any(x => x.Name == "StyleManager") || (control.GetType().GetProperties().Any(x => x.Name == "Theme") && control.GetType().GetProperties().Any(x => x.Name == "Style")))
+                    try
                     {
-                        control.GetType().GetProperty("Theme").SetValue(control, Friends.GlobalStyleManager.Theme, null);
-                        control.GetType().GetProperty("Style").SetValue(control, Friends.GlobalStyleManager.Style, null);
-                        var styleManager = control.GetType().GetProperty("StyleManager").GetValue(control, null) as MetroFramework.Components.MetroStyleManager;
-                        styleManager = Friends.GlobalStyleManager;
-                        styleManager.Style = Friends.GlobalStyleManager.Style;
-                        styleManager.Theme = Friends.GlobalStyleManager.Theme;
-                        control.Refresh();
+                        if (control.GetType().GetProperties().Any(x => x.Name == "StyleManager") || (control.GetType().GetProperties().Any(x => x.Name == "Theme") && control.GetType().GetProperties().Any(x => x.Name == "Style")))
+                        {
+                            control.GetType().GetProperty("Theme").SetValue(control, Friends.GlobalStyleManager.Theme, null);
+                            control.GetType().GetProperty("Style").SetValue(control, Friends.GlobalStyleManager.Style, null);
+                            var styleManager = control.GetType().GetProperty("StyleManager").GetValue(control, null) as MetroFramework.Components.MetroStyleManager;
+                            styleManager = Friends.GlobalStyleManager;
+                            styleManager.Style = Friends.GlobalStyleManager.Style;
+                            styleManager.Theme = Friends.GlobalStyleManager.Theme;
+                            control.Refresh();
+                        }
+                        LoadTheme(null, control.Controls);
+                    }
+                    catch
+                    {
+
                     }                    
-                    LoadTheme(null, control.Controls);
                 }
             }
             if (Form != null)
@@ -295,6 +302,23 @@ namespace MistClient
             data.Add("steamId", steamId.ToString());
             data.Add("os", systemName);
             SteamWeb.Fetch("http://jzhang.net/mist/stats.php", "POST", data);
+        }
+
+        public static void StyleWebcontrolScrollbars(ref Awesomium.Windows.Forms.WebControl webcontrol)
+        {
+            var script = @" var css = ""::-webkit-scrollbar { width: 12px; } ::-webkit-scrollbar-track { background-color: #111111;	} ::-webkit-scrollbar-thumb { background-color: #444444; } ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e;	}"";
+                            var style = document.createElement('style');
+                            if (style.styleSheet)
+                            {
+                                style.styleSheet.cssText = css;
+                            }
+                            else 
+                            {
+                                style.appendChild(document.createTextNode(css));
+                            }
+                            document.getElementsByTagName('head')[0].appendChild(style);
+                            ";
+            webcontrol.ExecuteJavascript(script);
         }
     }
 }

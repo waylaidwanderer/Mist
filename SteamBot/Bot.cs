@@ -393,24 +393,22 @@ namespace SteamBot
                 new Thread(() =>
                 {                    
                     CDNCache.Initialize();
+                    #if !DEBUG
                     ConnectToGC(13540830642081628378);
                     System.Threading.Thread.Sleep(2000);
                     ConnectToGC(0);
+                    #endif
                     while (true)
                     {
                         if (showFriends != null)
                         {
                             var numFriendsDisplayed = showFriends.GetNumFriendsDisplayed();
                             var numSteamFriendCount = SteamFriends.GetFriendCount();
-                            if (numFriendsDisplayed != -1 && numFriendsDisplayed != numSteamFriendCount)
-                            {
+                            Console.WriteLine(numFriendsDisplayed);
+                            if (numFriendsDisplayed != -1 && numFriendsDisplayed != ListFriends.Get().Count)
+                            {                                
                                 LoadFriends();
                                 showFriends.UpdateFriendsHTML();
-                            }
-                            else if (numSteamFriendCount != ListFriends.Get().Count)
-                            {
-                                LoadFriends();
-                                showFriends.UpdateFriendsHTML();                           
                             }
                             System.Threading.Thread.Sleep(10000);
                         }
@@ -533,22 +531,21 @@ namespace SteamBot
             {
                 EChatEntryType type = callback.EntryType;
 
-                if (callback.EntryType == EChatEntryType.Typing)
+                if (type == EChatEntryType.Typing)
                 {
                     var name = SteamFriends.GetFriendPersonaName(callback.Sender);
                     GetUserHandler(callback.Sender).SetChatStatus(name + " is typing...");
-                }
-                else
-                {
+                    System.Threading.Thread.Sleep(30000);
                     GetUserHandler(callback.Sender).SetChatStatus("");
-                }
+                }                
 
-                if (callback.EntryType == EChatEntryType.ChatMsg)
+                if (type == EChatEntryType.ChatMsg)
                 {
                     //log.Info (String.Format ("Chat Message from {0}: {1}",
                     //                     SteamFriends.GetFriendPersonaName (callback.Sender),
                     //                     callback.Message
                     //));
+                    GetUserHandler(callback.Sender).SetChatStatus("");
                     GetUserHandler(callback.Sender).OnMessage(callback.Message, type);
                 }
             });
@@ -688,30 +685,23 @@ namespace SteamBot
         public void LoadFriends()
         {            
             ListFriends.Clear();
+            var steamListFriends = new List<SteamID>();
             Console.WriteLine("Loading all friends...");
             for (int count = 0; count < SteamFriends.GetFriendCount(); count++)
-            {                
-                var friendID = SteamFriends.GetFriendByIndex(count);
-                var friendName = SteamFriends.GetFriendPersonaName(friendID);
-                var friendNickname = PlayerNicknames.ContainsKey(friendID) ? "(" + PlayerNicknames[friendID] + ")" : "";
-                var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
-                if (friendState.ToString() != "Offline" && SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
-                {
-                    ListFriends.Add(friendName, friendID, friendNickname, friendState);
-                }
+            {
+                steamListFriends.Add(SteamFriends.GetFriendByIndex(count));
                 Thread.Sleep(25);
             }
-            for (int count = 0; count < SteamFriends.GetFriendCount(); count++)
+            for (int count = 0; count < steamListFriends.Count; count++)
             {
-                var friendID = SteamFriends.GetFriendByIndex(count);
-                var friendName = SteamFriends.GetFriendPersonaName(friendID);
-                var friendNickname = PlayerNicknames.ContainsKey(friendID) ? "(" + PlayerNicknames[friendID] + ")" : "";
-                var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
-                if (friendState.ToString() == "Offline" && SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
+                var friendID = steamListFriends[count];
+                if (SteamFriends.GetFriendRelationship(friendID) == EFriendRelationship.Friend)
                 {
+                    var friendName = SteamFriends.GetFriendPersonaName(friendID);
+                    var friendNickname = PlayerNicknames.ContainsKey(friendID) ? "(" + PlayerNicknames[friendID] + ")" : "";
+                    var friendState = SteamFriends.GetFriendPersonaState(friendID).ToString();
                     ListFriends.Add(friendName, friendID, friendNickname, friendState);
-                }
-                Thread.Sleep(25);
+                }                
             }
             foreach (var item in ListFriends.Get())
             {

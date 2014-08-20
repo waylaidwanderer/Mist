@@ -53,7 +53,7 @@ namespace MistClient
             if (response == null || response.StatusCode != HttpStatusCode.OK)
             {
                 log.Error("[UPDATER] Error contacting the update server! Aborting.");
-                MetroFramework.MetroMessageBox.Show(this, "Could not contact the update server. Please try again later.",
+                MessageBox.Show(this, "Could not contact the update server. Please try again later.",
                                     "Connection Error",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error,
@@ -70,7 +70,10 @@ namespace MistClient
             fileSize = sizeMB.ToString("0.00");
             if (fileSize != null)
             {
-                metroLabel1.Text += " (" + fileSize + " MB)";
+                metroLabel1.Invoke((Action)(() =>
+                {
+                    metroLabel1.Text += " (" + fileSize + " MB)";
+                }));                
             }
             // keeps track of the total bytes downloaded so we can update the progress bar
             Int64 iRunningByteTotal = 0;
@@ -109,7 +112,7 @@ namespace MistClient
             if (!File.Exists("Update.zip"))
             {
                 log.Error("[UPDATER] The file has failed to download.");
-                MetroFramework.MetroMessageBox.Show(this, "The file has failed to download.",
+                MessageBox.Show(this, "The file has failed to download.",
                                     "Downloading Error",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error,
@@ -127,7 +130,7 @@ namespace MistClient
                 }
                 foreach (ZipEntry ex in zip)
                 {
-                    foreach (var file in Directory.GetFiles(Path.Combine(Application.StartupPath, "lib")))
+                    foreach (var file in Directory.GetFiles(Application.StartupPath))
                     {
                         string fileName = file;
                         if (fileName.EndsWith(ex.FileName.Replace('/', '\\')))
@@ -177,7 +180,7 @@ namespace MistClient
 
             }
             log.Success("[UPDATER] Mist has been successfully updated!");
-            MetroFramework.MetroMessageBox.Show(this, "Mist has been successfully updated!",
+            MessageBox.Show(this, "Mist has been successfully updated!",
                                     "Success",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Information,

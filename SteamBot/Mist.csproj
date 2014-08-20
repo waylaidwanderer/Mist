@@ -6,7 +6,7 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E81DED36-EDF5-41A5-8666-A3A0C581762F}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>MistClient</RootNamespace>
     <AssemblyName>Mist</AssemblyName>
     <PublishUrl>publish\</PublishUrl>

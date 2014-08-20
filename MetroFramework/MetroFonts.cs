@@ -219,7 +219,7 @@ namespace MetroFramework
 
         public static Font Title
         {
-            get { return DefaultLight(24f); }
+            get { return DefaultLight(20f); }
         }
 
         public static Font Subtitle

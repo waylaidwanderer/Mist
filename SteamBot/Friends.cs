@@ -55,7 +55,7 @@ namespace MistClient
                 Util.SendUsageStats(bot.SteamUser.SteamID);
                 statsSent = true;
             }
-            this.Text = "Friends - Mist v" + MistVersion;
+            this.Text = "Friends";
             this.steam_name.Text = username;
             this.bot = bot;
             this.steam_name.ContextMenuStrip = menu_status;
@@ -352,13 +352,13 @@ namespace MistClient
             var friend = ListFriends.GetFriend(steamId);
             try
             {
-                string friendName = friend.Name;
+                string friendName = System.Web.HttpUtility.HtmlEncode(friend.Name);
                 byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(friend.SID);
                 bool validHash = avatarHash != null && !IsZeros(avatarHash);
                 string hashStr = BitConverter.ToString(avatarHash).Replace("-", "").ToLower();
                 string hashPrefix = hashStr.Substring(0, 2);
                 string avatarUrl = string.Format("http://media.steampowered.com/steamcommunity/public/images/avatars/{0}/{1}.jpg", hashPrefix, hashStr);
-                string currentGame = bot.SteamFriends.GetFriendGamePlayedName(friend.SID);
+                string currentGame = System.Web.HttpUtility.HtmlEncode(bot.SteamFriends.GetFriendGamePlayedName(friend.SID));
                 if (friend.Status == "Offline")
                     statusStyle = "offline";
                 else if (!string.IsNullOrEmpty(currentGame))
@@ -405,13 +405,13 @@ namespace MistClient
             string scammerFriends = "";
             foreach (var friend in ListFriendRequests.Get())
             {
-                string friendName = friend.Name;
+                string friendName = System.Web.HttpUtility.HtmlEncode(friend.Name);
                 byte[] avatarHash = bot.SteamFriends.GetFriendAvatar(friend.SteamID);
                 bool validHash = avatarHash != null && !IsZeros(avatarHash);
                 string hashStr = BitConverter.ToString(avatarHash).Replace("-", "").ToLower();
                 string hashPrefix = hashStr.Substring(0, 2);
                 string avatarUrl = string.Format("http://media.steampowered.com/steamcommunity/public/images/avatars/{0}/{1}.jpg", hashPrefix, hashStr);
-                string currentGame = bot.SteamFriends.GetFriendGamePlayedName(friend.SteamID);
+                string currentGame = System.Web.HttpUtility.HtmlEncode(bot.SteamFriends.GetFriendGamePlayedName(friend.SteamID));
                 string statusStyle = "";                
                 if (friend.Status == "Offline")
                     statusStyle = "offline";
@@ -537,11 +537,12 @@ namespace MistClient
         }
 
         void OnTrayIconDoubleClick(object sender, EventArgs e)
-        {
-            Visible = true;
+        {            
             ShowInTaskbar = true;
             trayIcon.Visible = false;
             this.Show();
+            webControl1.Invalidate();
+            webControl1.Refresh();
             this.Activate();
         }
 
@@ -809,11 +810,18 @@ namespace MistClient
 
         private void OnExit(object sender, EventArgs e)
         {
-            trayIcon.Visible = false;
-            trayIcon.Icon = null;
-            trayIcon.Dispose();
-            Application.Exit();
-            Environment.Exit(0);
+            try
+            {
+                trayIcon.Visible = false;
+                trayIcon.Icon = null;
+                trayIcon.Dispose();
+                Application.Exit();
+                Environment.Exit(0);
+            }
+            catch
+            {
+
+            }            
         }
 
         private void Friends_FormClosing(object sender, FormClosingEventArgs e)
@@ -821,12 +829,12 @@ namespace MistClient
             if (minimizeToTray)
             {
                 e.Cancel = true;
-                Visible = false;
+                this.Hide();
                 ShowInTaskbar = false;
                 if (trayIcon != null)
                 {
                     try
-                    {
+                    {                        
                         trayIcon.Visible = true;
                         trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
                     }
@@ -844,7 +852,7 @@ namespace MistClient
 
         private void aboutMistToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MetroFramework.MetroMessageBox.Show(this, "Mist is created by waylaidwanderer.\r\nView http://steamcommunity.com/groups/MistClient for more information.",
+            MetroFramework.MetroMessageBox.Show(this, " - Mist v" + MistVersion + " is created by waylaidwanderer.\r\nView http://steamcommunity.com/groups/MistClient for more information.",
                         "About",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information,

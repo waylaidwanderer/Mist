@@ -91,18 +91,25 @@ namespace MistClient
             {
                 if (this.StyleManager.Theme == MetroFramework.MetroThemeStyle.Dark)
                 {
-                    text_log.BackColor = Color.FromArgb(50, 50, 50);
+                    var backColor = Color.FromArgb(50, 50, 50);
+                    panel1.BackColor = backColor;
+                    text_log.BackColor = backColor;
+                    panel2.BackColor = backColor;
+                    chat_status.BackColor = backColor;
                     text_log.ForeColor = Color.Silver;
                     text_log.SelectionColor = Color.Silver;
-                    text_input.BackColor = Color.FromArgb(50, 50, 50);
+                    text_input.BackColor = backColor;
                     text_input.ForeColor = Color.Silver;
                 }
                 else
                 {
-                    text_log.BackColor = Color.White;
+                    panel1.BackColor = Color.WhiteSmoke;
+                    text_log.BackColor = Color.WhiteSmoke;
+                    panel2.BackColor = Color.WhiteSmoke;
+                    chat_status.BackColor = Color.WhiteSmoke;
                     text_log.ForeColor = Color.Black;
                     text_log.SelectionColor = Color.Black;
-                    text_input.BackColor = Color.White;
+                    text_input.BackColor = Color.WhiteSmoke;
                     text_input.ForeColor = Color.Black;
                 }
             }
