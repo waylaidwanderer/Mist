@@ -39,20 +39,19 @@ namespace MistClient
             chatTab.chat_status.Text = status;
         }
 
-        public void AddChat(string name, ulong sid)
+        public void AddChat(string name, SteamKit2.SteamID steamId)
         {
             page = new TabPage();
+            page.Tag = steamId;
             page.Text = name;
             page.BackColor = System.Drawing.Color.White;
-            chatTab = new ChatTab(this, bot, sid);
+            chatTab = new ChatTab(this, bot, steamId);
             chatTab.Dock = DockStyle.Fill;
             chatTab.Padding = new Padding(3, 3, 3, 3);
             page.Controls.Add(chatTab);
-            chatTab.tab = page;
             this.ChatTabControl.TabPages.Add(page);
             this.ChatTabControl.SelectTab(page);
             this.Text = this.ChatTabControl.SelectedTab.Text + " - Chat";
-            this.Refresh();
         }
 
         private void Chat_FormClosed(object sender, FormClosedEventArgs e)

@@ -197,14 +197,13 @@ namespace SteamBot
             
         }
 
-        public override bool OpenChat(SteamID SID)
+        public override bool OpenChat(SteamID steamId)
         {
-            string selected = Bot.SteamFriends.GetFriendPersonaName(SID);
-            ulong sid = SID;
+            string selected = Bot.SteamFriends.GetFriendPersonaName(steamId);
             if (!Friends.chat_opened)
             {
                 Friends.chat = new Chat(Bot);
-                Friends.chat.AddChat(selected, sid);
+                Friends.chat.AddChat(selected, steamId);
                 Friends.chat.Show();
                 Friends.chat.Flash();
                 Friends.chat_opened = true;
@@ -217,7 +216,7 @@ namespace SteamBot
                 {
                     foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
-                        if (tab.Text == selected)
+                        if ((SteamID)tab.Tag == steamId)
                         {                            
                             Friends.chat.Show();
                             Friends.chat.Flash();
@@ -226,7 +225,7 @@ namespace SteamBot
                     }
                     if (!found)
                     {
-                        Friends.chat.AddChat(selected, sid);
+                        Friends.chat.AddChat(selected, steamId);
                         Friends.chat.Show();
                         Friends.chat.Flash();
                     }
@@ -533,7 +532,7 @@ namespace SteamBot
         {
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
             {
-                if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                if ((SteamID)tab.Tag == OtherSID)
                 {
                     foreach (var item in tab.Controls)
                     {

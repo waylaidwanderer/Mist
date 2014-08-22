@@ -26,7 +26,6 @@ namespace MistClient
         public uint tradeID;
         public byte[] AvatarHash { get; set; } // checking if update is necessary
         public Chat Chat;
-        public TabPage tab;
         string prevName;
         string prevStatus;
         bool inGame = false;
