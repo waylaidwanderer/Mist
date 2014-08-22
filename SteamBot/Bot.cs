@@ -224,8 +224,7 @@ namespace SteamBot
         {
             log.Debug(msg.ToString());
             msg.Handle<SteamGameCoordinator.MessageCallback>(callback =>
-            {
-                Console.WriteLine("Got to here!");
+            {                
                 Console.WriteLine(callback.EMsg);
             });
 
@@ -234,7 +233,6 @@ namespace SteamBot
                 foreach (var player in callback.Nicknames)
                 {
                     PlayerNicknames.Add(player.steamid, player.nickname);
-                    //Console.WriteLine("{0}={1}", player.steamid, player.nickname);
                 }
             });
 
@@ -404,7 +402,6 @@ namespace SteamBot
                         {
                             var numFriendsDisplayed = showFriends.GetNumFriendsDisplayed();
                             var numSteamFriendCount = SteamFriends.GetFriendCount();
-                            Console.WriteLine(numFriendsDisplayed);
                             if (numFriendsDisplayed != -1 && numFriendsDisplayed != ListFriends.Get().Count)
                             {                                
                                 LoadFriends();

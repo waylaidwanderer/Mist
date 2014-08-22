@@ -71,6 +71,7 @@ namespace MistClient
             var onlineColor = ColorTranslator.FromHtml("#5db2ff");
             steam_name.ForeColor = onlineColor;
             steam_status.ForeColor = onlineColor;
+
             // Create a simple tray menu with only one item.
             trayMenu = new ContextMenu();
             trayMenu.MenuItems.Add("Show", OnTrayIconDoubleClick);
@@ -537,13 +538,57 @@ namespace MistClient
         }
 
         void OnTrayIconDoubleClick(object sender, EventArgs e)
-        {            
-            ShowInTaskbar = true;
+        {
+            this.Show();            
             trayIcon.Visible = false;
-            this.Show();
-            webControl1.Invalidate();
-            webControl1.Refresh();
-            this.Activate();
+        }        
+
+        private void Friends_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (minimizeToTray)
+            {                
+                this.Hide();
+                e.Cancel = true;
+                if (trayIcon != null)
+                {
+                    try
+                    {
+                        trayIcon.Visible = true;
+                        trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                OnExit(sender, e);
+            }
+        }
+
+        private void Friends_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            trayIcon.Icon = null;
+            trayIcon.Visible = false;
+            trayIcon.Dispose();
+        }
+
+        private void OnExit(object sender, EventArgs e)
+        {
+            try
+            {
+                trayIcon.Visible = false;
+                trayIcon.Icon = null;
+                trayIcon.Dispose();
+                Application.Exit();
+                Environment.Exit(0);
+            }
+            catch
+            {
+
+            }
         }
 
         public void UpdateState()
@@ -565,14 +610,7 @@ namespace MistClient
                 AvatarHash = null;
                 avatarBox.Image = ComposeAvatar(null);
             }            
-        }
-
-        private void Friends_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            trayIcon.Icon = null;
-            trayIcon.Visible = false;
-            trayIcon.Dispose();
-        }
+        }        
 
         private void label1_MouseHover(object sender, EventArgs e)
         {
@@ -806,49 +844,7 @@ namespace MistClient
                 icon,
                 MessageBoxDefaultButton.Button1);
             }
-        }            
-
-        private void OnExit(object sender, EventArgs e)
-        {
-            try
-            {
-                trayIcon.Visible = false;
-                trayIcon.Icon = null;
-                trayIcon.Dispose();
-                Application.Exit();
-                Environment.Exit(0);
-            }
-            catch
-            {
-
-            }            
-        }
-
-        private void Friends_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (minimizeToTray)
-            {
-                e.Cancel = true;
-                this.Hide();
-                ShowInTaskbar = false;
-                if (trayIcon != null)
-                {
-                    try
-                    {                        
-                        trayIcon.Visible = true;
-                        trayIcon.ShowBalloonTip(5000, "Mist has been minimized to tray", "To restore Mist, double-click the tray icon.", ToolTipIcon.Info);
-                    }
-                    catch
-                    {
-
-                    }                    
-                }
-            }
-            else
-            {
-                OnExit(sender, e);
-            }
-        }
+        }                    
 
         private void aboutMistToolStripMenuItem_Click(object sender, EventArgs e)
         {
