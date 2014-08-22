@@ -39,7 +39,7 @@ namespace SteamBot
                 {
                     foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
-                        if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                        if ((SteamID)tab.Tag == OtherSID)
                         {
                             foreach (var item in tab.Controls)
                             {
@@ -56,7 +56,7 @@ namespace SteamBot
             }
         }
 
-        public override void SetStatus(EPersonaState state)
+        public override void UpdatePersonaState()
         {
             if (Friends.chat_opened)
             {
@@ -64,15 +64,24 @@ namespace SteamBot
                 {
                     foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
-                        if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                        if ((SteamID)tab.Tag == OtherSID)
                         {
                             foreach (var item in tab.Controls)
                             {
                                 Friends.chat.chatTab = (ChatTab)item;
                             }
                             tab.Invoke((Action)(() =>
-                            {
-                                Friends.chat.chatTab.steam_status.Text = state.ToString();
+                            {                                
+                                var friend = ListFriends.GetFriend(OtherSID);
+                                if (Friends.chat.ChatTabControl.SelectedTab == tab)
+                                {
+                                    Friends.chat.Text = friend.Name + " - Chat";
+                                    Friends.chat.Refresh();
+                                }
+                                tab.Text = friend.Name;
+                                Friends.chat.chatTab.Name = friend.Name;
+                                Friends.chat.chatTab.steam_name.Text = friend.Name;
+                                Friends.chat.chatTab.steam_status.Text = friend.Status;                                
                             }));
                             return;
                         }
@@ -104,7 +113,7 @@ namespace SteamBot
                     {
                         foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                         {
-                            if (tab.Text == selected)
+                            if ((SteamID)tab.Tag == OtherSID)
                             {
                                 foreach (var item in tab.Controls)
                                 {
@@ -144,7 +153,7 @@ namespace SteamBot
             {
                 foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                 {
-                    if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                    if ((SteamID)tab.Tag == OtherSID)
                     {
                         foreach (var item in tab.Controls)
                         {
@@ -255,7 +264,7 @@ namespace SteamBot
                 string name = other + ": ";
                 foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                 {
-                    if (tab.Text == other)
+                    if ((SteamID)tab.Tag == OtherSID)
                     {
                         foreach (var item in tab.Controls)
                         {
@@ -327,8 +336,7 @@ namespace SteamBot
                     {
                         foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                         {
-                            Console.WriteLine("Looking at " + tab.Text);
-                            if (tab.Text == name)
+                            if ((SteamID)tab.Tag == OtherSID)
                             {
                                 foreach (var item in tab.Controls)
                                 {
@@ -344,7 +352,6 @@ namespace SteamBot
                         }
                         if (!found)
                         {
-                            Console.WriteLine("Not found");
                             Friends.chat.AddChat(name, OtherSID);
                             Friends.chat.Show();
                             Friends.chat.Flash();
@@ -408,8 +415,7 @@ namespace SteamBot
                     {
                         foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                         {
-                            Console.WriteLine("Looking at " + tab.Text);
-                            if (tab.Text == name)
+                            if ((SteamID)tab.Tag == OtherSID)
                             {
                                 foreach (var item in tab.Controls)
                                 {
@@ -438,7 +444,6 @@ namespace SteamBot
                         }
                         if (!found)
                         {
-                            Console.WriteLine("Not found");
                             Friends.chat.AddChat(name, OtherSID);
                             Friends.chat.Show();
                             Friends.chat.Flash();
@@ -482,7 +487,7 @@ namespace SteamBot
                 }
                 foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                 {
-                    if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                    if ((SteamID)tab.Tag == OtherSID)
                     {
                         foreach (var item in tab.Controls)
                         {
@@ -513,7 +518,7 @@ namespace SteamBot
             Bot.log.Success("Trade successfully initialized.");
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
             {
-                if (tab.Text == Bot.SteamFriends.GetFriendPersonaName(OtherSID))
+                if ((SteamID)tab.Tag == OtherSID)
                 {
                     foreach (var item in tab.Controls)
                     {

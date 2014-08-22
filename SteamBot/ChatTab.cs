@@ -537,7 +537,7 @@ namespace MistClient
         {
             foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
             {
-                if (tab.Text == steam_name.Text)
+                if ((SteamKit2.SteamID)tab.Tag == new SteamKit2.SteamID(userSteamId))
                 {
                     foreach (var item in tab.Controls)
                     {

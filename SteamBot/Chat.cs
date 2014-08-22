@@ -46,8 +46,7 @@ namespace MistClient
             page.Text = name;
             page.BackColor = System.Drawing.Color.White;
             chatTab = new ChatTab(this, bot, steamId);
-            chatTab.Dock = DockStyle.Fill;
-            chatTab.Padding = new Padding(3, 3, 3, 3);
+            chatTab.Dock = DockStyle.Fill;            
             page.Controls.Add(chatTab);
             this.ChatTabControl.TabPages.Add(page);
             this.ChatTabControl.SelectTab(page);
@@ -115,13 +114,6 @@ namespace MistClient
             hasFocus = false;
         }
 
-        private void ChatTabControl_Click(object sender, EventArgs e)
-        {
-            string name = ChatTabControl.SelectedTab.Text;
-            Friends.chat.Text = name + " - Chat";
-            this.Refresh();
-        }
-
         public void ViewSteamRepStatus(ulong steamId)
         {
             var status = Util.GetSteamRepStatus(steamId);
@@ -143,6 +135,13 @@ namespace MistClient
                 icon,
                 MessageBoxDefaultButton.Button1);
             }
+        }
+
+        private void ChatTabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            string name = ChatTabControl.SelectedTab.Text;
+            Friends.chat.Text = name + " - Chat";
+            Friends.chat.Refresh();
         }
     }
 }

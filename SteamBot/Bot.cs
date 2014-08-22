@@ -514,13 +514,14 @@ namespace SteamBot
             {
                 var status = callback.State;
                 var sid = callback.FriendID;
-                GetUserHandler(sid).SetStatus(status);
                 ListFriends.UpdateStatus(sid, status.ToString());
+                ListFriends.UpdateName(sid, SteamFriends.GetFriendPersonaName(sid));
+                GetUserHandler(sid).UpdatePersonaState();                
                 if (showFriends != null)
                 {
                     showFriends.UpdateState();
                     showFriends.UpdateFriendHTML(sid);
-                }                                  
+                }
             });
 
 

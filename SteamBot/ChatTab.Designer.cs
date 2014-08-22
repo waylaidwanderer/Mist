@@ -300,13 +300,13 @@
         private System.Windows.Forms.ToolStripMenuItem viewChatLogToolStripMenuItem;
         private MetroFramework.Controls.MetroButton button_trade;
         private MetroFramework.Controls.MetroButton button_send;
-        private MetroFramework.Controls.MetroLabel steam_name;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         public MetroFramework.Controls.MetroLabel chat_status;
         public MetroFramework.Controls.MetroLabel steam_status;
         private System.Windows.Forms.ToolStripMenuItem removeFriendToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
+        public MetroFramework.Controls.MetroLabel steam_name;
 
     }
 }

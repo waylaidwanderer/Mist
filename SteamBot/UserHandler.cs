@@ -168,7 +168,7 @@ namespace SteamBot
 
         public abstract void SetChatStatus(string message);
 
-        public abstract void SetStatus(EPersonaState state);
+        public abstract void UpdatePersonaState();
 
         public abstract bool OpenChat(SteamID SID);
 

@@ -251,12 +251,12 @@ namespace MistClient
             {
                 bot.main.Invoke((Action)(() =>
                 {
-                    ulong sid = Convert.ToUInt64(e.Arguments[0].ToString());
-                    string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                    ulong steamId = Convert.ToUInt64(e.Arguments[0].ToString());
+                    string selected = bot.SteamFriends.GetFriendPersonaName(steamId);
                     if (!chat_opened)
                     {
                         chat = new Chat(bot);
-                        chat.AddChat(selected, sid);
+                        chat.AddChat(selected, steamId);
                         chat.Show();
                         chat.Activate();
                         chat_opened = true;
@@ -266,7 +266,7 @@ namespace MistClient
                         bool found = false;
                         foreach (TabPage tab in chat.ChatTabControl.TabPages)
                         {
-                            if (tab.Text == selected)
+                            if ((SteamID)tab.Tag == new SteamID(steamId))
                             {
                                 chat.ChatTabControl.SelectedTab = tab;
                                 chat.Activate();
@@ -276,7 +276,7 @@ namespace MistClient
                         }
                         if (!found)
                         {
-                            chat.AddChat(selected, sid);
+                            chat.AddChat(selected, steamId);
                             chat.Activate();
                         }
                     }
@@ -740,12 +740,11 @@ namespace MistClient
         {
             bot.main.Invoke((Action)(() =>
             {
-                ulong sid = contextMenuSteamId;
-                string selected = bot.SteamFriends.GetFriendPersonaName(sid);
+                string selected = bot.SteamFriends.GetFriendPersonaName(contextMenuSteamId);
                 if (!chat_opened)
                 {
                     chat = new Chat(bot);
-                    chat.AddChat(selected, sid);
+                    chat.AddChat(selected, contextMenuSteamId);
                     chat.Show();
                     chat.Focus();
                     chat_opened = true;
@@ -756,7 +755,7 @@ namespace MistClient
                     bool found = false;
                     foreach (TabPage tab in Friends.chat.ChatTabControl.TabPages)
                     {
-                        if (tab.Text == selected)
+                        if ((SteamID)tab.Tag == new SteamID(contextMenuSteamId))
                         {
                             found = true;
                             tab.Invoke((Action)(() =>
@@ -772,7 +771,7 @@ namespace MistClient
                     }
                     if (!found)
                     {
-                        chat.AddChat(selected, sid);
+                        chat.AddChat(selected, contextMenuSteamId);
                         chat.Focus();
                         chat.chatTab.tradeClicked();
                     }

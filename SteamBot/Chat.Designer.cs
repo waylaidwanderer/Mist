@@ -67,7 +67,7 @@
             this.ChatTabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ChatTabControl.UseSelectable = true;
             this.ChatTabControl.UseStyleColors = true;
-            this.ChatTabControl.Click += new System.EventHandler(this.ChatTabControl_Click);
+            this.ChatTabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.ChatTabControl_Selected);
             this.ChatTabControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ChatTabControl_MouseUp);
             // 
             // metroStyleManager1
