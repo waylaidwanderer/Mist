@@ -1140,6 +1140,14 @@ namespace MistClient
                                 $j('#footer').hide();
                             });";
             webControl.ExecuteJavascript(script);
+            script = @" var scrollbarCSS = '::-webkit-scrollbar { width: 14px !important; height: 14px !important; } ::-webkit-scrollbar-track { background-color: #111111 !important;	} ::-webkit-scrollbar-thumb { background-color: #444444 !important; } ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e !important; } ::-webkit-scrollbar-corner { background-color: #111111 !important; }';              
+                            var head = document.getElementsByTagName('head')[0];
+                            var style = document.createElement('style');
+                            style.type = 'text/css';
+                            style.innerHTML = scrollbarCSS;                            
+                            head.appendChild(style);
+                            ";
+            webControl.ExecuteJavascript(script);
         }
 
         private void sendTradeOfferToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1159,7 +1167,8 @@ namespace MistClient
             string cookies = string.Format("steamLogin={0}; sessionid={1}", bot.token, bot.sessionId);
             tradeOffersWeb.WebSession = WebCore.CreateWebSession(new WebPreferences());
             tradeOffersWeb.WebSession.SetCookie("http://steamcommunity.com".ToUri(), cookies, true, true);
-            tradeOffersWeb.Source = url.ToUri();            
+            tradeOffersWeb.Source = url.ToUri();
+            tradeOffersWeb.DocumentReady += tradeOffersWeb_DocumentReady;
             tradeOffersForm.Controls.Add(tradeOffersWeb);
             tradeOffersForm.Show();
             tradeOffersForm.Focus();
@@ -1207,21 +1216,51 @@ namespace MistClient
         {
             var form = new MetroForm();
             form.Text = "Steam Community Market";
-            form.Width = 800;
+            form.Width = 1025;
             form.Height = 600;
             form.Style = Friends.GlobalStyleManager.Style;
             form.Theme = Friends.GlobalStyleManager.Theme;
             form.Icon = MistClient.Properties.Resources.Icon;
             form.ShadowType = MetroFormShadowType.DropShadow;
             var webControl = new Awesomium.Windows.Forms.WebControl();
+            form.Controls.Add(webControl);
             webControl.Dock = System.Windows.Forms.DockStyle.Fill;
             string cookies = string.Format("steamLogin={0}; sessionid={1}", bot.token, bot.sessionId);
             webControl.WebSession = Awesomium.Core.WebCore.CreateWebSession(new Awesomium.Core.WebPreferences());
             webControl.WebSession.SetCookie(new Uri("http://steamcommunity.com"), cookies, true, true);
             webControl.Source = new Uri("http://steamcommunity.com/market");
-            webControl.TitleChanged += (s, ev) => webControl_TitleChanged(s, ev, form);
-            form.Controls.Add(webControl);
+            webControl.DocumentReady += steamCommunityMarket_DocumentReady;
+            webControl.TitleChanged += (s, ev) => webControl_TitleChanged(s, ev, form);            
             form.Show();
+        }
+
+        void steamCommunityMarket_DocumentReady(object sender, UrlEventArgs e)
+        {
+            var webControl = (Awesomium.Windows.Forms.WebControl)sender;
+            while (webControl.ExecuteJavascriptWithResult("document.body.innerHTML").IsUndefined)
+            {
+                WebCore.Update();
+            }
+            var script = @"var $j = jQuery.noConflict();
+                            $j(function() {
+                                $j('#global_header').hide();
+                                $j('.profile_small_header_bg').hide();
+                                $j('.inventory_links').hide();
+                                $j('#footer_spacer').hide();
+                                $j('#footer').hide();
+                            });";
+            webControl.ExecuteJavascript(script);
+            script = @" var scrollbarCSS = '::-webkit-scrollbar { width: 14px !important; height: 14px !important; } ::-webkit-scrollbar-track { background-color: #111111 !important;	} ::-webkit-scrollbar-thumb { background-color: #444444 !important; } ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e !important; } ::-webkit-scrollbar-corner { background-color: #111111 !important; }';              
+                            var head = document.getElementsByTagName('head')[0];
+                            var style = document.createElement('style');
+                            style.type = 'text/css';
+                            style.innerHTML = scrollbarCSS;                            
+                            head.appendChild(style);
+                            ";
+            webControl.ExecuteJavascriptWithResult(script);
+            var prevSize = webControl.Parent.Size;
+            webControl.Parent.Size = new Size(webControl.Parent.Size.Width + 100, webControl.Parent.Size.Height);
+            webControl.Parent.Size = prevSize;
         }
 
         private static void webControl_TitleChanged(object sender, Awesomium.Core.TitleChangedEventArgs e, MetroForm parentForm)

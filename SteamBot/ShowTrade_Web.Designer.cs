@@ -45,7 +45,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.webControl1.Location = new System.Drawing.Point(23, 63);
             this.webControl1.NavigationInfo = Awesomium.Core.NavigationInfo.Normal;
-            this.webControl1.Size = new System.Drawing.Size(647, 452);
+            this.webControl1.Size = new System.Drawing.Size(639, 494);
             this.webControl1.TabIndex = 2;
             // 
             // metroStyleManager1
@@ -76,9 +76,9 @@
             this.metroPanel1.HorizontalScrollbarBarColor = true;
             this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel1.HorizontalScrollbarSize = 10;
-            this.metroPanel1.Location = new System.Drawing.Point(676, 63);
+            this.metroPanel1.Location = new System.Drawing.Point(668, 63);
             this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(309, 452);
+            this.metroPanel1.Size = new System.Drawing.Size(309, 494);
             this.metroPanel1.Style = MetroFramework.MetroColorStyle.Blue;
             this.metroPanel1.TabIndex = 3;
             this.metroPanel1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -91,7 +91,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 538);
+            this.ClientSize = new System.Drawing.Size(1000, 580);
             this.Controls.Add(this.metroPanel1);
             this.Controls.Add(this.webControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

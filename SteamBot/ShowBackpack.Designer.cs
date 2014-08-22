@@ -33,7 +33,6 @@
             this.LargeImageList = new System.Windows.Forms.ImageList(this.components);
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.webControl1 = new Awesomium.Windows.Forms.WebControl(this.components);
-            this.webControl2 = new Awesomium.Windows.Forms.WebControl(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,25 +49,19 @@
             // 
             // webControl1
             // 
-            this.webControl1.Location = new System.Drawing.Point(0, 0);
-            this.webControl1.Size = new System.Drawing.Size(75, 23);
-            this.webControl1.TabIndex = 2;
-            // 
-            // webControl2
-            // 
-            this.webControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.webControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webControl2.Location = new System.Drawing.Point(23, 63);
-            this.webControl2.Size = new System.Drawing.Size(507, 380);
-            this.webControl2.TabIndex = 2;
+            this.webControl1.Location = new System.Drawing.Point(23, 63);
+            this.webControl1.Size = new System.Drawing.Size(507, 380);
+            this.webControl1.TabIndex = 2;
             // 
             // ShowBackpack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 466);
-            this.Controls.Add(this.webControl2);
+            this.Controls.Add(this.webControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ShowBackpack";
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
@@ -87,6 +80,5 @@
         private System.Windows.Forms.ImageList LargeImageList;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
         private Awesomium.Windows.Forms.WebControl webControl1;
-        private Awesomium.Windows.Forms.WebControl webControl2;
     }
 }

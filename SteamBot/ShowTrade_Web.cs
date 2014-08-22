@@ -45,21 +45,24 @@ namespace MistClient
 
         void webControl1_DocumentReady(object sender, UrlEventArgs e)
         {
-            webControl1.Zoom = baseZoom;            
+            webControl1.Zoom = baseZoom;     
             while (webControl1.ExecuteJavascriptWithResult("document.body.innerHTML").IsUndefined)
             {
                 WebCore.Update();
             }
             webControl1.ExecuteJavascript("var footerSpacer = document.getElementById('footer_spacer'); footerSpacer.parentNode.removeChild(footerSpacer);");
             webControl1.ExecuteJavascript("var footer = document.getElementById('footer'); footerSpacer.parentNode.removeChild(footer);");
-            var script = @" var scrollbarCSS = '::-webkit-scrollbar { width: 12px !important; } ::-webkit-scrollbar-track { background-color: #111111 !important;	} ::-webkit-scrollbar-thumb { background-color: #444444 !important; } ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e !important; }';              
+            var script = @" var scrollbarCSS = '::-webkit-scrollbar { width: 14px !important; height: 14px !important; } ::-webkit-scrollbar-track { background-color: #111111 !important;	} ::-webkit-scrollbar-thumb { background-color: #444444 !important; } ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e !important; } ::-webkit-scrollbar-corner { background-color: #111111 !important; } body { overflow-x: hidden; }';              
                             var head = document.getElementsByTagName('head')[0];
                             var style = document.createElement('style');
                             style.type = 'text/css';
-                            style.innerHTML = scrollbarCSS;
+                            style.innerHTML = scrollbarCSS;                            
                             head.appendChild(style);
                             ";
             webControl1.ExecuteJavascript(script);
+            var prevSize = this.Size;
+            this.Size = new Size(this.Size.Width + 100, this.Size.Height + 100);
+            this.Size = prevSize; // need to force the scrollbar to show up
         }
 
         private void GetTradeState()

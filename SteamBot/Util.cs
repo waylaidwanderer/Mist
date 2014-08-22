@@ -249,9 +249,27 @@ namespace MistClient
             webControl.WebSession = Awesomium.Core.WebCore.CreateWebSession(new Awesomium.Core.WebPreferences());
             webControl.WebSession.SetCookie(new Uri("http://steamcommunity.com"), cookies, true, true);
             webControl.Source = new Uri((string.Format("http://steamcommunity.com/profiles/{0}/", steamId)));
+            webControl.DocumentReady += webControl_DocumentReady;
             webControl.TitleChanged += (s, e) => webControl_TitleChanged(s, e, form);
             form.Controls.Add(webControl);
             form.Show();
+        }
+
+        static void webControl_DocumentReady(object sender, Awesomium.Core.UrlEventArgs e)
+        {
+            var webControl = (Awesomium.Windows.Forms.WebControl)sender;
+            while (webControl.ExecuteJavascriptWithResult("document.body.innerHTML").IsUndefined)
+            {
+                Awesomium.Core.WebCore.Update();
+            }
+            var script = @" var scrollbarCSS = '::-webkit-scrollbar { width: 14px !important; height: 14px !important; } ::-webkit-scrollbar-track { background-color: #111111 !important;	} ::-webkit-scrollbar-thumb { background-color: #444444 !important; } ::-webkit-scrollbar-thumb:hover { background-color: #5e5e5e !important; } ::-webkit-scrollbar-corner { background-color: #111111 !important; }';              
+                            var head = document.getElementsByTagName('head')[0];
+                            var style = document.createElement('style');
+                            style.type = 'text/css';
+                            style.innerHTML = scrollbarCSS;                            
+                            head.appendChild(style);
+                            ";
+            webControl.ExecuteJavascript(script);
         }
 
         private static void webControl_TitleChanged(object sender, Awesomium.Core.TitleChangedEventArgs e, MetroForm parentForm)
