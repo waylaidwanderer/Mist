@@ -779,13 +779,20 @@ namespace SteamBot
             SteamUser.LogOn(logOnDetails);
         }
 
-        UserHandler GetUserHandler (SteamID sid)
+        UserHandler GetUserHandler(SteamID sid)
         {
-            if (!userHandlers.ContainsKey (sid))
+            try
             {
-                userHandlers [sid.ConvertToUInt64 ()] = CreateHandler(this, sid);
+                if (!userHandlers.ContainsKey(sid))
+                {
+                    userHandlers[sid.ConvertToUInt64()] = CreateHandler(this, sid);
+                }
+                return userHandlers[sid.ConvertToUInt64()];
             }
-            return userHandlers [sid.ConvertToUInt64 ()];
+            catch
+            {
+                return CreateHandler(this, sid);
+            }            
         }
 
         void RemoveUserHandler(SteamID sid)
