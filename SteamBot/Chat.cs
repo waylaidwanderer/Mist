@@ -139,9 +139,12 @@ namespace MistClient
 
         private void ChatTabControl_Selected(object sender, TabControlEventArgs e)
         {
-            string name = ChatTabControl.SelectedTab.Text;
-            Friends.chat.Text = name + " - Chat";
-            Friends.chat.Refresh();
+            if (Friends.chat.ChatTabControl.TabCount > 0)
+            {
+                string name = ChatTabControl.SelectedTab.Text;
+                Friends.chat.Text = name + " - Chat";
+                Friends.chat.Refresh();
+            }            
         }
     }
 }

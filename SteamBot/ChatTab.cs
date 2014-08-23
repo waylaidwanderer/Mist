@@ -78,10 +78,9 @@ namespace MistClient
             {
 
             }
-            new System.Threading.Thread(GetChatLog).Start();
-            checkrep.RunWorkerAsync();
+            new System.Threading.Thread(GetChatLog).Start();            
             status_update.RunWorkerAsync();
-            text_input.Focus();   
+            text_input.Focus();
         }
 
         void metroStyleManager1_OnThemeChanged(object sender, EventArgs e)
@@ -140,14 +139,14 @@ namespace MistClient
                     {
                         string date = "[" + time + "] ";
                         string name = bot.SteamFriends.GetFriendPersonaName(userSteamId) + ": ";
-                        message = date + name + message + "\r\n";
+                        message = date + name + message + "" + Environment.NewLine;
                         history.Add(message);
                     }
                     else if (accountId == botAccountId)
                     {
                         string date = "[" + time + "] ";
                         string name = Bot.DisplayName + ": ";
-                        message = date + name + message + "\r\n";
+                        message = date + name + message + "" + Environment.NewLine;
                         history.Add(message);                           
                     }
                 }
@@ -155,20 +154,15 @@ namespace MistClient
                 foreach (var line in history)
                     historyMessage += line;
                 text_log.Invoke((Action)(() =>
-                {
-                    var prevColor = text_log.SelectionColor;                    
-                    text_log.Select(0, 0);
-                    text_log.AppendText(historyMessage);
-                    text_log.SelectionColor = Color.Gray;
-                    text_log.Select(historyMessage.Length, text_log.Text.Length);
-                    text_log.SelectionColor = prevColor;
-                    text_log.ScrollToCaret();
+                {                    
+                    text_log.AppendText(historyMessage, Color.Gray);
                 }));
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+            checkrep.RunWorkerAsync();
         }
 
         private DateTime UnixTimeStampToDateTime(ulong unixTimeStamp)
@@ -297,9 +291,9 @@ namespace MistClient
                 case 3: // Other sent trade request - "Accept trade request"
                     button_trade.Enabled = true;
                     tradeMode = 3;
-                    text_log.AppendText("[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you.\r\n");
+                    text_log.AppendText("[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you." + Environment.NewLine);
                     if (Friends.keepLog)
-                        AppendLog(userSteamId, "[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you.\r\n");
+                        AppendLog(userSteamId, "[" + DateTime.Now + "] " + steam_name.Text + " has requested to trade with you." + Environment.NewLine);
                     text_log.ScrollToCaret();
                     if (!Chat.hasFocus)
                     {
@@ -350,15 +344,13 @@ namespace MistClient
             }
             // If we're running on the UI thread, we'll get here, and can safely update 
             // the label's text.
-            Color prevColor = text_log.SelectionColor;
-            text_log.SelectionColor = Color.RoyalBlue;
+            var selectionColor = Color.RoyalBlue;
             if (inGame)
             {
-                text_log.SelectionColor = Color.Green;
+                selectionColor = Color.Green;
             }
-            text_log.AppendText(date + name);
-            text_log.SelectionColor = prevColor;
-            message = message + "\r\n";
+            text_log.AppendText(date + name, selectionColor);
+            message = message + Environment.NewLine;
             text_log.AppendText(message);
             text_log.ScrollToCaret();
             chat_status.Text = "Last message received: " + DateTime.Now;
@@ -437,27 +429,7 @@ namespace MistClient
 
         private void button_send_Click(object sender, EventArgs e)
         {
-            if (text_input.Text != "")
-            {
-                bot.SteamFriends.SendChatMessage(userSteamId, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
-                Color prevColor = text_log.SelectionColor;
-                text_log.SelectionColor = Color.RoyalBlue;
-                if (bot.SteamFriends.GetFriendGamePlayed(bot.SteamUser.SteamID) != 0)
-                {
-                    text_log.SelectionColor = Color.Green;
-                }
-                string date = "[" + DateTime.Now + "] ";
-                string name = Bot.DisplayName + ": ";
-                text_log.AppendText(date + name);
-                text_log.SelectionColor = Color.DarkGray;
-                string message = text_input.Text + "\r\n";
-                text_log.AppendText(message);
-                text_log.ScrollToCaret();
-                text_log.SelectionColor = prevColor;
-                if (Friends.keepLog)
-                    AppendLog(userSteamId, date + name + message);
-                clear();
-            }
+            SendMessage();
         }
         
         private void text_input_KeyPress(object sender, KeyPressEventArgs e)
@@ -468,39 +440,33 @@ namespace MistClient
             }
             if (e.KeyChar == (char)Keys.Enter)
             {
-                if (text_input.Text != "")
-                {
-                    e.Handled = true;
-                    bot.SteamFriends.SendChatMessage(userSteamId, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
-                    Color prevColor = text_log.SelectionColor;
-                    text_log.SelectionColor = Color.RoyalBlue;
-                    if (bot.SteamFriends.GetFriendGamePlayed(bot.SteamUser.SteamID) != 0)
-                    {
-                        text_log.SelectionColor = Color.Green;
-                    }                    
-                    string date = "[" + DateTime.Now + "] ";
-                    string name = Bot.DisplayName + ": ";
-                    text_log.AppendText(date + name);
-                    text_log.SelectionColor = Color.DarkGray;
-                    string message = text_input.Text + "\r\n";
-                    text_log.AppendText(message);
-                    text_log.ScrollToCaret();
-                    text_log.SelectionColor = prevColor;
-                    if (Friends.keepLog)
-                        AppendLog(userSteamId, date + name + message);
-                    clear();
-                }
-                else
-                {
-                    e.Handled = true;
-                }
+                e.Handled = true;
+                SendMessage();
             }
         }
 
-        void clear()
+        void SendMessage()
         {
-            text_input.Select(0, 0);
-            text_input.Clear();
+            if (!string.IsNullOrWhiteSpace(text_input.Text))
+            {
+                bot.SteamFriends.SendChatMessage(userSteamId, SteamKit2.EChatEntryType.ChatMsg, text_input.Text);
+                var selectionColor = Color.RoyalBlue;
+                if (bot.SteamFriends.GetFriendGamePlayed(bot.SteamUser.SteamID) != 0)
+                {
+                    selectionColor = Color.Green;
+                }
+                string date = "[" + DateTime.Now + "] ";
+                string name = Bot.DisplayName + ": ";
+                text_log.AppendText(date + name, selectionColor);
+                selectionColor = Color.DarkGray;
+                string message = text_input.Text + "" + Environment.NewLine;
+                text_log.AppendText(message, selectionColor);
+                text_log.ScrollToCaret();
+                if (Friends.keepLog)
+                    AppendLog(userSteamId, date + name + message);
+                text_input.DeselectAll();
+                text_input.Clear();
+            }
         }
 
         private void button_trade_Click(object sender, EventArgs e)
@@ -516,9 +482,9 @@ namespace MistClient
                     bot.SteamTrade.Trade(userSteamId);
                     tradeMode = 2;
                     button_trade.Text = "Cancel Trade Request";
-                    UpdateChat("[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request.\r\n", false);
+                    UpdateChat("[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request." + Environment.NewLine, false);
                     if (Friends.keepLog)
-                        AppendLog(userSteamId, "[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request.\r\n");
+                        AppendLog(userSteamId, "[" + DateTime.Now + "] You have sent " + steam_name.Text + " a trade request." + Environment.NewLine);
                     break;
                 case 2: // User sent trade request - "Cancel trade request"
                     bot.SteamTrade.CancelTrade(userSteamId);
@@ -610,15 +576,11 @@ namespace MistClient
                 this.Invoke((Action)(() =>
                 {
                     string date = "[" + DateTime.Now + "] ";                    
-                    Color prevColor = text_log.SelectionColor;
-                    text_log.SelectionColor = Color.RoyalBlue;
-                    text_log.AppendText(date);
-                    text_log.SelectionColor = prevColor;
-                    string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading.\r\n";
+                    var selectionColor = Color.RoyalBlue;
+                    text_log.AppendText(date, selectionColor);
+                    string message = "[SteamRep] This user has no special reputation. Remember to always be cautious when trading." + Environment.NewLine;
                     text_log.AppendText(message);
                     text_log.ScrollToCaret();
-                    text_log.Select(text_log.Text.Length, 0);
-                        text_log.SelectionColor = prevColor;
                 }));
             }
             else
@@ -629,30 +591,26 @@ namespace MistClient
                     if (status.Contains("SCAMMER"))
                     {
                         string date = "[" + DateTime.Now + "] ";
-                        Color prevColor = text_log.SelectionColor;
-                        text_log.SelectionColor = Color.RoyalBlue;
-                        text_log.AppendText(date);
-                        text_log.SelectionColor = Color.Red;
+                        var selectionColor = Color.RoyalBlue;
+                        text_log.AppendText(date, selectionColor);
+                        selectionColor = Color.Red;
                         string message = "[SteamRep] WARNING: This user has been marked as a scammer on SteamRep with the following tags: "
-                            + status + ". Be careful!\r\n";
-                        text_log.AppendText(message);
+                            + status + ". Be careful!";
+                        text_log.AppendText(message, selectionColor);
+                        text_log.AppendText(Environment.NewLine);
                         text_log.ScrollToCaret();
-                        text_log.Select(text_log.Text.Length, 0);
-                        text_log.SelectionColor = prevColor;
                     }
                     else
                     {
                         string date = "[" + DateTime.Now + "] ";
-                        Color prevColor = text_log.SelectionColor;
-                        text_log.SelectionColor = Color.RoyalBlue;
-                        text_log.AppendText(date);
-                        text_log.SelectionColor = Color.Green;
+                        var selectionColor = Color.RoyalBlue;
+                        text_log.AppendText(date, selectionColor);
+                        selectionColor = Color.Green;
                         string message = "[SteamRep] This user has special reputation, with tags: "
-                            + status + ".\r\n";
-                        text_log.AppendText(message);
+                            + status + ".";
+                        text_log.AppendText(message, selectionColor);
+                        text_log.AppendText(Environment.NewLine);
                         text_log.ScrollToCaret();
-                        text_log.Select(text_log.Text.Length, 0);
-                        text_log.SelectionColor = prevColor;
                     }
                 }));
             }
@@ -686,16 +644,16 @@ namespace MistClient
                     }
                     if (this.steam_status.Text != prevStatus)
                     {
-                        UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n", false);
+                        UpdateChat("[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + "." + Environment.NewLine, false);
                         if (Friends.keepLog)
-                            AppendLog(userSteamId, "[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + ".\r\n");
+                            AppendLog(userSteamId, "[" + DateTime.Now + "] " + steam_name.Text + " is now " + steam_status.Text + "." + Environment.NewLine);
                         prevStatus = this.steam_status.Text;
                     }
                     if (this.steam_name.Text != prevName)
                     {
-                        UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n", false);
+                        UpdateChat("[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + "." + Environment.NewLine, false);
                         if (Friends.keepLog)
-                            AppendLog(userSteamId, "[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + ".\r\n");
+                            AppendLog(userSteamId, "[" + DateTime.Now + "] " + prevName + " has changed their name to " + steam_name.Text + "." + Environment.NewLine);
                         ListFriends.UpdateName(userSteamId, steam_name.Text);
                         prevName = this.steam_name.Text;
                     }
@@ -756,9 +714,9 @@ namespace MistClient
                 ListFriends.Remove(userSteamId);
                 bot.friends.Remove(userSteamId);
                 bot.SteamFriends.RemoveFriend(userSteamId);
-                UpdateChat("[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list.\r\n", false);
+                UpdateChat("[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list." + Environment.NewLine, false);
                 if (Friends.keepLog)
-                    AppendLog(userSteamId, "[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list.\r\n");
+                    AppendLog(userSteamId, "[" + DateTime.Now + "] You have removed " + steam_name.Text + " from your friends list." + Environment.NewLine);
                 MetroFramework.MetroMessageBox.Show(this, "You have removed " + name + ".",
                         "Remove Friend",
                         MessageBoxButtons.OK,
@@ -770,6 +728,19 @@ namespace MistClient
         private void text_log_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", e.LinkText);
+        }
+    }
+
+    public static class RichTextBoxExtensions
+    {
+        public static void AppendText(this RichTextBox box, string text, Color color)
+        {
+            box.SelectionStart = box.TextLength;
+            box.SelectionLength = 0;
+
+            box.SelectionColor = color;
+            box.AppendText(text);
+            box.SelectionColor = box.ForeColor;
         }
     }
 }

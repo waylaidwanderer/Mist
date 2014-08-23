@@ -67,11 +67,11 @@
             this.text_input.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.text_input.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.text_input.Location = new System.Drawing.Point(8, 326);
+            this.text_input.Location = new System.Drawing.Point(8, 317);
             this.text_input.MaxLength = 2048;
             this.text_input.Multiline = true;
             this.text_input.Name = "text_input";
-            this.text_input.Size = new System.Drawing.Size(244, 58);
+            this.text_input.Size = new System.Drawing.Size(244, 67);
             this.text_input.TabIndex = 0;
             this.text_input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.text_input_KeyPress);
             // 
@@ -178,9 +178,9 @@
             // button_send
             // 
             this.button_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_send.Location = new System.Drawing.Point(258, 326);
+            this.button_send.Location = new System.Drawing.Point(258, 317);
             this.button_send.Name = "button_send";
-            this.button_send.Size = new System.Drawing.Size(103, 58);
+            this.button_send.Size = new System.Drawing.Size(103, 67);
             this.button_send.Style = MetroFramework.MetroColorStyle.Blue;
             this.button_send.TabIndex = 1;
             this.button_send.Text = "Send";
