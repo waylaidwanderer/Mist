@@ -143,7 +143,7 @@ namespace SteamBot
                 {
                     CallbackMsg msg = SteamClient.WaitForCallback(true);
 
-                    HandleSteamMessage(msg);
+                    new Thread(() => HandleSteamMessage(msg)).Start();
                 }
             }); 
             
@@ -539,10 +539,6 @@ namespace SteamBot
 
                 if (type == EChatEntryType.ChatMsg)
                 {
-                    //log.Info (String.Format ("Chat Message from {0}: {1}",
-                    //                     SteamFriends.GetFriendPersonaName (callback.Sender),
-                    //                     callback.Message
-                    //));
                     GetUserHandler(callback.Sender).SetChatStatus("");
                     GetUserHandler(callback.Sender).OnMessage(callback.Message, type);
                 }
@@ -787,7 +783,7 @@ namespace SteamBot
         {
             if (!userHandlers.ContainsKey (sid))
             {
-                userHandlers [sid.ConvertToUInt64 ()] = CreateHandler (this, sid);
+                userHandlers [sid.ConvertToUInt64 ()] = CreateHandler(this, sid);
             }
             return userHandlers [sid.ConvertToUInt64 ()];
         }
