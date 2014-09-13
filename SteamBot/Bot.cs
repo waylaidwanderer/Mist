@@ -302,6 +302,7 @@ namespace SteamBot
                     {
                         main.label_status.Text = "Logging in...";
                     }));
+                    SteamClient.Connect();
                 }
 
                 if (callback.Result == EResult.InvalidLoginAuthCode)
@@ -314,6 +315,7 @@ namespace SteamBot
                     {
                         main.label_status.Text = "Logging in...";
                     }));
+                    SteamClient.Connect();
                 }
             });
 
@@ -637,18 +639,21 @@ namespace SteamBot
 
             msg.Handle<SteamClient.DisconnectedCallback> (callback =>
             {
-                IsLoggedIn = false;
-                CloseTrade ();
-                log.Warn ("Disconnected from Steam Network!");
-                main.Invoke((Action)(() =>
+                if (IsLoggedIn)
                 {
-                    main.label_status.Text = "Disconnected from Steam Network! Retrying...";
-                }));
-                SteamClient.Connect ();
-                main.Invoke((Action)(() =>
-                {
-                    main.label_status.Text = "Connecting to Steam...";
-                }));
+                    IsLoggedIn = false;
+                    CloseTrade();
+                    log.Warn("Disconnected from Steam Network!");
+                    main.Invoke((Action)(() =>
+                    {
+                        main.label_status.Text = "Disconnected from Steam Network! Retrying...";
+                    }));
+                    SteamClient.Connect();
+                    main.Invoke((Action)(() =>
+                    {
+                        main.label_status.Text = "Connecting to Steam...";
+                    }));
+                }
             });
             #endregion
 
